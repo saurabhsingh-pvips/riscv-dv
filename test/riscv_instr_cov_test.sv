@@ -28,6 +28,7 @@ class riscv_instr_cov_test extends uvm_test;
     string header[$];
     string entry[$];
     int fd;
+    $display("cov run_phase running!");
     while(1) begin
       args = {$sformatf("trace_csv_%0d", i), "=%s"};
       if ($value$plusargs(args, csv)) begin
@@ -138,7 +139,7 @@ class riscv_instr_cov_test extends uvm_test;
       if (riscv_instr::instr_template.exists(instr_name)) begin
         instr.copy(riscv_instr::instr_template[instr_name]);
         if (instr.group inside {RV32I, RV32M, RV32C, RV64I, RV64M, RV64C,
-                                RV32F, RV32B, RV64B}) begin
+                                RV32F}) begin
           assign_trace_info_to_instr(instr);
         end
         instr.pre_sample();
@@ -173,11 +174,7 @@ class riscv_instr_cov_test extends uvm_test;
       I_FORMAT: begin
         // TODO, support I_FORMAT floating point later
         if (instr.group == RV32F) return;
-        if (instr.instr_name inside {FSRI, FSRIW}) begin
-          `DV_CHECK_FATAL(operands.size() == 4, trace["instr_str"])
-        end else begin
-          `DV_CHECK_FATAL(operands.size() == 3, trace["instr_str"])
-        end
+        `DV_CHECK_FATAL(operands.size() == 3, trace["instr_str"])
         if(instr.category == LOAD) begin
           // load rd, imm(rs1)
           instr.rs1 = get_gpr(operands[2]);
@@ -191,13 +188,6 @@ class riscv_instr_cov_test extends uvm_test;
           end else begin
             get_val(operands[1], instr.csr);
           end
-        end else if (instr.instr_name inside {FSRI, FSRIW}) begin
-          // fsri rd, rs1, rs3, imm
-          instr.rs1 = get_gpr(operands[1]);
-          instr.rs1_value = get_gpr_state(operands[1]);
-          instr.rs3 = get_gpr(operands[2]);
-          instr.rs3_value = get_gpr_state(operands[2]);
-          get_val(operands[3], instr.imm);
         end else begin
           // addi rd, rs1, imm
           instr.rs1 = get_gpr(operands[1]);
@@ -226,12 +216,8 @@ class riscv_instr_cov_test extends uvm_test;
         end
       end
       R_FORMAT: begin
-        if ((instr.has_rs2 || instr.category == CSR) &&
-            !(instr.instr_name inside {FCLASS_S, FCLASS_D})) begin
-          `DV_CHECK_FATAL(operands.size() == 3)
-        end else begin
-          `DV_CHECK_FATAL(operands.size() == 2)
-        end
+        if (!instr.instr_name inside {FCLASS_S, FCLASS_D}) `DV_CHECK_FATAL(operands.size() == 3)
+        else                                               `DV_CHECK_FATAL(operands.size() == 2)
         if(instr.category == CSR) begin
           // csrrw rd, csr, rs1
           if (preg_enum::from_name(operands[1].toupper(), preg)) begin
@@ -255,23 +241,18 @@ class riscv_instr_cov_test extends uvm_test;
           // add rd, rs1, rs2
           instr.rs1 = get_gpr(operands[1]);
           instr.rs1_value = get_gpr_state(operands[1]);
-          if (instr.has_rs2) begin
-            instr.rs2 = get_gpr(operands[2]);
-            instr.rs2_value = get_gpr_state(operands[2]);
-          end
+          instr.rs2 = get_gpr(operands[2]);
+          instr.rs2_value = get_gpr_state(operands[2]);
         end
       end
       R4_FORMAT: begin
         `DV_CHECK_FATAL(operands.size() == 4)
-        update_instr_reg_by_abi_name(operands[1],
-                                     instr.rs1, instr.rs1_value,
-                                     instr.fs1, instr.fs1_value);
-        update_instr_reg_by_abi_name(operands[2],
-                                     instr.rs2, instr.rs2_value,
-                                     instr.fs2, instr.fs2_value);
-        update_instr_reg_by_abi_name(operands[3],
-                                     instr.rs3, instr.rs3_value,
-                                     instr.fs3, instr.fs3_value);
+        instr.fs1 = get_fpr(operands[1]);
+        instr.fs1_value = get_gpr_state(operands[1]);
+        instr.fs2 = get_fpr(operands[2]);
+        instr.fs2_value = get_gpr_state(operands[2]);
+        instr.fs3 = get_fpr(operands[3]);
+        instr.fs3_value = get_gpr_state(operands[3]);
       end
       CI_FORMAT, CIW_FORMAT: begin
         if (instr.instr_name == C_ADDI16SP) begin

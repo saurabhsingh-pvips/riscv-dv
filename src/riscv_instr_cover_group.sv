@@ -26,6 +26,9 @@
 `define INSTR_CG_BEGIN(INSTR_NAME) \
   covergroup ``INSTR_NAME``_cg with function sample(riscv_instr_cov_item instr);
 
+`define SEQ_INSTR_CG_BEGIN(INSTR_NAME) \
+  covergroup ``INSTR_NAME``_seq_cg with function sample(riscv_instr_cov_item instr);
+
 `define R_INSTR_CG_BEGIN(INSTR_NAME) \
   `INSTR_CG_BEGIN(INSTR_NAME) \
     cp_rs1         : coverpoint instr.rs1; \
@@ -70,6 +73,9 @@
     `DV(cp_lsu_hazard  : coverpoint instr.lsu_hazard { \
       bins valid_hazard[] = {NO_HAZARD, WAR_HAZARD, WAW_HAZARD}; \
     }) \
+    `DV(cp_ld_sr_seq	: coverpoint instr.ld_sr_seq { \
+      bins valid_seq [] = {NO_LD_SR_SEQ, STORE_LOAD, STORE_STORE}; \
+    }) \
 
 `define LOAD_INSTR_CG_BEGIN(INSTR_NAME) \
   `INSTR_CG_BEGIN(INSTR_NAME) \
@@ -82,6 +88,9 @@
     `DV(cp_lsu_hazard  : coverpoint instr.lsu_hazard { \
       bins valid_hazard[] = {NO_HAZARD, RAW_HAZARD}; \
     }) \
+    `DV(cp_ld_sr_seq	: coverpoint instr.ld_sr_seq { \
+      bins valid_seq [] = {NO_LD_SR_SEQ, LOAD_LOAD, LOAD_STORE}; \
+    }) \
 
 `define I_INSTR_CG_BEGIN(INSTR_NAME) \
   `INSTR_CG_BEGIN(INSTR_NAME) \
@@ -90,12 +99,6 @@
     cp_rs1_sign    : coverpoint instr.rs1_sign; \
     cp_rd_sign     : coverpoint instr.rd_sign; \
     cp_imm_sign    : coverpoint instr.imm_sign; \
-    `DV(cp_gpr_hazard : coverpoint instr.gpr_hazard;)
-
-`define B_I_INSTR_CG_BEGIN(INSTR_NAME) \
-  `INSTR_CG_BEGIN(INSTR_NAME) \
-    cp_rs1         : coverpoint instr.rs1; \
-    cp_rd          : coverpoint instr.rd; \
     `DV(cp_gpr_hazard : coverpoint instr.gpr_hazard;)
 
 `define U_INSTR_CG_BEGIN(INSTR_NAME) \
@@ -108,7 +111,23 @@
   `INSTR_CG_BEGIN(INSTR_NAME) \
     cp_imm_sign    : coverpoint instr.imm_sign; \
     cp_rd          : coverpoint instr.rd; \
-    cp_rd_align    : coverpoint instr.rd_value[1];
+    cp_rd_align    : coverpoint instr.rd_value[1]; \
+    `DV(cp_b2b_jump   : coverpoint instr.jump_seq { \
+    	bins valid_seq[] = {NO_SEQ , B2BJUMP}; \
+    }) \
+
+/*
+`define J_INSTR_CG_BEGIN(INSTR_NAME) \
+  `INSTR_CG_BEGIN(INSTR_NAME) \
+    `DV(cp_b2b_jump   : coverpoint instr.jump_seq;)
+*/
+
+/*
+ `define J_INSTR_SEQ_CG_BEGIN(INSTR_NAME) \
+  `SEQ_INSTR_CG_BEGIN(INSTR_NAME) \
+    cp_imm_sign    : coverpoint instr.imm_sign; \
+    `DV(cp_b2b_jump: coverpoint instr.jump_seq;)
+*/
 
 `define CSR_INSTR_CG_BEGIN(INSTR_NAME) \
   `INSTR_CG_BEGIN(INSTR_NAME) \
@@ -263,38 +282,6 @@
     cp_fd_sign     : coverpoint instr.fd_sign; \
     `DV(cp_gpr_hazard : coverpoint instr.gpr_hazard;) \
 
-`define B_R_INSTR_CG_BEGIN(INSTR_NAME) \
-  `INSTR_CG_BEGIN(INSTR_NAME) \
-    cp_rs1         : coverpoint instr.rs1; \
-    cp_rs2         : coverpoint instr.rs2; \
-    cp_rd          : coverpoint instr.rd;  \
-    `DV(cp_gpr_hazard : coverpoint instr.gpr_hazard;) \
-
-`define B_R_INSTR_NO_RS2_CG_BEGIN(INSTR_NAME) \
-  `INSTR_CG_BEGIN(INSTR_NAME) \
-    cp_rs1         : coverpoint instr.rs1; \
-    cp_rd          : coverpoint instr.rd;  \
-    `DV(cp_gpr_hazard : coverpoint instr.gpr_hazard;) \
-
-`define B_R4_INSTR_CG_BEGIN(INSTR_NAME) \
-  `INSTR_CG_BEGIN(INSTR_NAME) \
-    cp_rs1         : coverpoint instr.rs1; \
-    cp_rs2         : coverpoint instr.rs2; \
-    cp_rs3         : coverpoint instr.rs3; \
-    cp_rd          : coverpoint instr.rd;  \
-    `DV(cp_gpr_hazard : coverpoint instr.gpr_hazard;) \
-
-
-// only enable the coverpoint for a particular XLEN (32, 64, 128)
-`define ENABLE_CP_BY_XLEN(XLEN_VAL) \
-  option.weight = (XLEN == XLEN_VAL); \
-  type_option.weight = (XLEN == XLEN_VAL); \
-
-`define CP_VALUE_RANGE(NAME, VAL, START, END) \
-  cp_``NAME``: coverpoint VAL{ \
-    bins values[] = {[START:END]}; \
-  }
-
 `define CG_END endgroup
 
 `define CG_SELECTOR_BEGIN(CG_ISA) \
@@ -308,6 +295,7 @@ class riscv_instr_cover_group;
   riscv_instr_gen_config  cfg;
   riscv_instr_cov_item    cur_instr;
   riscv_instr_cov_item    pre_instr;
+  //riscv_instr_cov_item    instr_seq;
   riscv_instr_name_t      instr_list[$];
   int unsigned            instr_cnt;
   int unsigned            branch_instr_cnt;
@@ -507,7 +495,7 @@ class riscv_instr_cover_group;
   `J_INSTR_CG_BEGIN(jal)
     cp_imm_align : coverpoint instr.imm[1];
   `CG_END
-
+  
   `J_INSTR_CG_BEGIN(jalr)
     cp_rs1_link : coverpoint instr.rs1 {
       bins ra = {RA};
@@ -590,398 +578,6 @@ class riscv_instr_cover_group;
   `CG_END
 
   `FP_R4_INSTR_CG_BEGIN(fnmsub_s)
-  `CG_END
-
-  // B extension
-  // Count Leading/Trailing Zeros (clz, ctz)
-  `B_R_INSTR_NO_RS2_CG_BEGIN(clz)
-    `CP_VALUE_RANGE(num_leading_zeros, instr.rd_value, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(ctz)
-    `CP_VALUE_RANGE(num_trailing_zeros, instr.rd_value, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(clzw)
-    `CP_VALUE_RANGE(num_leading_zeros, instr.rd_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(ctzw)
-    `CP_VALUE_RANGE(num_trailing_zeros, instr.rd_value, 0, XLEN/2-1)
-  `CG_END
-
-  // Count Bits Set (pcnt)
-  `B_R_INSTR_NO_RS2_CG_BEGIN(pcnt)
-    `CP_VALUE_RANGE(num_set_bits, instr.rd_value, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(pcntw)
-    `CP_VALUE_RANGE(num_set_bits, instr.rd_value, 0, XLEN/2-1)
-  `CG_END
-
-  // Logic-with-negate (andn, orn, xnor)
-  `B_R_INSTR_CG_BEGIN(andn)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(orn)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(xnor)
-  `CG_END
-
-  // Pack two words in one register (pack, packu, packh)
-  `B_R_INSTR_CG_BEGIN(pack)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(packu)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(packh)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(packw)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(packuw)
-  `CG_END
-
-  // Min/max instructions (min, max, minu, maxu)
-  `B_R_INSTR_CG_BEGIN(min)
-    cp_rs1_gt_rs2  : coverpoint (longint'(instr.rs1_value) > longint'(instr.rs2_value));
-    cp_rs1_eq_rs2  : coverpoint (instr.rs1_value == instr.rs2_value) {
-      bins equal = {1};
-    }
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(max)
-    cp_rs1_gt_rs2  : coverpoint (longint'(instr.rs1_value) > longint'(instr.rs2_value));
-    cp_rs1_eq_rs2  : coverpoint (instr.rs1_value == instr.rs2_value) {
-      bins equal = {1};
-    }
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(minu)
-    cp_rs1_gt_rs2  : coverpoint (instr.rs1_value > instr.rs2_value);
-    cp_rs1_eq_rs2  : coverpoint (instr.rs1_value == instr.rs2_value) {
-      bins equal = {1};
-    }
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(maxu)
-    cp_rs1_gt_rs2  : coverpoint (instr.rs1_value > instr.rs2_value);
-    cp_rs1_eq_rs2  : coverpoint (instr.rs1_value == instr.rs2_value) {
-      bins equal = {1};
-    }
-  `CG_END
-
-  // Sign-extend instructions (sext.b, sext.h)
-  `B_R_INSTR_NO_RS2_CG_BEGIN(sext_b)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(sext_h)
-  `CG_END
-
-  // Single-bit instructions (sbset, sbclr, sbinv, sbext)
-  `B_R_INSTR_CG_BEGIN(sbset)
-    `CP_VALUE_RANGE(bit_location, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(sbclr)
-    `CP_VALUE_RANGE(bit_location, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(sbinv)
-    `CP_VALUE_RANGE(bit_location, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(sbext)
-    `CP_VALUE_RANGE(bit_location, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(sbseti)
-    `CP_VALUE_RANGE(bit_location, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(sbclri)
-    `CP_VALUE_RANGE(bit_location, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(sbinvi)
-    `CP_VALUE_RANGE(bit_location, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(sbexti)
-    `CP_VALUE_RANGE(bit_location, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  // Shift Ones (Left/Right) (slo, sloi, sro, sroi)
-  `B_R_INSTR_CG_BEGIN(slo)
-    `CP_VALUE_RANGE(num_ones_shift, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(sro)
-    `CP_VALUE_RANGE(num_ones_shift, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(sloi)
-    `CP_VALUE_RANGE(num_ones_shift, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(sroi)
-    `CP_VALUE_RANGE(num_ones_shift, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(slow)
-    `CP_VALUE_RANGE(num_ones_shift, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(srow)
-    `CP_VALUE_RANGE(num_ones_shift, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(sloiw)
-    `CP_VALUE_RANGE(num_ones_shift, instr.imm, 0, XLEN/2-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(sroiw)
-    `CP_VALUE_RANGE(num_ones_shift, instr.imm, 0, XLEN/2-1)
-  `CG_END
-
-  // Rotate (Left/Right) (rol, ror, rori)
-  `B_R_INSTR_CG_BEGIN(ror)
-    `CP_VALUE_RANGE(num_bit_rotate, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(rol)
-    `CP_VALUE_RANGE(num_bit_rotate, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(rori)
-    `CP_VALUE_RANGE(num_bit_rotate, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(rorw)
-    `CP_VALUE_RANGE(num_bit_rotate, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(rolw)
-    `CP_VALUE_RANGE(num_bit_rotate, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(roriw)
-    `CP_VALUE_RANGE(num_bit_rotate, instr.imm, 0, XLEN/2-1)
-  `CG_END
-
-  // Generalized Reverse (grev, grevi, rev)
-  `B_R_INSTR_CG_BEGIN(grev)
-    `CP_VALUE_RANGE(reverse_mode, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(grevi)
-    `CP_VALUE_RANGE(reverse_mode, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(grevw)
-    `CP_VALUE_RANGE(reverse_mode, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(greviw)
-    `CP_VALUE_RANGE(reverse_mode, instr.imm, 0, XLEN/2-1)
-  `CG_END
-
-  // Generalized Shuffle (shfl, unshfl, shfli, unshfli, zip, unzip)
-  `B_R_INSTR_CG_BEGIN(shfl)
-    `CP_VALUE_RANGE(shuffle_mode, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(unshfl)
-    `CP_VALUE_RANGE(shuffle_mode, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(shfli)
-    `CP_VALUE_RANGE(shuffle_mode, instr.imm, 0, XLEN/2-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(unshfli)
-    `CP_VALUE_RANGE(shuffle_mode, instr.imm, 0, XLEN/2-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(shflw)
-    `CP_VALUE_RANGE(shuffle_mode, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(unshflw)
-    `CP_VALUE_RANGE(shuffle_mode, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  // Generalized OR-Combine (gorc, gorci)
-  `B_R_INSTR_CG_BEGIN(gorc)
-    `CP_VALUE_RANGE(or_combine_mode, instr.rs2_value, 0, XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(gorci)
-    `CP_VALUE_RANGE(or_combine_mode, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(gorcw)
-    `CP_VALUE_RANGE(or_combine_mode, instr.rs2_value, 0, XLEN/2-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(gorciw)
-    `CP_VALUE_RANGE(or_combine_mode, instr.imm, 0, XLEN/2-1)
-  `CG_END
-
-  // Bit-Field Place (bfp)
-  `B_R_INSTR_CG_BEGIN(bfp)
-    // cover all values of length and offset
-    cp_len: coverpoint instr.rs2_value[27:24] iff (XLEN == 32) {
-      `ENABLE_CP_BY_XLEN(32)
-      bins values[] = {[0:XLEN/2-1]};
-    }
-    cp_offset: coverpoint instr.rs2_value[20:16] iff (XLEN == 32) {
-      `ENABLE_CP_BY_XLEN(32)
-      bins values[] = {[0:XLEN-1]};
-    }
-    cp_len_64bit_sel01: coverpoint instr.rs2_value[60:56] iff (XLEN == 64 &&
-          instr.rs2_value[XLEN-1:XLEN-2] == 2'b10) {
-      `ENABLE_CP_BY_XLEN(64)
-      bins values[] = {[0:XLEN/2-1]};
-    }
-    cp_offset_64bit_sel01: coverpoint instr.rs2_value[53:48] iff (XLEN == 64 &&
-          instr.rs2_value[XLEN-1:XLEN-2] == 2'b10) {
-      `ENABLE_CP_BY_XLEN(64)
-      bins values = {[0:XLEN-1]};
-    }
-    cp_len_64bit_not_sel01: coverpoint instr.rs2_value[60:56] iff (XLEN == 64 &&
-          instr.rs2_value[XLEN-1:XLEN-2] != 2'b10) {
-      `ENABLE_CP_BY_XLEN(64)
-      bins values[] = {[0:XLEN/2-1]};
-    }
-    cp_offset_64bit_not_sel01: coverpoint instr.rs2_value[53:48] iff (XLEN == 64 &&
-          instr.rs2_value[XLEN-1:XLEN-2] != 2'b10) {
-      `ENABLE_CP_BY_XLEN(64)
-      bins values[] = {[0:XLEN-1]};
-    }
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(bfpw)
-    // cover all values of length and offset
-    `CP_VALUE_RANGE(length, instr.rs2_value[27:24], 0, XLEN/2-1)
-    `CP_VALUE_RANGE(offset, instr.rs2_value[20:16], 0, XLEN/2-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(bext)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(bextw)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(bdep)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(bdepw)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(clmul)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(clmulh)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(clmulr)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(clmulw)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(clmulhw)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(clmulrw)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(crc32_b)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(crc32_h)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(crc32_w)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(crc32c_b)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(crc32c_h)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(crc32c_w)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(crc32_d)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(crc32c_d)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(bmator)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(bmatxor)
-  `CG_END
-
-  `B_R_INSTR_NO_RS2_CG_BEGIN(bmatflip)
-  `CG_END
-
-  `B_R4_INSTR_CG_BEGIN(cmix)
-  `CG_END
-
-  `B_R4_INSTR_CG_BEGIN(cmov)
-  `CG_END
-
-  `B_R4_INSTR_CG_BEGIN(fsl)
-    `CP_VALUE_RANGE(num_shift, instr.rs2_value, 0, 2*XLEN-1)
-  `CG_END
-
-  `B_R4_INSTR_CG_BEGIN(fsr)
-    `CP_VALUE_RANGE(num_shift, instr.rs2_value, 0, 2*XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(fsri)
-    cp_rs3 : coverpoint instr.rs3;
-    `CP_VALUE_RANGE(num_shift, instr.imm, 0, XLEN-1)
-  `CG_END
-
-  `B_R4_INSTR_CG_BEGIN(fslw)
-    `CP_VALUE_RANGE(num_shift, instr.rs2_value, 0, 2*XLEN-1)
-  `CG_END
-
-  `B_R4_INSTR_CG_BEGIN(fsrw)
-    `CP_VALUE_RANGE(num_shift, instr.rs2_value, 0, 2*XLEN-1)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(fsriw)
-    cp_rs3 : coverpoint instr.rs3;
-    `CP_VALUE_RANGE(num_shift, instr.imm, 0, XLEN/2-1)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(addwu)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(subwu)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(addiwu)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(addu_w)
-  `CG_END
-
-  `B_R_INSTR_CG_BEGIN(subu_w)
-  `CG_END
-
-  `B_I_INSTR_CG_BEGIN(slliu_w)
-    `CP_VALUE_RANGE(num_shift, instr.imm, 0, XLEN-1)
   `CG_END
 
   // CSR instructions
@@ -1453,6 +1049,7 @@ class riscv_instr_cover_group;
     this.cfg = cfg;
     cur_instr = riscv_instr_cov_item::type_id::create("cur_instr");
     pre_instr = riscv_instr_cov_item::type_id::create("pre_instr");
+    //instr_seq = riscv_instr_cov_item::type_id::create("instr_seq");
     build_instr_list();
     `ifdef COMPLIANCE_MODE
       compliance_mode = 1;
@@ -1650,103 +1247,6 @@ class riscv_instr_cover_group;
       fnmsub_s_cg = new();
     `CG_SELECTOR_END
 
-    `CG_SELECTOR_BEGIN(RV32B)
-      clz_cg      = new();
-      ctz_cg      = new();
-      pcnt_cg     = new();
-      andn_cg     = new();
-      orn_cg      = new();
-      xnor_cg     = new();
-      pack_cg     = new();
-      packh_cg    = new();
-      min_cg      = new();
-      max_cg      = new();
-      minu_cg     = new();
-      maxu_cg     = new();
-      sext_b_cg   = new();
-      sext_h_cg   = new();
-      sbset_cg    = new();
-      sbclr_cg    = new();
-      sbinv_cg    = new();
-      sbext_cg    = new();
-      sbseti_cg   = new();
-      sbclri_cg   = new();
-      sbinvi_cg   = new();
-      sbexti_cg   = new();
-      slo_cg      = new();
-      sro_cg      = new();
-      sloi_cg     = new();
-      sroi_cg     = new();
-      ror_cg      = new();
-      rol_cg      = new();
-      rori_cg     = new();
-      grev_cg     = new();
-      grevi_cg    = new();
-      shfli_cg    = new();
-      unshfli_cg  = new();
-      shfl_cg     = new();
-      unshfl_cg   = new();
-      gorc_cg     = new();
-      gorci_cg    = new();
-      bfp_cg      = new();
-      bext_cg     = new();
-      bdep_cg     = new();
-      clmul_cg    = new();
-      clmulh_cg   = new();
-      clmulr_cg   = new();
-      crc32_b_cg  = new();
-      crc32_h_cg  = new();
-      crc32_w_cg  = new();
-      crc32c_b_cg = new();
-      crc32c_h_cg = new();
-      crc32c_w_cg = new();
-      cmix_cg     = new();
-      cmov_cg     = new();
-      fsl_cg      = new();
-      fsr_cg      = new();
-      fsri_cg     = new();
-    `CG_SELECTOR_END
-
-    `CG_SELECTOR_BEGIN(RV64B)
-      clzw_cg     = new();
-      ctzw_cg     = new();
-      pcntw_cg    = new();
-      packw_cg    = new();
-      packuw_cg   = new();
-      slow_cg     = new();
-      srow_cg     = new();
-      sloiw_cg    = new();
-      sroiw_cg    = new();
-      rorw_cg     = new();
-      rolw_cg     = new();
-      roriw_cg    = new();
-      grevw_cg    = new();
-      greviw_cg   = new();
-      shflw_cg    = new();
-      unshflw_cg  = new();
-      gorcw_cg    = new();
-      gorciw_cg   = new();
-      bfpw_cg     = new();
-      bextw_cg    = new();
-      bdepw_cg    = new();
-      clmulw_cg   = new();
-      clmulhw_cg  = new();
-      clmulrw_cg  = new();
-      crc32_d_cg  = new();
-      crc32c_d_cg = new();
-      bmator_cg   = new();
-      bmatxor_cg  = new();
-      bmatflip_cg = new();
-      fslw_cg     = new();
-      fsrw_cg     = new();
-      fsriw_cg    = new();
-      addwu_cg    = new();
-      subwu_cg    = new();
-      addiwu_cg   = new();
-      addu_w_cg   = new();
-      subu_w_cg   = new();
-      slliu_w_cg  = new();
-    `CG_SELECTOR_END
     // Ignore the exception which cannot be covered when running with ISS
     if (iss_mode) begin
       int i;
@@ -1781,6 +1281,8 @@ class riscv_instr_cover_group;
     instr_cnt += 1;
     if (instr_cnt > 1) begin
       instr.check_hazard_condition(pre_instr);
+      instr.sample_two_instr_sequence(pre_instr);
+      instr.sample_ld_sr_instr_sequence(pre_instr);
     end
     if ((instr.binary[1:0] != 2'b11) && (RV32C inside {supported_isa})) begin
       `SAMPLE(hint_cg, instr);
@@ -1914,100 +1416,6 @@ class riscv_instr_cover_group;
       FNMADD_S   : `SAMPLE(fnmadd_s_cg, instr)
       FMSUB_S    : `SAMPLE(fmsub_s_cg, instr)
       FNMSUB_S   : `SAMPLE(fnmsub_s_cg, instr)
-      // RV32B
-      CLZ        : `SAMPLE(clz_cg, instr)
-      CTZ        : `SAMPLE(ctz_cg, instr)
-      PCNT       : `SAMPLE(pcnt_cg, instr)
-      ANDN       : `SAMPLE(andn_cg, instr)
-      ORN        : `SAMPLE(orn_cg, instr)
-      XNOR       : `SAMPLE(xnor_cg, instr)
-      PACK       : `SAMPLE(pack_cg, instr)
-      PACKH      : `SAMPLE(packh_cg, instr)
-      MIN        : `SAMPLE(min_cg, instr)
-      MAX        : `SAMPLE(max_cg, instr)
-      MINU       : `SAMPLE(minu_cg, instr)
-      MAXU       : `SAMPLE(maxu_cg, instr)
-      SEXT_B     : `SAMPLE(sext_b_cg, instr)
-      SEXT_H     : `SAMPLE(sext_h_cg, instr)
-      SBSET      : `SAMPLE(sbset_cg, instr)
-      SBCLR      : `SAMPLE(sbclr_cg, instr)
-      SBINV      : `SAMPLE(sbinv_cg, instr)
-      SBEXT      : `SAMPLE(sbext_cg, instr)
-      SBSETI     : `SAMPLE(sbseti_cg, instr)
-      SBCLRI     : `SAMPLE(sbclri_cg, instr)
-      SBINVI     : `SAMPLE(sbinvi_cg, instr)
-      SBEXTI     : `SAMPLE(sbexti_cg, instr)
-      SLO        : `SAMPLE(slo_cg, instr)
-      SRO        : `SAMPLE(sro_cg, instr)
-      SLOI       : `SAMPLE(sloi_cg, instr)
-      SROI       : `SAMPLE(sroi_cg, instr)
-      ROR        : `SAMPLE(ror_cg, instr)
-      ROL        : `SAMPLE(rol_cg, instr)
-      RORI       : `SAMPLE(rori_cg, instr)
-      GREV       : `SAMPLE(grev_cg, instr)
-      GREVI      : `SAMPLE(grevi_cg, instr)
-      SHFLI      : `SAMPLE(shfli_cg, instr)
-      UNSHFLI    : `SAMPLE(unshfli_cg, instr)
-      SHFL       : `SAMPLE(shfl_cg, instr)
-      UNSHFL     : `SAMPLE(unshfl_cg, instr)
-      GORC       : `SAMPLE(gorc_cg, instr)
-      GORCI      : `SAMPLE(gorci_cg, instr)
-      BFP        : `SAMPLE(bfp_cg, instr)
-      BEXT       : `SAMPLE(bext_cg, instr)
-      BDEP       : `SAMPLE(bdep_cg, instr)
-      CLMUL      : `SAMPLE(clmul_cg, instr)
-      CLMULH     : `SAMPLE(clmulh_cg, instr)
-      CLMULR     : `SAMPLE(clmulr_cg, instr)
-      CRC32_B    : `SAMPLE(crc32_b_cg, instr)
-      CRC32_H    : `SAMPLE(crc32_h_cg, instr)
-      CRC32_W    : `SAMPLE(crc32_w_cg, instr)
-      CRC32C_B   : `SAMPLE(crc32c_b_cg, instr)
-      CRC32C_H   : `SAMPLE(crc32c_h_cg, instr)
-      CRC32C_W   : `SAMPLE(crc32c_w_cg, instr)
-      CMIX       : `SAMPLE(cmix_cg, instr)
-      CMOV       : `SAMPLE(cmov_cg, instr)
-      FSL        : `SAMPLE(fsl_cg, instr)
-      FSR        : `SAMPLE(fsr_cg, instr)
-      FSRI       : `SAMPLE(fsri_cg, instr)
-      // RV64B
-      CLZW       : `SAMPLE(clzw_cg, instr)
-      CTZW       : `SAMPLE(ctzw_cg, instr)
-      PCNTW      : `SAMPLE(pcntw_cg, instr)
-      PACKW      : `SAMPLE(packw_cg, instr)
-      PACKUW     : `SAMPLE(packuw_cg, instr)
-      SLOW       : `SAMPLE(slow_cg, instr)
-      SROW       : `SAMPLE(srow_cg, instr)
-      SLOIW      : `SAMPLE(sloiw_cg, instr)
-      SROIW      : `SAMPLE(sroiw_cg, instr)
-      RORW       : `SAMPLE(rorw_cg, instr)
-      ROLW       : `SAMPLE(rolw_cg, instr)
-      RORIW      : `SAMPLE(roriw_cg, instr)
-      GREVW      : `SAMPLE(grevw_cg, instr)
-      GREVIW     : `SAMPLE(greviw_cg, instr)
-      SHFLW      : `SAMPLE(shflw_cg, instr)
-      UNSHFLW    : `SAMPLE(unshflw_cg, instr)
-      GORCW      : `SAMPLE(gorcw_cg, instr)
-      GORCIW     : `SAMPLE(gorciw_cg, instr)
-      BFPW       : `SAMPLE(bfpw_cg, instr)
-      BEXTW      : `SAMPLE(bextw_cg, instr)
-      BDEPW      : `SAMPLE(bdepw_cg, instr)
-      CLMULW     : `SAMPLE(clmulw_cg, instr)
-      CLMULHW    : `SAMPLE(clmulhw_cg, instr)
-      CLMULRW    : `SAMPLE(clmulrw_cg, instr)
-      CRC32_D    : `SAMPLE(crc32_d_cg, instr)
-      CRC32C_D   : `SAMPLE(crc32c_d_cg, instr)
-      BMATOR     : `SAMPLE(bmator_cg, instr)
-      BMATXOR    : `SAMPLE(bmatxor_cg, instr)
-      BMATFLIP   : `SAMPLE(bmatflip_cg, instr)
-      FSLW       : `SAMPLE(fslw_cg, instr)
-      FSRW       : `SAMPLE(fsrw_cg, instr)
-      FSRIW      : `SAMPLE(fsriw_cg, instr)
-      ADDWU      : `SAMPLE(addwu_cg, instr)
-      SUBWU      : `SAMPLE(subwu_cg, instr)
-      ADDIWU     : `SAMPLE(addiwu_cg, instr)
-      ADDU_W     : `SAMPLE(addu_w_cg, instr)
-      SUBU_W     : `SAMPLE(subu_w_cg, instr)
-      SLLIU_W    : `SAMPLE(slliu_w_cg, instr)
       `VECTOR_INCLUDE("riscv_instr_cover_group_inc_cg_sample.sv")
       default: begin
         if (instr.group == RV32I) begin

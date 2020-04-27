@@ -1031,6 +1031,19 @@ package riscv_instr_pkg;
     WAW_HAZARD
   } hazard_e;
 
+  typedef enum bit {
+	NO_SEQ,
+  	B2BJUMP
+  } instr_seq_e;
+
+  typedef enum bit [2:0] {
+	NO_LD_SR_SEQ,
+  	LOAD_LOAD,
+  	LOAD_STORE,
+  	STORE_LOAD,
+  	STORE_STORE
+  } ld_sr_seq_e;
+
   `include "riscv_core_setting.sv"
 
   // PMP address matching mode
@@ -1044,18 +1057,6 @@ package riscv_instr_pkg;
   // PMP configuration register layout
   // This configuration struct includes the pmp address for simplicity
   // TODO (udinator) allow a full 34 bit address for rv32?
-`ifdef _VCP //GRK958
-  typedef struct packed {
-    bit                   l;
-    bit [1:0]                  zero;
-    pmp_addr_mode_t       a;
-    bit                   x;
-    bit                   w;
-    bit                   r;
-    // RV32: the pmpaddr is the top 32 bits of a 34 bit PMP address
-    // RV64: the pmpaddr is the top 54 bits of a 56 bit PMP address
-    bit [XLEN - 1 : 0]    offset;
-`else
   typedef struct{
     rand bit                   l;
     bit [1:0]                  zero;
@@ -1066,7 +1067,6 @@ package riscv_instr_pkg;
     // RV32: the pmpaddr is the top 32 bits of a 34 bit PMP address
     // RV64: the pmpaddr is the top 54 bits of a 56 bit PMP address
     rand bit [XLEN - 1 : 0]    offset;
-`endif
   } pmp_cfg_reg_t;
 
   function automatic string hart_prefix(int hart = 0);
@@ -1259,7 +1259,7 @@ package riscv_instr_pkg;
     end
   endfunction
 
-  class cmdline_enum_processor #(parameter type T = riscv_instr_group_t);
+  class cmdline_enum_processor #(parameter type T);
     static function void get_array_values(string cmdline_str, ref T vals[]);
       string s;
       void'(inst.get_arg_value(cmdline_str, s));

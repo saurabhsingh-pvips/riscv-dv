@@ -20,10 +20,8 @@ class riscv_instr_cov_item extends riscv_instr;
     NORMAL_VAL, MIN_VAL, MAX_VAL, ZERO_VAL
   } special_val_e;
 
-  rand riscv_reg_t      rs3;
   rand bit [XLEN-1:0]   rs1_value;
   rand bit [XLEN-1:0]   rs2_value;
-  rand bit [XLEN-1:0]   rs3_value;
   rand bit [XLEN-1:0]   rd_value;
   rand riscv_fpr_t      fs1;
   rand riscv_fpr_t      fs2;
@@ -44,18 +42,18 @@ class riscv_instr_cov_item extends riscv_instr;
   div_result_e          div_result;
   operand_sign_e        rs1_sign;
   operand_sign_e        rs2_sign;
-  operand_sign_e        rs3_sign;
   operand_sign_e        fs1_sign;
   operand_sign_e        fs2_sign;
   operand_sign_e        fs3_sign;
   operand_sign_e        imm_sign;
   operand_sign_e        rd_sign;
   operand_sign_e        fd_sign;
+  instr_seq_e		jump_seq;
+  ld_sr_seq_e		ld_sr_seq;
   hazard_e              gpr_hazard;
   hazard_e              lsu_hazard;
   special_val_e         rs1_special_val;
   special_val_e         rs2_special_val;
-  special_val_e         rs3_special_val;
   special_val_e         rd_special_val;
   special_val_e         imm_special_val;
   compare_result_e      compare_result;
@@ -71,7 +69,6 @@ class riscv_instr_cov_item extends riscv_instr;
     unaligned_pc = (pc[1:0] != 2'b00);
     rs1_sign = get_operand_sign(rs1_value);
     rs2_sign = get_operand_sign(rs2_value);
-    rs3_sign = get_operand_sign(rs3_value);
     rd_sign = get_operand_sign(rd_value);
     fs1_sign = get_operand_sign(fs1_value);
     fs2_sign = get_operand_sign(fs2_value);
@@ -81,7 +78,6 @@ class riscv_instr_cov_item extends riscv_instr;
     rs1_special_val = get_operand_special_val(rs1_value);
     rd_special_val = get_operand_special_val(rd_value);
     rs2_special_val = get_operand_special_val(rs2_value);
-    rs3_special_val = get_operand_special_val(rs3_value);
     if ((format != R_FORMAT) && (format != CR_FORMAT)) begin
       imm_special_val = get_imm_special_val(imm);
     end
@@ -201,12 +197,12 @@ class riscv_instr_cov_item extends riscv_instr;
     case(instr_name)
       BEQ    : is_branch_hit = (rs1_value == rs2_value);
       C_BEQZ : is_branch_hit = (rs1_value == 0);
-      BNE    : is_branch_hit = (rs1_value != rs2_value);
+      BNE    : is_branch_hit = (rs1_value == rs2_value);
       C_BNEZ : is_branch_hit = (rs1_value != 0);
       BLT    : is_branch_hit = ($signed(rs1_value) <  $signed(rs2_value));
-      BGE    : is_branch_hit = ($signed(rs1_value) >=  $signed(rs2_value));
+      BGE    : is_branch_hit = ($signed(rs1_value) >  $signed(rs2_value));
       BLTU   : is_branch_hit = (rs1_value < rs2_value);
-      BGEU   : is_branch_hit = (rs1_value >= rs2_value);
+      BGEU   : is_branch_hit = (rs1_value > rs2_value);
       default: `uvm_error(get_name(), $sformatf("Unexpected instr %0s", instr_name.name()))
     endcase
     return is_branch_hit;
@@ -230,6 +226,7 @@ class riscv_instr_cov_item extends riscv_instr;
 
   function void check_hazard_condition(riscv_instr_cov_item pre_instr);
     riscv_reg_t gpr;
+    $display("Inside check_hazard_condition");
     if (pre_instr.has_rd) begin
       if ((has_rs1 && (rs1 == pre_instr.rd)) || (has_rs2 && (rs2 == pre_instr.rd))) begin
         gpr_hazard = RAW_HAZARD;
@@ -263,6 +260,74 @@ class riscv_instr_cov_item extends riscv_instr;
                               gpr_hazard.name(), lsu_hazard.name()), UVM_FULL)
   endfunction
 
+  function void sample_two_instr_sequence(riscv_instr_cov_item instr_seq);
+	  static int sample_count;
+	  $display("Inside sample_seq_function");
+	  if(category == JUMP)
+	  begin
+		  $display("Outer if");
+		  if((instr_seq.category == JUMP)) begin
+			  jump_seq = B2BJUMP;
+			  sample_count++;
+			  $display("Inner if \t sample_count = %0d",sample_count);
+			  $display("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s", instr_seq.convert2asm(), this.convert2asm(), jump_seq.name(), jump_seq.name());
+		  end
+		  else begin
+			  jump_seq = NO_SEQ;
+		  end
+	  end
+    `uvm_info("SAMPLE_SEQ", $sformatf("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s",
+                              instr_seq.convert2asm(), this.convert2asm(),
+                              jump_seq.name(), jump_seq.name()), UVM_FULL)
+  endfunction
+
+  function void sample_ld_sr_instr_sequence(riscv_instr_cov_item instr_seq);
+	  static int ld_ld_count;
+	  static int ld_sr_count;
+	  static int sr_ld_count;
+	  static int sr_sr_count;
+	  $display("Inside ld_sr_seq");
+	  if(category == LOAD)
+	  begin
+		  $display("Category = LOAD");
+		  if(instr_seq.category == LOAD) begin
+			  ld_sr_seq = LOAD_LOAD;
+			  ld_ld_count++;
+			  $display("Inner if \t ld_ld_count = %0d",ld_ld_count);
+			  $display("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s", instr_seq.convert2asm(), this.convert2asm(), ld_sr_seq.name(), ld_sr_seq.name());
+		  end
+		  else if(instr_seq.category == STORE) begin
+			  ld_sr_seq = LOAD_STORE;
+			  sr_ld_count++;
+			  $display("Inner if \t ld_sr_count = %0d",ld_sr_count);
+			  $display("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s", instr_seq.convert2asm(), this.convert2asm(), ld_sr_seq.name(), ld_sr_seq.name());
+		  end
+		  else
+			  ld_sr_seq = NO_LD_SR_SEQ;
+	  end
+	  
+	  if(category == STORE)
+	  begin
+		  $display("Category = STORE");
+		  if(instr_seq.category == LOAD) begin
+			  ld_sr_seq = STORE_LOAD;
+			  ld_sr_count++;
+			  $display("Inner if \t sr_ld_count = %0d",sr_ld_count);
+			  $display("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s", instr_seq.convert2asm(), this.convert2asm(), ld_sr_seq.name(), ld_sr_seq.name());
+		  end
+		  else if(instr_seq.category == STORE) begin
+			  ld_sr_seq = STORE_STORE;
+			  sr_sr_count++;
+			  $display("Inner if \t sr_sr_count = %0d",sr_sr_count);
+			  $display("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s", instr_seq.convert2asm(), this.convert2asm(), ld_sr_seq.name(), ld_sr_seq.name());
+		  end
+		  else
+			  ld_sr_seq = NO_LD_SR_SEQ;
+	  end
+    `uvm_info("SAMPLE_SEQ", $sformatf("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s",
+                              instr_seq.convert2asm(), this.convert2asm(),
+                              jump_seq.name(), jump_seq.name()), UVM_FULL)
+  endfunction
   virtual function void sample_cov();
     pre_sample();
   endfunction
