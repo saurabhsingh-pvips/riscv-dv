@@ -43,14 +43,14 @@
     +no_branch_jump=1
     +boot_mode=m
     +no_csr_instr=1
-  iterations: 2
+  iterations: 20
   gen_test: riscv_instr_base_test
   rtl_test: core_base_test
 
 - test: riscv_rand_instr_test
   description: >
     Random instruction stress test
-  iterations: 2
+  iterations: 20
   gen_test: riscv_instr_base_test
   gen_opts: >
     +instr_cnt=10000
@@ -67,18 +67,18 @@
 - test: riscv_jump_stress_test
   description: >
     Stress back-to-back jump instruction test
-  iterations: 2
+  iterations: 20
   gen_test: riscv_instr_base_test
   gen_opts: >
-    +instr_cnt=5000
+    +instr_cnt=10000
     +num_of_sub_program=5
-    +directed_instr_1=riscv_jal_instr,20
+    +directed_instr_1=riscv_jal_instr,40
   rtl_test: core_base_test
 
 - test: riscv_loop_test
   description: >
     Random instruction stress test
-  iterations: 2
+  iterations: 20
   gen_test: riscv_instr_base_test
   gen_opts: >
     +instr_cnt=10000
@@ -89,7 +89,7 @@
 - test: riscv_rand_jump_test
   description: >
     Jump among large number of sub-programs, stress testing iTLB operations.
-  iterations: 2
+  iterations: 20
   gen_test: riscv_instr_base_test
   gen_opts: >
     +instr_cnt=10000
@@ -101,7 +101,7 @@
   description: >
     Test with different patterns of load/store instructions, stress test MMU
     operations.
-  iterations: 2
+  iterations: 20
   gen_test: riscv_instr_base_test
   gen_opts: >
     +instr_cnt=5000
@@ -116,7 +116,7 @@
   description: >
     Random instruction with FENCE disabled, used to test processor pipeline with
     less stall/flush operations caused by FENCE instruction.
-  iterations: 2
+  iterations: 20
   gen_test: riscv_rand_instr_test
   gen_opts: >
     +no_fence=1
@@ -128,7 +128,7 @@
     instruction and handle corresponding exception properly. An exception
     handling routine is designed to resume execution after illegal
     instruction exception.
-  iterations: 2
+  iterations: 20
   gen_test: riscv_rand_instr_test
   gen_opts: >
     +illegal_instr_ratio=5
@@ -196,4 +196,31 @@
     +directed_instr_2=riscv_multi_page_load_store_instr_stream,5
     +directed_instr_3=riscv_mem_region_stress_test,5
     +enable_unaligned_load_store=1
+  rtl_test: core_base_test
+
+- test: riscv_custom_test_1
+  description : >
+          Added to verify correctness of coverage model
+  iterations: 1
+  gen_test: riscv_instr_base_test
+  gen_opts: 
+    +instr_cnt=20
+    +num_of_sub_program=1
+    +no_branch_jump=0
+    +directed_instr_0=riscv_jal_instr,4
+    +directed_instr_1=riscv_load_store_hazard_instr_stream,4
+  rtl_test: core_base_test
+
+- test: riscv_custom_test_2
+  description : >
+          Added to verify correctness of coverage model
+  iterations: 1
+  gen_test: riscv_instr_base_test
+  gen_opts: 
+    +instr_cnt=20
+    +num_of_sub_program=1
+    +no_branch_jump=0
+    +directed_instr_0=riscv_jal_instr,4
+    +directed_instr_1=riscv_load_store_rand_instr_stream,4
+    +directed_instr_2=riscv_load_store_hazard_instr_stream,4
   rtl_test: core_base_test
