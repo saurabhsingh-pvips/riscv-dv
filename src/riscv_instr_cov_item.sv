@@ -34,7 +34,7 @@ class riscv_instr_cov_item extends riscv_instr;
   bit [31:0]            binary;
   bit [XLEN-1:0]        pc;
   bit [XLEN-1:0]        mem_addr;
-
+  
   bit                   unaligned_pc;
   bit                   unaligned_mem_access;
   bit                   compressed;
@@ -48,7 +48,8 @@ class riscv_instr_cov_item extends riscv_instr;
   operand_sign_e        imm_sign;
   operand_sign_e        rd_sign;
   operand_sign_e        fd_sign;
-  instr_seq_e		jump_seq;
+  jump_seq_e		jump_seq;
+  jump_3_seq_e		jump_3_seq;
   ld_sr_seq_e		ld_sr_seq;
   hazard_e              gpr_hazard;
   hazard_e              lsu_hazard;
@@ -260,25 +261,38 @@ class riscv_instr_cov_item extends riscv_instr;
                               gpr_hazard.name(), lsu_hazard.name()), UVM_FULL)
   endfunction
 
-  function void sample_two_instr_sequence(riscv_instr_cov_item instr_seq);
+  function void sample_b2b_jump_instr(riscv_instr_cov_item instr_seq);
 	  static int sample_count;
 	  $display("Inside sample_seq_function");
 	  if(category == JUMP)
 	  begin
 		  $display("Outer if");
 		  if((instr_seq.category == JUMP)) begin
-			  jump_seq = B2BJUMP;
+			  jump_seq = B2B_JUMP;
 			  sample_count++;
 			  $display("Inner if \t sample_count = %0d",sample_count);
 			  $display("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s", instr_seq.convert2asm(), this.convert2asm(), jump_seq.name(), jump_seq.name());
 		  end
 		  else begin
-			  jump_seq = NO_SEQ;
+			  jump_seq = NO_B2B_SEQ;
 		  end
 	  end
     `uvm_info("SAMPLE_SEQ", $sformatf("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s",
                               instr_seq.convert2asm(), this.convert2asm(),
                               jump_seq.name(), jump_seq.name()), UVM_FULL)
+  endfunction
+
+  function void sample_b2b_3_jump_instr(riscv_instr_cov_item pre_instr, pre_2_instr);
+	  static int sample_3_count;
+	  if(category == JUMP) begin
+		  if(pre_instr.category == JUMP && pre_2_instr.category == JUMP) begin
+			  jump_3_seq = B2B_3_JUMP;
+			  sample_3_count++;
+			  $display("sample_3_count = %0d", sample_3_count);
+		  end
+		  else
+			  jump_3_seq = NO_B2B_3_SEQ;
+	  end
   endfunction
 
   function void sample_ld_sr_instr_sequence(riscv_instr_cov_item instr_seq);
@@ -326,8 +340,19 @@ class riscv_instr_cov_item extends riscv_instr;
 	  end
     `uvm_info("SAMPLE_SEQ", $sformatf("SEQ: Pre:%0s, Cur:%0s, Seq: %0s/%0s",
                               instr_seq.convert2asm(), this.convert2asm(),
-                              jump_seq.name(), jump_seq.name()), UVM_FULL)
+                              ld_sr_seq.name(), ld_sr_seq.name()), UVM_FULL)
   endfunction
+
+
+  function void get_rs1(riscv_instr instr);
+	  riscv_reg_t gpr;
+
+	  if(instr.has_rs1) begin
+		  $display("RS1_Value: Instr = %0s",instr.convert2asm);
+		  $display("RS1_Value: rs1_value = %0d",rs1);
+	  end
+  endfunction
+
   virtual function void sample_cov();
     pre_sample();
   endfunction

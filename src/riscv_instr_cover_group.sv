@@ -113,7 +113,10 @@
     cp_rd          : coverpoint instr.rd; \
     cp_rd_align    : coverpoint instr.rd_value[1]; \
     `DV(cp_b2b_jump   : coverpoint instr.jump_seq { \
-    	bins valid_seq[] = {NO_SEQ , B2BJUMP}; \
+      bins valid_seq []  = {NO_B2B_SEQ,B2B_JUMP}; \
+    }) \
+    `DV(cp_b2b_3_jump   : coverpoint instr.jump_3_seq { \
+      bins valid_seq []  = {NO_B2B_3_SEQ,B2B_3_JUMP}; \
     }) \
 
 /*
@@ -295,8 +298,9 @@ class riscv_instr_cover_group;
   riscv_instr_gen_config  cfg;
   riscv_instr_cov_item    cur_instr;
   riscv_instr_cov_item    pre_instr;
-  //riscv_instr_cov_item    instr_seq;
+  riscv_instr_cov_item    pre_2_instr;
   riscv_instr_name_t      instr_list[$];
+  bit 			  jump_3_en;
   int unsigned            instr_cnt;
   int unsigned            branch_instr_cnt;
   bit [4:0]               branch_hit_history; // The last 5 branch result
@@ -1049,6 +1053,7 @@ class riscv_instr_cover_group;
     this.cfg = cfg;
     cur_instr = riscv_instr_cov_item::type_id::create("cur_instr");
     pre_instr = riscv_instr_cov_item::type_id::create("pre_instr");
+    pre_2_instr = riscv_instr_cov_item::type_id::create("pre_2_instr");
     //instr_seq = riscv_instr_cov_item::type_id::create("instr_seq");
     build_instr_list();
     `ifdef COMPLIANCE_MODE
@@ -1279,10 +1284,13 @@ class riscv_instr_cover_group;
 
   function void sample(riscv_instr_cov_item instr);
     instr_cnt += 1;
+    //$display("Instr = %0s, pre_instr = %0s, pre_2_instr=%0s",instr.instr_name, pre_instr.instr_name, pre_2_instr.instr_name);
     if (instr_cnt > 1) begin
       instr.check_hazard_condition(pre_instr);
-      instr.sample_two_instr_sequence(pre_instr);
+      instr.sample_b2b_jump_instr(pre_instr);
+      instr.sample_b2b_3_jump_instr(pre_instr, pre_2_instr);
       instr.sample_ld_sr_instr_sequence(pre_instr);
+      instr.get_rs1(instr);
     end
     if ((instr.binary[1:0] != 2'b11) && (RV32C inside {supported_isa})) begin
       `SAMPLE(hint_cg, instr);
@@ -1465,6 +1473,7 @@ class riscv_instr_cover_group;
       end
     end
    `VECTOR_INCLUDE("riscv_instr_cover_group_inc_sample.sv")
+    pre_2_instr.copy(pre_instr);
     pre_instr.copy(instr);
     pre_instr.mem_addr = instr.mem_addr;
   endfunction

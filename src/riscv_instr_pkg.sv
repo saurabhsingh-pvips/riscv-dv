@@ -1032,10 +1032,15 @@ package riscv_instr_pkg;
   } hazard_e;
 
   typedef enum bit {
-	NO_SEQ,
-  	B2BJUMP
-  } instr_seq_e;
+	NO_B2B_SEQ,
+  	B2B_JUMP
+  } jump_seq_e;
 
+  typedef enum bit {
+	NO_B2B_3_SEQ,
+	B2B_3_JUMP
+  } jump_3_seq_e;
+  
   typedef enum bit [2:0] {
 	NO_LD_SR_SEQ,
   	LOAD_LOAD,
