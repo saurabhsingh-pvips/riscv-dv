@@ -1,6 +1,7 @@
 *.ini
 *.bin
 work/
+urgReport/
 *.pyc
 /.cproject
 /.project
