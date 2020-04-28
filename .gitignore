@@ -1,7 +1,7 @@
 *.ini
 *.bin
 work/
-urgReport/
+sequence_coverage/*/urgReport/
 *.pyc
 /.cproject
 /.project
