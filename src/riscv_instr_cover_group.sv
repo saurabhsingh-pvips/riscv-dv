@@ -74,7 +74,10 @@
       bins valid_hazard[] = {NO_HAZARD, WAR_HAZARD, WAW_HAZARD}; \
     }) \
     `DV(cp_ld_sr_seq	: coverpoint instr.ld_sr_seq { \
-      bins valid_seq [] = {NO_LD_SR_SEQ, STORE_LOAD, STORE_STORE}; \
+      bins valid_seq [] = {NO_LD_SR_SEQ, LOAD_STORE, STORE_STORE}; \
+    }) \
+    `DV(cp_ld_sr_3_seq	: coverpoint instr.ld_sr_3_seq { \
+      bins valid_seq [] = {NO_LD_SR_3_SEQ, LD_LD_SR, SR_LD_SR, LD_SR_SR, SR_SR_SR}; \
     }) \
 
 `define LOAD_INSTR_CG_BEGIN(INSTR_NAME) \
@@ -89,7 +92,10 @@
       bins valid_hazard[] = {NO_HAZARD, RAW_HAZARD}; \
     }) \
     `DV(cp_ld_sr_seq	: coverpoint instr.ld_sr_seq { \
-      bins valid_seq [] = {NO_LD_SR_SEQ, LOAD_LOAD, LOAD_STORE}; \
+      bins valid_seq [] = {NO_LD_SR_SEQ, LOAD_LOAD, STORE_LOAD}; \
+    }) \
+    `DV(cp_ld_sr_3_seq	: coverpoint instr.ld_sr_3_seq { \
+      bins valid_seq [] = {NO_LD_SR_3_SEQ, LD_LD_LD, SR_LD_LD , LD_SR_LD, SR_SR_LD}; \
     }) \
 
 `define I_INSTR_CG_BEGIN(INSTR_NAME) \
@@ -1284,13 +1290,12 @@ class riscv_instr_cover_group;
 
   function void sample(riscv_instr_cov_item instr);
     instr_cnt += 1;
-    //$display("Instr = %0s, pre_instr = %0s, pre_2_instr=%0s",instr.instr_name, pre_instr.instr_name, pre_2_instr.instr_name);
     if (instr_cnt > 1) begin
       instr.check_hazard_condition(pre_instr);
       instr.sample_b2b_jump_instr(pre_instr);
       instr.sample_b2b_3_jump_instr(pre_instr, pre_2_instr);
       instr.sample_ld_sr_instr_sequence(pre_instr);
-      instr.get_rs1(instr);
+      instr.sample_3_ld_sr_instr_sequence(pre_instr, pre_2_instr);
     end
     if ((instr.binary[1:0] != 2'b11) && (RV32C inside {supported_isa})) begin
       `SAMPLE(hint_cg, instr);

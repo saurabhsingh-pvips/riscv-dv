@@ -1049,6 +1049,18 @@ package riscv_instr_pkg;
   	STORE_STORE
   } ld_sr_seq_e;
 
+  typedef enum bit [3:0] {
+	NO_LD_SR_3_SEQ,
+  	LD_LD_LD,
+  	LD_LD_SR,
+  	LD_SR_LD,
+  	LD_SR_SR,
+  	SR_LD_LD,
+  	SR_LD_SR,
+  	SR_SR_LD,
+  	SR_SR_SR
+  } ld_sr_3_seq_e;
+
   `include "riscv_core_setting.sv"
 
   // PMP address matching mode
