@@ -1,14 +1,18 @@
 
 from collections import defaultdict
+from riscv_instr_gen_config import *
+from riscv_instr_pkg import *
+import pdb
+import random
 class riscv_instr:
-    
+	
     def __init__(self):
         self.instr_registry = {}
         self.instr_names = []
-        self.riscv_instr_name_t = None
-        self.instr_name = None
-        self.instr_group = defaultdict(list) # dictionary of list
-        self.instr_category = defaultdict(list) # dictionary of list
+        #self.riscv_instr_name_t = None
+        self.instr_name = [] 
+        self.instr_group =  defaultdict(list) 
+        self.instr_category = defaultdict(list)
         self.basic_instr = []
         self.instr_template = {}
         
@@ -24,22 +28,24 @@ class riscv_instr:
         self.rs1 = None
         self.rd = None
 
+        self.supported_isa  = ["RV32I"] # Field Added for debugging. 
+
     def register (self, instr_name):
-        #`uvm_info("riscv_instr", $sformatf("Registering %0s", instr_name.name()), UVM_LOW)
-        print("Registering {}".format(self.instr_name))
-        self.instr_registry[self.instr_name] = 1
+        for i in range(len(instr_name)):
+            print("Registering {}".format(instr_name[i]))
+            self.instr_registry[instr_name[i]] = 1
         return 1
-        
+
     def create_instr_list(self, cfg):
         self.instr_names.clear()
         self.instr_group.clear()
         self.instr_category.clear()
         
-        for _ in range(len(self.instr_registry)):
+        for i in range(len(self.instr_registry)):
             instr_inst = riscv_instr() # Instance of class riscv_instr
-            if(self.instr_name in unsupported_instr): #TODO - How to access the unsupported_instr
+            '''if(self.instr_name in unsupported_instr):
                 continue
-            instr_inst = create_instr(self.instr_name) #TODO - create_instr function 
+            instr_inst = create_instr(self.instr_name) #create_instr function TODO
             self.instr_template[self.instr_name] = instr_inst
             if (not (self.is_supported(cfg))):
                 continue
@@ -50,15 +56,16 @@ class riscv_instr:
             if (not (cfg.enable_sfence and self.instr_name == "SFENCE_VMA")):
                 continue
             if (cfg.no_fence and (self.instr_name in (FENCE or FENCE_I or SFENCE_VMA))):
-                continue
-            if ((instr_inst.group in supported_isa) and not ((cfg.disable_compressed_instr and \
-            (instr_inst.group in (RV32C or RV64C or RV32DC or RV32FC or RV128C)))) and \
-            not((cfg.enable_floating_point and (instr_inst.group in (RV32F or RV64F or RV32D or RV64D))))):
-                instr_category[instr_inst.category].append(self.instr_name)
-            
-            self.instr_category[instr_inst.category].append(self.instr_name);
-            self.instr_group[instr_inst.group].append(self.instr_name);
-            self.instr_names.append(self.instr_name);
+                continue'''
+            #pdb.set_trace()
+            if ((all(x in self.supported_isa for x in riscv_pkg.group)) and not ((cfg.disable_compressed_instr and \
+            (riscv_pkg.group in ["RV32C","RV64C","RV32DC","RV32FC","RV128C"]))) and \
+            not((cfg.enable_floating_point and (riscv_pkg.group in ["RV32F","RV64F","RV32D","RV64D"])))):
+                pass 
+            #riscv_instr_ins.instr_category[riscv_pkg.category[random.randint(0,4)]].append(riscv_pkg.instr_name[i])
+            #self.instr_category[riscv_pkg.instr_category].append(self.instr_name);
+            #self.instr_group[riscv_pkg.instr_group].append(self.instr_name);
+            #self.instr_names.append(self.instr_name);
 
             self.build_basic_instruction_list(cfg)
             self.create_csr_filter(cfg)
@@ -74,3 +81,10 @@ class riscv_instr:
 
     def create_csr_filter(self, cfg):
         pass
+riscv_instr_ins = riscv_instr()
+cfg = riscv_instr_gen_config()
+riscv_pkg = riscv_instr_pkg()
+riscv_instr_ins.register(riscv_pkg.instr_name)
+riscv_instr_ins.create_instr_list(cfg)
+print(riscv_instr_ins.instr_registry)   
+print(riscv_instr_ins.instr_category)
