@@ -1061,9 +1061,9 @@ class riscv_instr_pkg:
         STORE_AMO_ACCESS_FAULT = 0x7
         ECALL_UMODE = 0x8
         ECALL_SMODE = 0x9
-        ECALL_MMODE = 0xB,
-        INSTRUCTION_PAGE_FAULT = 0xC,
-        LOAD_PAGE_FAULT = 0xD,
+        ECALL_MMODE = 0xB
+        INSTRUCTION_PAGE_FAULT = 0xC
+        LOAD_PAGE_FAULT = 0xD
         STORE_AMO_PAGE_FAULT = 0xF
 
 
@@ -1071,16 +1071,16 @@ class riscv_instr_pkg:
     class misa_ext_t(Enum):
         MISA_EXT_A = 0
         MISA_EXT_B = auto()
-        MISA_EXT_C = auto(),
-        MISA_EXT_D = auto(),
-        MISA_EXT_E = auto(),
-        MISA_EXT_F = auto(),
-        MISA_EXT_G = auto(),
-        MISA_EXT_H = auto(),
-        MISA_EXT_I = auto(),
-        MISA_EXT_J = auto(),
-        MISA_EXT_K = auto(),
-        MISA_EXT_L = auto(),
+        MISA_EXT_C = auto()
+        MISA_EXT_D = auto()
+        MISA_EXT_E = auto()
+        MISA_EXT_F = auto()
+        MISA_EXT_G = auto()
+        MISA_EXT_H = auto()
+        MISA_EXT_I = auto()
+        MISA_EXT_J = auto()
+        MISA_EXT_K = auto()
+        MISA_EXT_L = auto()
         MISA_EXT_M = auto()
         MISA_EXT_N = auto()
         MISA_EXT_O = auto()
