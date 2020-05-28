@@ -1298,6 +1298,150 @@ class riscv_instr_pkg:
 		if(inst.get_arg_value(cmdline_str, s)):
 			val = s.atohex()
 
+    class cmdline_enum_processor #(parameter type T = riscv_instr_group_t)        #to do............
+		def get_array_values(self, cmdline_strcmdline_str, ref T vals[])  #ref T vals[] to do .....
+			s = auto()
+			#void'(inst.get_arg_value(cmdline_str, s))      #to do type casting.............
+			if(s != " "):
+				cmdline_list[$]   #to do....
+				T value
+				#uvm_split_string(s, ",", cmdline_list);
+				vals = new[cmdline_list.size]
+				for i in range(0,):
+					if (uvm_enum_wrapper#(T)::from_name(cmdline_list[i].toupper(), value)):  #to do....
+						vals[i] = value
+					else:
+						print( "Invalid value (%0s) specified in command line: %0s", cmdline_list[i], cmdline_str))  #uvm_fatal
+
+    
+    riscv_reg_t   all_gpr[]   = {ZERO, RA, SP, GP, TP, T0, T1, T2, S0, S1, A0,   #to do..........
+                             A1, A2, A3, A4, A5, A6, A7, S2, S3, S4, S5, S6,
+                             S7, S8, S9, S10, S11, T3, T4, T5, T6};
+
+
+    riscv_reg_t compressed_gpr[] = {S0, S1, A0, A1, A2, A3, A4, A5};    #to do .........
+
+
+
+   riscv_instr_category_t all_categories[] = {                                  #to do...........
+    LOAD, STORE, SHIFT, ARITHMETIC, LOGICAL, COMPARE, BRANCH, JUMP,
+    SYNCH, SYSTEM, COUNTER, CSR, CHANGELEVEL, TRAP, INTERRUPT, AMO
+    };
+
+
+
+
+    def get_val(self, str, val, hex=0):
+	if (str.len() > 2):
+		if (str.substr(0, 1) == "0x"):
+			str = str.substr(2, str.len() -1)
+			val = str.atohex()
+			return
+	if (hex):
+		val = str.atohex()
+	else:
+		if (str.substr(0, 0) == "-"):
+			str = str.substr(1, str.len() - 1)
+			val = -str.atoi()
+
+		else:
+			val = str.atoi()
+
+	print("riscv_instr_pkg, imm:", str, val, val)   # to do $signed(val)
+
+
+import riscv_vector_cfg
+import riscv_pmp_cfg
+typedef class riscv_instr
+typedef class riscv_b_instr
+import riscv_instr_gen_config
+import isa/riscv_instr
+import isa/riscv_amo_instr
+import isa/riscv_b_instr
+import isa/riscv_floating_point_instr
+import isa/riscv_vector_instr
+import isa/riscv_compressed_instr
+import isa/rv32a_instr
+import isa/rv32c_instr
+import isa/rv32dc_instr
+import isa/rv32d_instr
+import isa/rv32fc_instr
+import isa/rv32f_instr
+import isa/rv32i_instr
+import isa/rv32b_instr
+import isa/rv32m_instr
+import isa/rv64a_instr
+import isa/rv64b_instr
+import isa/rv64c_instr
+import isa/rv64d_instr
+import isa/rv64f_instr
+import isa/rv64i_instr
+import isa/rv64m_instr
+import isa/rv128c_instr
+import isa/rv32v_instr
+import isa/custom/riscv_custom_instr
+import isa/custom/rv32x_instr
+import isa/custom/rv64x_instr
+
+import riscv_pseudo_instr
+import riscv_illegal_instr
+import riscv_reg
+import riscv_privil_reg
+import riscv_page_table_entry
+import riscv_page_table_exception_cfg
+import riscv_page_table
+import riscv_page_table_list
+import riscv_privileged_common_seq
+import riscv_callstack_gen
+import riscv_data_page_gen
+
+import riscv_instr_stream
+import riscv_loop_instr
+import riscv_directed_instr_lib
+import riscv_load_store_instr_lib
+import riscv_amo_instr_lib
+
+import riscv_instr_sequence
+import riscv_asm_program_gen
+import riscv_debug_rom_gen
+import riscv_instr_cover_group
+import user_extension
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
