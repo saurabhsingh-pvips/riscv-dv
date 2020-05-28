@@ -1228,13 +1228,91 @@ class riscv_instr_pkg:
 
 
     #Push general purpose register to stack, this is needed before trap handling
-    def push_gpr_to_kernel_stack(self,
-                                 privileged_reg_t status,
-                                 mprivileged_reg_t scratch,
-                                 8er++bit mprv,
-                                                   riscv_reg_t sp,
-                                                   riscv_reg_t tp,
-                                                   ref string instr[$]):
+    def push_gpr_to_kernel_stack(self, status, scratch, mprv, sp, tp, ref string instr[$])):
+		status = privileged_reg_t()
+		scratch = privileged_reg_t()
+		sp = riscv_reg_t()
+		tp = riscv_reg_t()                #ref string instr[$]))  #to do
+
+		store_instr = (XLEN == 32) ? "sw" : "sd"
+
+                if (scratch inside {implemented_csr}):    #coverage part....
+		#Use kernal stack for handling exceptions
+		#Save the user mode stack pointer to the scratch register
+		    instr.push_back(print("csrrw ", sp, scratch, sp))
+		    #Move TP to SP
+		    instr.push_back(print("add ", sp, tp))	
+		        # If MPRV is set and MPP is S/U mode, it means the address translation and memory protection
+                        # for load/store instruction is the same as the mode indicated by MPP. In this case, we
+                        # need to use the virtual address to access the kernel stack.
+		
+		if((status == MSTATUS) and (SATP_MODE != BARE)):
+		    #We temporarily use tp to check mstatus to avoid changing other GPR. The value of sp has
+		    #been saved to xScratch and can be restored later.
+		    if(mprv):
+			instr.push_back(print("csrr // MSTATUS", tp, status))
+                        instr.push_back(print("srli ", tp, tp))                # Move MPP to bit 0
+                        instr.push_back(print("andi ", tp, tp))                # keep the MPP bits
+                        #Check if MPP equals to M-mode('b11)
+                        instr.push_back(print("xori ", tp, tp))
+                        instr.push_back(print("bnez ", tp))                    #Use physical address for kernel SP
+                        #Use virtual address for stack pointer
+                        instr.push_back(print("slli ", sp, sp, XLEN - MAX_USED_VADDR_BITS))
+                        instr.push_back($sformatf("srli ", sp, sp, XLEN - MAX_USED_VADDR_BITS))
+
+		#Reserve space from kernel stack to save all 32 GPR except for x0
+		instr.push_back(print("1: addi x%0d, x%0d, -%0d", sp, sp, 31 * (XLEN/8)))
+		#Push all GPRs to kernel stack
+		for i in range(0,32):
+			instr.push_back(print(" the store_instr, sp", store_instr, i, i * (XLEN/8), sp))
+		#Pop general purpose register from stack, this is needed before returning to user program
+
+    def pop_gpr_from_kernel_stack(self,status, scratch, mprv, sp, tp, ref string instr[$])):
+		status = privileged_reg_t()
+		scratch = privileged_reg_t()
+		sp = riscv_reg_t()
+		tp = riscv_reg_t()                #ref string instr[$]))  #to do
+
+		load_instr = (XLEN == 32) ? "lw" : "ld"
+		#Pop user mode GPRs from kernel stack
+		
+		for i in range(0,32):
+			instr.push_back(print("the store_instr, sp", load_instr, i, i * (XLEN/8), sp))
+		#Restore kernel stack pointer
+		instr.push_back(print("addi x%0d, x%0d, %0d", sp, sp, 31 * (XLEN/8)))
+		if (scratch inside {implemented_csr}) :    # to do................
+			#Move SP to TP
+			instr.push_back(print("add ", tp, sp))
+			#Restore user mode stack pointer
+			instr.push_back(print("csrrw ", sp, scratch, sp))
+    
+    #Get an integer argument from comand line
+    def get_int_arg_value(self,cmdline_str,val):
+		s = auto()
+		if(inst.get_arg_value(cmdline_str, s)):
+			val = s.atoi()
+
+    #Get a hex argument from command line
+    def get_hex_arg_value(self, cmdline_str, val):
+		s = auto()
+		if(inst.get_arg_value(cmdline_str, s)):
+			val = s.atohex()
+
+
+
+
+
+
+
+
+
+
+		
+		    
+		
+
+
+                               
 
 
 
