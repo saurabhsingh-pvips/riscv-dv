@@ -11,4 +11,8 @@ class riscv_instr_gen_config:
 		self.enable_illegal_csr_instruction = 0
 		self.enable_access_invalid_csr_level = 0 
 		self.invalid_priv_mode_csrs = [] 
-		self.init_privileged_mode = "MACHINE_MODE" 
+		self.init_privileged_mode = "MACHINE_MODE"
+		self.no_ebreak = 1
+		self.no_dret = 1
+		self.no_csr_instr = 1
+		self.no_wfi = 1
