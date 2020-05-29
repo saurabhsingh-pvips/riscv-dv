@@ -1,3 +1,5 @@
+import sys
+sys.path.append("../../")
 from pygen_src.isa.rv32i_instr import *
 class riscv_instr_base_test:
 	def __init__(self):

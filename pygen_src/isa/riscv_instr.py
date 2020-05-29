@@ -2,13 +2,12 @@
 from collections import defaultdict
 from pygen_src.riscv_instr_gen_config import *
 from pygen_src.riscv_instr_pkg import *
-import pygen_src.isa.rv32i_instr 
+from pygen_src.isa import rv32i_instr
 import random
 class riscv_instr:
     instr_registry = {}
     def __init__(self): 
         self.instr_names = []
-        #self.riscv_instr_name_t = None
         self.instr_name = None
         self.instr_group =  defaultdict(list) 
         self.instr_category = defaultdict(list)
@@ -50,7 +49,7 @@ class riscv_instr:
         self.has_rd = 1
         self.has_imm = 1
 
-        #Field Added for debugging These fields are actually from a different files. 
+        #Fields Added for debugging These fields are actually from a different files. 
         self.unsupported_instr = []
         self.XLEN = 32
         self.supported_isa  = [riscv_instr_group_t.RV32I]
@@ -99,7 +98,7 @@ class riscv_instr:
         
     
     def create_instr(self, instr_name):
-        instr_inst = eval("pygen_src.isa.rv32i_instr.riscv_"+instr_name+"_instr()")
+        instr_inst = eval("rv32i_instr.riscv_"+instr_name+"_instr()")
         return instr_inst
 
     def is_supported(self, cfg):
@@ -121,7 +120,7 @@ class riscv_instr:
             self.basic_instr.append(self.instr_category["CSR"])
         if(cfg.no_wfi == 0):
             self.basic_instr.append("WFI")
-
+        print("\n Basic_Instr: {} ".format(self.basic_instr))
     def create_csr_filter(self, cfg):
         self.include_reg.clear()
         self.exclude_reg.clear()
