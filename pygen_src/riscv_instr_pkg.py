@@ -1,5 +1,4 @@
 from enum import Enum, auto
-
 class riscv_instr_name_t(Enum):
     # RV32I instructions
     LUI = 0

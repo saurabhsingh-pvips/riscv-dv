@@ -1,4 +1,3 @@
-
 from collections import defaultdict
 from pygen_src.riscv_instr_gen_config import *
 from pygen_src.riscv_instr_pkg import *
