@@ -1,5 +1,5 @@
-from riscv_defines import *
-from riscv_instr_pkg import *
+from pygen_src.riscv_defines import *
+from pygen_src.riscv_instr_pkg import *
 # LOAD instructions
 DEFINE_INSTR(riscv_instr_name_t.LB,     riscv_instr_format_t.I_FORMAT, riscv_instr_category_t.LOAD, riscv_instr_group_t.RV32I, g = globals())
 DEFINE_INSTR(riscv_instr_name_t.LH,     riscv_instr_format_t.I_FORMAT, riscv_instr_category_t.LOAD, riscv_instr_group_t.RV32I, g = globals())

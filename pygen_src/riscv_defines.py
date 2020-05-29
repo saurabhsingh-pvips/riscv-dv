@@ -1,5 +1,5 @@
-from riscv_instr_pkg import * 
-from riscv_instr import *
+from pygen_src.riscv_instr_pkg import * 
+from pygen_src.isa.riscv_instr import *
 
 def DEFINE_INSTR(instr_n, instr_format, instr_category, instr_group, imm_tp = imm_t.IMM, g=globals()):
     class_name = f"riscv_{instr_n.name}_instr"

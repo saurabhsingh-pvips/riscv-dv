@@ -1,8 +1,8 @@
 
 from collections import defaultdict
-from riscv_instr_gen_config import *
-from riscv_instr_pkg import *
-import rv32i_instr 
+from pygen_src.riscv_instr_gen_config import *
+from pygen_src.riscv_instr_pkg import *
+import pygen_src.isa.rv32i_instr 
 import random
 class riscv_instr:
     instr_registry = {}
