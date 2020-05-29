@@ -99,7 +99,7 @@ class riscv_instr:
         
     
     def create_instr(self, instr_name):
-        instr_inst = eval("rv32i_instr.riscv_"+instr_name+"_instr()")
+        instr_inst = eval("pygen_src.isa.rv32i_instr.riscv_"+instr_name+"_instr()")
         return instr_inst
 
     def is_supported(self, cfg):
