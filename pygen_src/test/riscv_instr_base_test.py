@@ -7,5 +7,3 @@ for i in range(cfg.num_of_test):
 	print("Test {} Started \n".format(i+1))
 	riscv_instr_ins.create_instr_list(cfg)
 
-print("instr_registry Contents = {}".format(riscv_instr_ins.instr_registry))
-	riscv_instr_ins.create_instr_list(cfg)
