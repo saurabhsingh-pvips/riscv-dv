@@ -59,6 +59,8 @@ class riscv_instr:
     def register (cls, instr_name):
         print("Registering {}".format(instr_name.name))
         cls.instr_registry[instr_name.name] = 1
+        if instr_name == None:
+            print("\n")
         return 1
 
     
@@ -73,6 +75,7 @@ class riscv_instr:
                 continue
             instr_inst = self.create_instr(instr_name) #create_instr function TODO
             self.instr_template[instr_name] = instr_inst
+
             if (not instr_inst.is_supported(cfg)):
                 continue
             if ((self.XLEN != 32) and (instr_name == "C_JAL")):
@@ -103,7 +106,21 @@ class riscv_instr:
         return 1
 
     def build_basic_instruction_list(self, cfg):
-        pass
+        self.basic_instr = (self.instr_category["SHIFT"] + self.instr_category["ARITHMETIC"] + self.instr_category["LOGICAL"] + self.instr_category["COMPARE"])
+        if(cfg.no_ebreak):
+            self.basic_instr.append("EBREAK")
+            for items in self.supported_isa:
+                if("RV32C" in self.supported_isa and not(cfg.disable_compressed_instr)):
+                    self.basic_instr.append("C_EBREAK")
+                    break
+        if(cfg.no_dret==0):
+            slef.basic_instr.append("DRET")
+        if(cfg.no_fence==0):
+            self.basic_instr.append(self.instr_category["SYNCH"])
+        if(cfg.no_csr_instr == 0 and cfg.init_privileged_mode == "MACHINE_MODE"):
+            self.basic_instr.append(self.instr_category["CSR"])
+        if(cfg.no_wfi == 0):
+            self.basic_instr.append("WFI")
 
     def create_csr_filter(self, cfg):
         self.include_reg.clear()
