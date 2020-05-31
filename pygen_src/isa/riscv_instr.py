@@ -3,6 +3,9 @@ from pygen_src.riscv_instr_gen_config import *
 from pygen_src.riscv_instr_pkg import *
 from pygen_src.isa import rv32i_instr
 import random
+from bitstring import BitArray, BitStream
+import logging
+
 class riscv_instr:
     instr_registry = {}
     def __init__(self): 
@@ -15,20 +18,20 @@ class riscv_instr:
         
         self.exclude_reg = []
         self.include_reg = []
-
-        self.group = None
-        self.format = None
-        self.category = None
-        self.imm_type = None
-        self.imm_len = None
-
+        
+        self.imm_len = 0
         self.csr = None
         self.rs2 = None
         self.rs1 = None
         self.rd = None
-        self.imm = None
+        self.imm = BitArray(uint = 2341 , length = 32)
+        self.idx = -1
+        self.has_rs1 = 1
+        self.has_rs2 = 1
+        self.has_rd = 1
+        self.has_imm = 1
 
-        self.imm_mask = 0xffff_ffff 
+        self.imm_mask = BitArray(uint = 4294967295 , length = 32)
         self.is_branch_target = None
         self.has_label  = 1
         self.atomic = 0
@@ -42,12 +45,7 @@ class riscv_instr:
         self.comment = None
         self.label = None
         self.is_local_numeric_label = None
-        self.idx = -1
-        self.has_rs1 = 1
-        self.has_rs2 = 1
-        self.has_rd = 1
-        self.has_imm = 1
-
+        
         #Fields Added for debugging These fields are actually from a different files. 
         self.unsupported_instr = []
         self.XLEN = 32
@@ -61,8 +59,6 @@ class riscv_instr:
             print("\n")
         return 1
 
-    
-    
     def create_instr_list(self, cfg):
         self.instr_names.clear()
         self.instr_group.clear()
@@ -88,16 +84,14 @@ class riscv_instr:
                 self.instr_category[instr_inst.category.name].append(instr_name)
                 self.instr_group[instr_inst.group.name].append(instr_name)
                 self.instr_names.append(instr_name)
-        print("Category: {} \n".format(dict(self.instr_category)))
-        print("Group: {} \n".format(dict(self.instr_group)))
-        print("Instruction Name: {} \n".format(self.instr_names))
 
         self.build_basic_instruction_list(cfg)
         self.create_csr_filter(cfg)
         
-    
-    def create_instr(self, instr_name):
+    def create_instr(self,instr_name):
         instr_inst = eval("rv32i_instr.riscv_"+instr_name+"_instr()")
+        if(instr_inst == None):
+            logging.critical("Failed to create instr: %0s", instr_name)
         return instr_inst
 
     def is_supported(self, cfg):
@@ -119,7 +113,7 @@ class riscv_instr:
             self.basic_instr.append(self.instr_category["CSR"])
         if(cfg.no_wfi == 0):
             self.basic_instr.append("WFI")
-        print("\n Basic_Instr: {} ".format(self.basic_instr))
+
     def create_csr_filter(self, cfg):
         self.include_reg.clear()
         self.exclude_reg.clear()
@@ -129,11 +123,11 @@ class riscv_instr:
         elif(cfg.enable_access_invalid_csr_level):
             self.include_reg = cfg.invalid_priv_mode_csrs
         else:
-            if(cfg.init_privileged_mode == "MACHINE_MODE"): # Machine Mode
+            if(cfg.init_privileged_mode == "MACHINE_MODE"):    # Machine Mode
                 self.include_reg.append("MSCRATCH")
             elif(cfg.init_privileged_mode=="SUPERVISOR_MODE"): # Supervisor Mode
                 self.include_reg.append("SSCRATCH")
-            else: # User Mode
+            else:                                              # User Mode
                 self.include_reg.append("USCRATCH") 
 
     def get_rand_instr(self):
@@ -146,21 +140,39 @@ class riscv_instr:
         pass
 
     def set_rand_mode(self):
-        pass
+        if(self.format.name == "R_FORMAT"):
+            self.has_imm = 0 
+        if(self.format.name=="I_FORMAT"):
+            self.has_rs2 = 0
+        if(self.format.name in ["S_FORMAT", "b_FORMAT"]):
+            self.has_rd = 0
 
     def pre_randomize(self):
         pass
-
+    
     def set_imm_len(self):
-        pass
-
+        if(self.format.name in  ["U_FORMAT","J_FORMAT"]):
+            self.imm_len = 20
+        elif(self.format.name in ["I_FORMAT", "S_FORMAT", "B_FORMAT"]):
+            if(self.imm_type.name == "UIMM"):
+                self.imm_len = 5
+            else:
+                self.imm_len = 11
+       	self.imm_mask = self.imm_mask << self.imm_len
+   
     def extend_imm(self):
-        self.extend_imm()
-        self.update_imm_str()
+        sign = 0
+        self.imm = self.imm << (32 - self.imm_len)
+        sign = self.imm.bin[0:1:1] # sign = imm[31]
+        self.imm = self.imm >> (32 - self.imm_len)
+        #Signed extension
+        if((sign and not(self.format == "U_FORMAT")) or (self.imm_type in ["UIMM", "NZUIMM"])):
+        	self.imm = self.imm_mask | self.imm
 
     def post_randomize(self):
-        pass
-
+        self.extend_imm()
+        self.update_imm_str()
+        
     def convert2asm(self):
         pass
 
@@ -177,22 +189,27 @@ class riscv_instr:
         pass
 
     def get_instr_name(self):
-        pass
+    	get_instr_name = self.instr_name.name
+    	for i in get_instr_name:
+    		if(i == "_"):
+    			get_instr_name = get_instr_name.replace(i,".")
+    	return get_instr_name
 
-    def get_c_gpr(self):
-        pass
+    def get_c_gpr(self, gpr):
+        return gpr
 
     def get_imm(self):
-        return imm_str
+        return self.imm_str
 
     def clear_unused_label(self):
-        pass
+        if(self.has_label and not(self.is_branch_target) and self.is_local_numeric_label):
+        	self.has_label = 0
 
     def do_copy(self):
         pass
 
     def update_imm_str(self):
-        pass
+        self.imm_str = str(self.imm)
 
 riscv_instr_ins = riscv_instr()
 cfg = riscv_instr_gen_config()
