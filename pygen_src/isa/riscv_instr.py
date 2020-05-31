@@ -5,6 +5,7 @@ from pygen_src.isa import rv32i_instr
 import random
 from bitstring import BitArray, BitStream
 import logging
+
 class riscv_instr:
     instr_registry = {}
     def __init__(self): 
@@ -17,11 +18,6 @@ class riscv_instr:
         
         self.exclude_reg = []
         self.include_reg = []
-
-        # self.group = []
-        # self.format = []
-        # self.category = []
-        # self.imm_type = []
         
         self.imm_len = 0
         self.csr = None
@@ -63,8 +59,6 @@ class riscv_instr:
             print("\n")
         return 1
 
-    
-    
     def create_instr_list(self, cfg):
         self.instr_names.clear()
         self.instr_group.clear()
@@ -90,9 +84,6 @@ class riscv_instr:
                 self.instr_category[instr_inst.category.name].append(instr_name)
                 self.instr_group[instr_inst.group.name].append(instr_name)
                 self.instr_names.append(instr_name)
-        print("Category: {} \n".format(dict(self.instr_category)))
-        print("Group: {} \n".format(dict(self.instr_group)))
-        print("Instruction Name: {} \n".format(self.instr_names))
 
         self.build_basic_instruction_list(cfg)
         self.create_csr_filter(cfg)
@@ -122,7 +113,6 @@ class riscv_instr:
             self.basic_instr.append(self.instr_category["CSR"])
         if(cfg.no_wfi == 0):
             self.basic_instr.append("WFI")
-        print("Basic_Instr: {} ".format(self.basic_instr))
 
     def create_csr_filter(self, cfg):
         self.include_reg.clear()
@@ -141,8 +131,7 @@ class riscv_instr:
                 self.include_reg.append("USCRATCH") 
 
     def get_rand_instr(self):
-        instr_h = None
-        idx = None
+        pass
 
     def get_load_store_instr(self):
         pass
@@ -156,6 +145,7 @@ class riscv_instr:
             self.has_rs2 = 0
         if(self.format.name in ["S_FORMAT", "b_FORMAT"]):
             self.has_rd = 0
+
     def pre_randomize(self):
         pass
     
@@ -182,7 +172,6 @@ class riscv_instr:
         self.extend_imm()
         self.update_imm_str()
         
-
     def convert2asm(self):
         pass
 
