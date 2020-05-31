@@ -138,7 +138,6 @@ class riscv_instr:
 
     def get_instr(self):
         pass
-
     def set_rand_mode(self):
         if(self.format.name == "R_FORMAT"):
             self.has_imm = 0 
