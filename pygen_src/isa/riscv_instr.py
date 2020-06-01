@@ -5,7 +5,7 @@ from pygen_src.isa import rv32i_instr
 import random
 from bitstring import BitArray, BitStream
 import logging
-
+from copy import copy
 class riscv_instr:
     instr_registry = {}
     def __init__(self): 
@@ -24,7 +24,7 @@ class riscv_instr:
         self.rs2 = None
         self.rs1 = None
         self.rd = None
-        self.imm = BitArray(uint = 2341 , length = 32)
+        self.imm = BitArray(uint = 0 , length = 32)
         self.idx = -1
         self.has_rs1 = 1
         self.has_rs2 = 1
@@ -84,7 +84,7 @@ class riscv_instr:
                 self.instr_category[instr_inst.category.name].append(instr_name)
                 self.instr_group[instr_inst.group.name].append(instr_name)
                 self.instr_names.append(instr_name)
-
+                
         self.build_basic_instruction_list(cfg)
         self.create_csr_filter(cfg)
         
@@ -131,20 +131,42 @@ class riscv_instr:
                 self.include_reg.append("USCRATCH") 
 
     def get_rand_instr(self):
-        pass
+        pass #TO-DO
 
-    def get_load_store_instr(self):
-        pass
+    def get_load_store_instr(self, load_store_instr):
+        instr_h = riscv_instr()
+        if(len(load_store_instr) == 0):
+            load_store_instr = self.instr_category["LOAD"] + self.instr_category["STORE"]
+        self.idx = random.randrange(0,len(load_store_instr)-1)    
+        name = load_store_instr[self.idx]
+        instr_h = copy(self.instr_template[name]) #Shallow copy for all relevant fields to improve performance
+        return instr_h
 
-    def get_instr(self):
-        pass
+
+    def get_instr(self, name):
+        if (not self.instr_template.get(name)):             
+            logging.critical("Cannot get instr %s",name)
+        instr_h = copy(self.instr_template[name])
+        return instr_h
+      
     def set_rand_mode(self):
+        # rand_mode setting for Instruction Format
+
         if(self.format.name == "R_FORMAT"):
             self.has_imm = 0 
         if(self.format.name=="I_FORMAT"):
             self.has_rs2 = 0
-        if(self.format.name in ["S_FORMAT", "b_FORMAT"]):
+        if(self.format.name in ["S_FORMAT", "B_FORMAT"]):
             self.has_rd = 0
+        if(self.format.name in ["U_FORMAT", "J_FORMAT"]):
+            self.has_rs1 = 0
+            self.has_rs2 = 0
+
+        # rand_mode setting for Instruction Category
+        if(self.category.name == "CSR"):
+            self.has_rs2 = 0
+            if(self.format.name == "I_FORMAT"):
+                self.has_rs1 = 0
 
     def pre_randomize(self):
         pass
@@ -158,6 +180,7 @@ class riscv_instr:
             else:
                 self.imm_len = 11
        	self.imm_mask = self.imm_mask << self.imm_len
+
    
     def extend_imm(self):
         sign = 0
@@ -168,6 +191,7 @@ class riscv_instr:
         if((sign and not(self.format == "U_FORMAT")) or (self.imm_type in ["UIMM", "NZUIMM"])):
         	self.imm = self.imm_mask | self.imm
 
+
     def post_randomize(self):
         self.extend_imm()
         self.update_imm_str()
@@ -176,13 +200,117 @@ class riscv_instr:
         pass
 
     def get_opcode(self):
-        pass
+    	count =0
+    	if(self.instr_name.name == "LUI"):
+    		count +=1
+    		return (BitArray(uint=55 , length = 7).bin)
+    	if(self.instr_name.name == "AUIPC"):
+    		count +=1
+    		return (BitArray(uint =23 , length = 7).bin)
+    	if(self.instr_name.name == "JAL"):
+    		count +=1
+    		return (BitArray(uint =23 , length = 7).bin)
+    	if(self.instr_name.name == "JALR"):
+    		count +=1
+    		return (BitArray(uint =111 , length = 7).bin)
+    	if(self.instr_name.name in ["BEQ", "BNE", "BLT", "BGE", "BLTU", "BGEU"]):
+    		count +=1
+    		return (BitArray(uint = 103 , length = 7).bin)
+    	if(self.instr_name.name in ["LB", "LH", "LW", "LBU", "LHU", "LWU", "LD"]):
+    		count +=1
+    		return (BitArray(uint = 99 , length = 7).bin)
+    	if(self.instr_name.name in ["SB", "SH", "SW", "SD"]):
+    		count +=1
+    		return (BitArray(uint = 35 , length = 7).bin)
+    	if(self.instr_name.name in ["ADDI", "SLTI", "SLTIU", "XORI", "ORI", "ANDI", "SLLI", "SRLI", "SRAI", "NOP"]):
+    		count +=1
+    		return (BitArray(uint = 19 , length = 7).bin)
+    	if(self.instr_name.name in ["ADD", "SUB", "SLL", "SLT", "SLTU", "XOR", "SRL", "SRA", "OR", "AND", "MUL",\
+    		"MULH", "MULHSU", "MULHU", "DIV", "DIVU", "REM", "REMU"]):
+    		count +=1
+    		return (BitArray(uint = 51 , length = 7).bin)
+    	if(self.instr_name.name in ["ADDIW", "SLLIW", "SRLIW", "SRAIW"]):
+    		count +=1
+    		return (BitArray(uint = 27 , length = 7).bin)
+    	if(self.instr_name.name in ["MULH", "MULHSU", "MULHU", "DIV", "DIVU", "REM", "REMU"]):
+    		count +=1
+    		return (BitArray(uint = 51 , length = 7).bin)
+    	if(self.instr_name.name in ["FENCE", "FENCE_I"]):
+    		count +=1
+    		return (BitArray(uint = 15 , length = 7).bin)
+    	if(self.instr_name.name in ["ECALL", "EBREAK", "CSRRW", "CSRRS", "CSRRC", "CSRRWI", "CSRRSI", "CSRRCI"]):
+    		count +=1
+    		return (BitArray(uint = 115 , length = 7).bin)
+    	if(self.instr_name.name in ["ADDW", "SUBW", "SLLW", "SRLW", "SRAW", "MULW", "DIVW", "DIVUW", "REMW", "REMUW"]):
+    		count +=1
+    		return (BitArray(uint = 59 , length = 7).bin)
+    	if(self.instr_name.name in ["ECALL", "EBREAK", "URET", "SRET", "MRET", "DRET", "WFI", "SFENCE_VMA"]):
+    		count +=1
+    		return (BitArray(uint = 115 , length = 7).bin)
+    	if(count==0):
+    		logging.critical("Unsupported instruction %0s", self.instr_name.name)
+
 
     def get_func3(self):
-        pass
+    	count =0
+    	if(self.instr_name.name in ["JALR", "BEQ", "LB", "SB", "ADDI", "NOP", "ADD", "SUB", "FENCE","ECALL",\
+    		"EBREAK", "ADDIW", "ADDW", "SUBW","MUL","MULW","ECALL","EBREAK", "URET", \
+    		"SRET", "MRET", "DRET", "WFI", "SFENCE_VMA"]):
+    		count +=1
+    		return (BitArray(uint = 0, length = 3).bin)
+    	if(self.instr_name.name in ["BNE", "LH", "SH", "SLLI", "SLL", "FENCE_I", "CSRRW", "SLLIW","SLLW","MULH"]):
+    		count +=1 
+    		return (BitArray(uint = 1, length = 3).bin)
+    	if(self.instr_name.name in ["LW", "SW", "SLTI", "SLT", "CSRRS", "MULHS"]):
+    		count +=1
+    		return (BitArray(uint = 2, length = 3).bin)
+    	if(self.instr_name.name in ["SLTIU", "SLTU", "CSRRC", "LD", "SD", "MULHU"]):
+    		count +=1
+    		return (BitArray(uint = 3, length = 3).bin)
+    	if(self.instr_name.name in ["BLT", "LBU", "XORI", "XOR", "DIV", "DIVW"]):
+    		count +=1
+    		return (BitArray(uint = 4, length = 3).bin)
+    	if(self.instr_name.name in ["BGE", "LHU", "SRLI", "SRAI", "SRL", "SRA", "CSRRWI", "SRLIW",\
+    		"SRAIW","SRLW","SRAW","DIVU","DIVUW"]):
+    		count +=1
+    		return (BitArray(uint = 5, length = 3).bin)
+    	if(self.instr_name.name in ["BLTU", "ORI", "OR", "CSRRSI", "LWU", "REM", "REMW"]):
+    		count +=1
+    		return (BitArray(uint = 6, length = 3).bin)
+    	if(self.instr_name.name in ["BGEU", "ANDI", "AND", "CSRRCI", "REMU", "REMUW"]):
+    		count +=1
+    		return (BitArray(uint = 7, length = 3).bin)
+    	if(count==0):
+    		logging.critical("Unsupported instruction %0s", self.instr_name.name)
 
     def get_func7(self):
-        pass
+    	count =0
+    	if(self.instr_name.name in ["SLLI", "SRLI", "ADD", "SLL", "SLT", "SLTU","XOR","SRL","OR","AND",\
+    		"FENCE","FENCE_I","SLLIW","SRLIW","ADDW","SLLW","SRLW","ECALL","EBREAK","URET"]):
+    		count +=1
+    		return (BitArray(uint = 0, length = 7).bin)
+    	if(self.instr_name.name in ["SUB", "SRA", "SRAIW", "SUBW", "SRAW"]):
+    		count +=1
+    		return (BitArray(uint = 32, length = 7).bin)
+    	if(self.instr_name.name in ["MUL", "MULH", "MULHSU", "MULHU", "DIV","DIVU","REM","REMU","MULW",\
+    		"DIVW","DIVUW","REMW","REMUW"]):
+    		count +=1
+    		return (BitArray(uint = 1, length = 7).bin)
+    	if(self.instr_name.name in ["SRET", "WFI"]):
+    		count +=1
+    		return (BitArray(uint = 8, length = 7).bin)
+    	if(self.instr_name.name == "MRET"):
+    		count +=1
+    		return (BitArray(uint = 24, length = 7).bin)
+    	if(self.instr_name.name == "DRET"):
+    		count +=1
+    		return (BitArray(uint = 61, length = 7).bin)
+    	if(self.instr_name.name == "SFENCE_VMA"):
+    		count +=1
+    		return (BitArray(uint = 9, length = 7).bin)
+    	if(count==0):
+    		logging.critical("Unsupported instruction %0s", self.instr_name.name)
+
 
     def convert2bin(self):
         pass
@@ -190,8 +318,8 @@ class riscv_instr:
     def get_instr_name(self):
     	get_instr_name = self.instr_name.name
     	for i in get_instr_name:
-    		if(i == "_"):
-    			get_instr_name = get_instr_name.replace(i,".")
+            if(i == "_"):
+                get_instr_name = get_instr_name.replace(i,".")
     	return get_instr_name
 
     def get_c_gpr(self, gpr):
