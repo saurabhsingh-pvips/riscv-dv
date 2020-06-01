@@ -142,12 +142,13 @@ class riscv_instr:
         instr_h = copy(self.instr_template[name]) #Shallow copy for all relevant fields to improve performance
         return instr_h
 
+
     def get_instr(self, name):
         if (not self.instr_template.get(name)):             
             logging.critical("Cannot get instr %s",name)
         instr_h = copy(self.instr_template[name])
         return instr_h
-
+      
     def set_rand_mode(self):
         # rand_mode setting for Instruction Format
 
