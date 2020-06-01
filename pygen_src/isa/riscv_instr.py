@@ -131,7 +131,7 @@ class riscv_instr:
                 self.include_reg.append("USCRATCH") 
 
     def get_rand_instr(self):
-        pass
+        pass #TO-DO
 
     def get_load_store_instr(self, load_store_instr):
         instr_h = riscv_instr()
@@ -203,64 +203,49 @@ class riscv_instr:
     	if(self.instr_name.name == "LUI"):
     		count +=1
     		return (BitArray(uint=55 , length = 7).bin)
-
     	if(self.instr_name.name == "AUIPC"):
     		count +=1
     		return (BitArray(uint =23 , length = 7).bin)
-
     	if(self.instr_name.name == "JAL"):
     		count +=1
     		return (BitArray(uint =23 , length = 7).bin)
-
     	if(self.instr_name.name == "JALR"):
     		count +=1
     		return (BitArray(uint =111 , length = 7).bin)
-
     	if(self.instr_name.name in ["BEQ", "BNE", "BLT", "BGE", "BLTU", "BGEU"]):
     		count +=1
     		return (BitArray(uint = 103 , length = 7).bin)
-
     	if(self.instr_name.name in ["LB", "LH", "LW", "LBU", "LHU", "LWU", "LD"]):
     		count +=1
     		return (BitArray(uint = 99 , length = 7).bin)
-
     	if(self.instr_name.name in ["SB", "SH", "SW", "SD"]):
     		count +=1
     		return (BitArray(uint = 35 , length = 7).bin)
-
     	if(self.instr_name.name in ["ADDI", "SLTI", "SLTIU", "XORI", "ORI", "ANDI", "SLLI", "SRLI", "SRAI", "NOP"]):
     		count +=1
     		return (BitArray(uint = 19 , length = 7).bin)
-
     	if(self.instr_name.name in ["ADD", "SUB", "SLL", "SLT", "SLTU", "XOR", "SRL", "SRA", "OR", "AND", "MUL",\
     		"MULH", "MULHSU", "MULHU", "DIV", "DIVU", "REM", "REMU"]):
     		count +=1
     		return (BitArray(uint = 51 , length = 7).bin)
-
     	if(self.instr_name.name in ["ADDIW", "SLLIW", "SRLIW", "SRAIW"]):
     		count +=1
     		return (BitArray(uint = 27 , length = 7).bin)
-
     	if(self.instr_name.name in ["MULH", "MULHSU", "MULHU", "DIV", "DIVU", "REM", "REMU"]):
     		count +=1
     		return (BitArray(uint = 51 , length = 7).bin)
-
     	if(self.instr_name.name in ["FENCE", "FENCE_I"]):
     		count +=1
     		return (BitArray(uint = 15 , length = 7).bin)
-
     	if(self.instr_name.name in ["ECALL", "EBREAK", "CSRRW", "CSRRS", "CSRRC", "CSRRWI", "CSRRSI", "CSRRCI"]):
     		count +=1
     		return (BitArray(uint = 115 , length = 7).bin)
-
     	if(self.instr_name.name in ["ADDW", "SUBW", "SLLW", "SRLW", "SRAW", "MULW", "DIVW", "DIVUW", "REMW", "REMUW"]):
     		count +=1
     		return (BitArray(uint = 59 , length = 7).bin)
-
     	if(self.instr_name.name in ["ECALL", "EBREAK", "URET", "SRET", "MRET", "DRET", "WFI", "SFENCE_VMA"]):
     		count +=1
     		return (BitArray(uint = 115 , length = 7).bin)
-
     	if(count==0):
     		logging.critical("Unsupported instruction %0s", self.instr_name.name)
 
@@ -275,30 +260,25 @@ class riscv_instr:
     	if(self.instr_name.name in ["BNE", "LH", "SH", "SLLI", "SLL", "FENCE_I", "CSRRW", "SLLIW","SLLW","MULH"]):
     		count +=1 
     		return (BitArray(uint = 1, length = 3).bin)
-
     	if(self.instr_name.name in ["LW", "SW", "SLTI", "SLT", "CSRRS", "MULHS"]):
     		count +=1
     		return (BitArray(uint = 2, length = 3).bin)
     	if(self.instr_name.name in ["SLTIU", "SLTU", "CSRRC", "LD", "SD", "MULHU"]):
     		count +=1
     		return (BitArray(uint = 3, length = 3).bin)
-
     	if(self.instr_name.name in ["BLT", "LBU", "XORI", "XOR", "DIV", "DIVW"]):
     		count +=1
     		return (BitArray(uint = 4, length = 3).bin)
-
     	if(self.instr_name.name in ["BGE", "LHU", "SRLI", "SRAI", "SRL", "SRA", "CSRRWI", "SRLIW",\
     		"SRAIW","SRLW","SRAW","DIVU","DIVUW"]):
     		count +=1
     		return (BitArray(uint = 5, length = 3).bin)
-
     	if(self.instr_name.name in ["BLTU", "ORI", "OR", "CSRRSI", "LWU", "REM", "REMW"]):
     		count +=1
     		return (BitArray(uint = 6, length = 3).bin)
     	if(self.instr_name.name in ["BGEU", "ANDI", "AND", "CSRRCI", "REMU", "REMUW"]):
     		count +=1
     		return (BitArray(uint = 7, length = 3).bin)
-
     	if(count==0):
     		logging.critical("Unsupported instruction %0s", self.instr_name.name)
 
@@ -311,28 +291,22 @@ class riscv_instr:
     	if(self.instr_name.name in ["SUB", "SRA", "SRAIW", "SUBW", "SRAW"]):
     		count +=1
     		return (BitArray(uint = 32, length = 7).bin)
-
     	if(self.instr_name.name in ["MUL", "MULH", "MULHSU", "MULHU", "DIV","DIVU","REM","REMU","MULW",\
     		"DIVW","DIVUW","REMW","REMUW"]):
     		count +=1
     		return (BitArray(uint = 1, length = 7).bin)
-
     	if(self.instr_name.name in ["SRET", "WFI"]):
     		count +=1
     		return (BitArray(uint = 8, length = 7).bin)
-
     	if(self.instr_name.name == "MRET"):
     		count +=1
     		return (BitArray(uint = 24, length = 7).bin)
-
     	if(self.instr_name.name == "DRET"):
     		count +=1
     		return (BitArray(uint = 61, length = 7).bin)
-
     	if(self.instr_name.name == "SFENCE_VMA"):
     		count +=1
     		return (BitArray(uint = 9, length = 7).bin)
-
     	if(count==0):
     		logging.critical("Unsupported instruction %0s", self.instr_name.name)
 
