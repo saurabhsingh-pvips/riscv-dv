@@ -475,9 +475,7 @@ class riscv_b_instr extends riscv_instr;
                }) ||
            (ZBE inside {cfg.enable_bitmanip_groups} && instr_name inside {
                BEXT, BEXTW,
-               BDEP, BDEPW,
-               // TODO, spec 0.92 doesn't categorize these 2 instr in any group, put in ZBE for now
-               SEXT_B, SEXT_H
+               BDEP, BDEPW
                }) ||
            (ZBF inside {cfg.enable_bitmanip_groups} && instr_name inside {BFP, BFPW}) ||
            (ZBC inside {cfg.enable_bitmanip_groups} && instr_name inside {
@@ -492,8 +490,44 @@ class riscv_b_instr extends riscv_instr;
                }) ||
            (ZBT inside {cfg.enable_bitmanip_groups} && instr_name inside {
                CMOV, CMIX,
-               FSL, FSLW, FSR, FSRW, FSRI, FSRIW}));
+               FSL, FSLW, FSR, FSRW, FSRI, FSRIW}) ||
+           // TODO, spec 0.92 doesn't categorize these 2 instr, put them in ZB_TMP #572
+           (ZB_TMP inside {cfg.enable_bitmanip_groups} && instr_name inside {
+               SEXT_B, SEXT_H})
+           );
   endfunction
+
+  // coverage related functons
+  virtual function void update_src_regs(string operands[$]);
+    // handle special I_FORMAT (FSRI, FSRIW) and R4_FORMAT
+    case(format)
+      I_FORMAT: begin
+        if (instr_name inside {FSRI, FSRIW}) begin
+          `DV_CHECK_FATAL(operands.size() == 4, instr_name)
+          // fsri rd, rs1, rs3, imm
+          rs1 = get_gpr(operands[1]);
+          rs1_value = get_gpr_state(operands[1]);
+          rs3 = get_gpr(operands[2]);
+          rs3_value = get_gpr_state(operands[2]);
+          get_val(operands[3], imm);
+          return;
+        end
+      end
+      R4_FORMAT: begin
+        `DV_CHECK_FATAL(operands.size() == 4)
+        rs1 = get_gpr(operands[1]);
+        rs1_value = get_gpr_state(operands[1]);
+        rs2 = get_gpr(operands[2]);
+        rs2_value = get_gpr_state(operands[2]);
+        rs3 = get_gpr(operands[3]);
+        rs3_value = get_gpr_state(operands[3]);
+        return;
+      end
+      default: ;
+    endcase
+    // reuse base function to handle the other instructions
+    super.update_src_regs(operands);
+  endfunction : update_src_regs
 
 endclass
 

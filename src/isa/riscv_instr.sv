@@ -124,7 +124,9 @@ class riscv_instr extends uvm_object;
           !(cfg.disable_compressed_instr &&
             (instr_inst.group inside {RV32C, RV64C, RV32DC, RV32FC, RV128C})) &&
           !(!cfg.enable_floating_point &&
-            (instr_inst.group inside {RV32F, RV64F, RV32D, RV64D}))
+            (instr_inst.group inside {RV32F, RV64F, RV32D, RV64D})) &&
+          !(!cfg.enable_vector_extension &&
+            (instr_inst.group inside {RV32V, RV64V}))
           ) begin
         instr_category[instr_inst.category].push_back(instr_name);
         instr_group[instr_inst.group].push_back(instr_name);
@@ -181,7 +183,8 @@ class riscv_instr extends uvm_object;
     if (!cfg.no_ebreak) begin
       basic_instr = {basic_instr, EBREAK};
       foreach (riscv_instr_pkg::supported_isa[i]) begin
-        if (RV32C inside {riscv_instr_pkg::supported_isa[i]}) begin
+        if (RV32C inside {riscv_instr_pkg::supported_isa[i]} &&
+            !cfg.disable_compressed_instr) begin
           basic_instr = {basic_instr, C_EBREAK};
           break;
         end
@@ -647,5 +650,7 @@ class riscv_instr extends uvm_object;
   virtual function void update_imm_str();
     imm_str = $sformatf("%0d", $signed(imm));
   endfunction
+
+  `include "isa/riscv_instr_cov.svh"
 
 endclass
