@@ -1,4 +1,7 @@
-# convertion of riscv_instr_pkg.sv into python
+##############################################################################
+##           Convertion of riscv_instr_pkg.sv into python                   ##
+##############################################################################
+
 
 from enum import *
 from random import *
@@ -15,14 +18,17 @@ class riscv_instr_pkg:
 
     #import uvm_pkg:: *
     #import riscv_signature_pkg:: *
-    # `define include_file(f) `include `"f`"
-
-    # uvm_cmdline_processor  inst;
-    inst = uvm_cmdline_processor()
+    #`define include_file(f) `include `"f`"           
+    
+    inst = uvm_cmdline_processor()                     # uvm_cmdline_processor  inst;
 
     # Data section setting
-    mem_region_t = struct.pack('sI?', 'name', size_in_bytes, xwr)  # Python Struct Functions
+    class mem_region_t:
+	name
+        size_in_bytes
+        xwr                                             # xwr = Excutable,Writable,Readale
 
+  
     class satp_mode_t(Enum):
         BARE = 0b0000
         SV32 = 0b0001
@@ -458,12 +464,12 @@ class riscv_instr_pkg:
         VWMACC = auto()
         VWMACCSU = auto()
         VWMACCUS = auto()
-        '''
-        VQMACCU = auto()
-        VQMACC = auto()
-        VQMACCSU = auto()
-        VQMACCUS = auto()
-        '''
+        
+        #VQMACCU = auto()
+        #VQMACC = auto()
+        #VQMACCSU = auto()
+        #VQMACCUS = auto()
+        
         VMERGE = auto()
         VMV = auto()
         VSADDU = auto()
@@ -587,8 +593,9 @@ class riscv_instr_pkg:
         INVALID_INSTR = auto()
 
     #Maximum virtual address bits used by the program parameter
-    #parameter intMAX_USED_VADDR_BITS = 30
-    MAX_USED_VADDR_BITS = 30
+
+    def MAX_USED_VADDR_BITS():                # parameter intMAX_USED_VADDR_BITS = 30
+        return 30
 
 
     class riscv_reg_t(Enum):
@@ -1024,7 +1031,7 @@ class riscv_instr_pkg:
 
     # Data pattern of the memory model
     class data_pattern_t(Enum):
-        RAND_DATA = 0,
+        RAND_DATA = 0
         ALL_ZERO = auto()
         INCR_VAL = auto()
 
@@ -1103,8 +1110,8 @@ class riscv_instr_pkg:
         WAR_HAZARD = auto()
         WAW_HAZARD = auto()
 
-    #`include "riscv_core_setting.sv"
     import riscv_core_setting
+    #import riscv_core_setting
 
     # PMP address matching mode
     class pmp_addr_mode_t(Enum):
@@ -1112,12 +1119,14 @@ class riscv_instr_pkg:
         TOR = 0b01
         NA4 = 0b10
         NAPOT = 0b11
+
     #PMP configuration register layout
     #This configuration struct includes the pmp address for simplicity
     #TODO (udinator) allow a full 34 bit address for rv32?
 
 
      ######################################### to do #########################################
+
     #`ifdef _VCP // GRK958
     if _VCP:
         pmp_cfg_reg_t = struct.pack('????????', 1, zero,a, x, w, r, addr, offset)
@@ -1317,6 +1326,8 @@ class riscv_instr_pkg:
     riscv_reg_t   all_gpr[]   = {ZERO, RA, SP, GP, TP, T0, T1, T2, S0, S1, A0,   #to do..........
                              A1, A2, A3, A4, A5, A6, A7, S2, S3, S4, S5, S6,
                              S7, S8, S9, S10, S11, T3, T4, T5, T6};
+    
+    
 
 
     riscv_reg_t compressed_gpr[] = {S0, S1, A0, A1, A2, A3, A4, A5};    #to do .........
@@ -1347,7 +1358,7 @@ class riscv_instr_pkg:
 		else:
 			val = str.atoi()
 
-	print("riscv_instr_pkg, imm:", str, val, val)   # to do $signed(val)
+	print("riscv_instr_pkg imm:", str, val)   # to do $signed(val)
 
 
 import riscv_vector_cfg
