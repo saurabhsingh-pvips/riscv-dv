@@ -1,4 +1,23 @@
+"""
+Copyright 2020 Google LLC
+Copyright 2020 PerfectVIPs Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+Regression script for RISC-V random instruction generator
+
+"""
+
 from enum import Enum, auto
+
+
 class riscv_instr_name_t(Enum):
     # RV32I instructions
     LUI = 0
@@ -107,7 +126,7 @@ class riscv_instr_name_t(Enum):
     BFP = auto()
     SHFLI = auto()
     UNSHFLI = auto()
-    #RV64B instructions
+    # RV64B instructions
     ADDIWU = auto()
     SLLIU_W = auto()
     ADDWU = auto()
@@ -500,9 +519,10 @@ class riscv_instr_name_t(Enum):
     WFI = auto()
     SFENCE_VMA = auto()
     # Custom instructions
-    #import riscv_custom_instr_enum #TODO: Right now it's not working as expected fix it
+    # import riscv_custom_instr_enum #TODO: Right now it's not working as expected fix it
     # You can add other instructions here
     INVALID_INSTR = auto()
+
 
 class riscv_instr_format_t(Enum):
     J_FORMAT = 0
@@ -525,9 +545,10 @@ class riscv_instr_format_t(Enum):
     # Vector instruction format
     VSET_FORMAT = auto()
     VA_FORMAT = auto()
-    VS2_FORMAT = auto() # op vd,vs2
+    VS2_FORMAT = auto()  # op vd,vs2
     VL_FORMAT = auto()
     VS_FORMAT = auto()
+
 
 class riscv_instr_category_t(Enum):
     LOAD = 0
@@ -545,8 +566,9 @@ class riscv_instr_category_t(Enum):
     CHANGELEVEL = auto()
     TRAP = auto()
     INTERRUPT = auto()
-    #`VECTOR_INCLUDE("riscv_instr_pkg_inc_riscv_instr_category_t.sv") TODO: Fix this
-    AMO = auto() # (last one)
+    # `VECTOR_INCLUDE("riscv_instr_pkg_inc_riscv_instr_category_t.sv") TODO: Fix this
+    AMO = auto()  # (last one)
+
 
 class riscv_instr_group_t(Enum):
     RV32I = 0
@@ -572,8 +594,9 @@ class riscv_instr_group_t(Enum):
     RV32X = auto()
     RV64X = auto()
 
+
 class imm_t(Enum):
-    IMM    = 0      # Signed immediate
-    UIMM   = auto() # Unsigned immediate
-    NZUIMM = auto() # Non-zero unsigned immediate
-    NZIMM  = auto() # Non-zero signed immediate
+    IMM = 0      # Signed immediate
+    UIMM = auto()  # Unsigned immediate
+    NZUIMM = auto()  # Non-zero unsigned immediate
+    NZIMM = auto()  # Non-zero signed immediate
