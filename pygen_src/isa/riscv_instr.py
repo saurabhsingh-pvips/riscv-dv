@@ -1,7 +1,6 @@
 from collections import defaultdict
 from pygen_src.riscv_instr_gen_config import *
 from pygen_src.riscv_instr_pkg import *
-from pygen_src.isa import rv32i_instr
 import random
 from bitstring import BitArray, BitStream
 import logging
