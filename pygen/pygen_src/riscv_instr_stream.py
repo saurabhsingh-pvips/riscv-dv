@@ -12,14 +12,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 Regression script for RISC-V random instruction generator
-
 """
 
 from pygen_src.isa.riscv_instr import *
 from pygen_src.riscv_instr_gen_config import *
 from pygen_src.riscv_instr_pkg import *
 import random
-import constraint
 
 
 class riscv_instr_stream:
@@ -76,7 +74,6 @@ class riscv_instr_stream:
             When replace is 1, the original instruction at the inserted position will be replaced
         """
         current_instr_cnt = len(self.instr_list)
-        new_instr_cnt = len(new_instr)
 
         if current_instr_cnt == 0:
             self.instr_list = new_instr
@@ -84,7 +81,8 @@ class riscv_instr_stream:
 
         if idx == -1:
             idx = random.randint(0, current_instr_cnt - 1)
-            # cares must be taken to avoid targeting an atomic instruction (while atomic, find a new idx)
+            # cares must be taken to avoid targeting
+            # an atomic instruction (while atomic, find a new idx)
             for i in range(10):
                 if self.instr_list[idx].atomic:
                     break
@@ -97,10 +95,12 @@ class riscv_instr_stream:
                 if instr_list[idx].atomic:
                     print("Error")  # TODO: Put appropriate print here
         elif idx > current_instr_cnt or idx < 0:
-            # TODO: Print an error indicating that inserting an instruction in this location is not possible
+            # TODO: Print an error indicating that inserting an instruction
+            #       in this location is not possible
             pass
-        # When replace is 1, the original instruction at this index will be removed. The label of the
-        # original instruction will be copied to the head of inserted instruction stream.
+        # When replace is 1, the original instruction at this index will be removed.
+        # The label of the original instruction will be copied to the head
+        # of inserted instruction stream.
         if replace:
             new_instr[0].label = self.instr_list[idx].label
             new_instr[0].has_label = self.instr_list[idx].has_label
@@ -111,7 +111,8 @@ class riscv_instr_stream:
         """
         Mix the input instruction stream with the original instruction, the instruction order is
         preserved. When 'contained' is set, the original instruction stream will be inside the
-        new instruction stream with the first and last instruction from the input instruction stream.
+        new instruction stream with the first and last instruction from the input instruction
+        stream.
         new_instr is a list of riscv_instr
         """
         # TODO: Verify the logic of function
@@ -140,12 +141,12 @@ class riscv_instr_stream:
 
 class riscv_rand_instr_stream(riscv_instr_stream):
     """
-        Generate a random instruction stream based on the configuration
-        There are two ways to use this class to generate instruction stream
+    Generate a random instruction stream based on the configuration
+    There are two ways to use this class to generate instruction stream
         1. For short instruction stream, you can call randomize() directly.
-        2. For long instruction stream (>1K), randomize() all instructions together might take a long
-            time for the constraint solver. In this case, you can call gen_instr to generate instructions
-            one by one. The time only grows linearly with the instruction count
+        2. For long instruction stream (>1K), randomize() all instructions together might take a
+           long time for the constraint solver. In this case, you can call gen_instr to generate
+           instructions one by one. The time only grows linearly with the instruction count
     """
 
     def __init__(self):
@@ -160,7 +161,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         for i in range(self.instr_cnt):
             self.instr_list.append(None)
 
-    def setup_allowed_instr(self, no_branch=False, bit no_load_store=True):
+    def setup_allowed_instr(self, no_branch=False, no_load_store=True):
         # TODO: check if this should be shallow copy or deep copy
         self.allowed_instr = riscv_instr.basic_instr
         if no_branch == 0:
@@ -171,7 +172,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
             self.allowed_instr.append(riscv_instr.instr_category[riscv_instr_category_t.STORE.name])
         self.setup_instruction_dist(no_branch, no_load_store)
 
-    def setup_instruction_dist(self, no_branch = False, bit no_load_store = True):
+    def setup_instruction_dist(self, no_branch=False, no_load_store=True):
         if cfg.dist_control_mode:
             self.category_dist = cfg.category_dist
             if no_branch:
@@ -183,18 +184,20 @@ class riscv_rand_instr_stream(riscv_instr_stream):
             print("ERROR")
 
     def gen_instr(self, not_branch=False, no_load_store=True, is_debug_program=False):
-        self.setup_allowed_instr(no_branch, no_load_store()
+        self.setup_allowed_instr(no_branch, no_load_store)
         for i in range(len(self.instr_list)):
-            self.instr_list[i] = self.randomize_instr(
-                    self.instr_list[i], is_debug_program)
-        while(self.instr_list[-1].category == riscv_instr_category_t.BRANCH):
+            self.instr_list[i] = self.randomize_instr(self.instr_list[i], is_debug_program)
+        while self.instr_list[-1].category == riscv_instr_category_t.BRANCH:
             self.instr_list.pop()
             if len(self.instr_list):
                 break
 
     def randomize_instr(self, instr, is_in_debug=False, disable_dist=False):
         exclude_instr = []
-        if ((riscv_reg_t.SP in self.reserved_rd) or (riscv_reg_t.SP in cfg.reserved_regs)) or (not (riscv_reg_t.SP in self.avail_regs)):
+        is_SP_in_reserved_rd = riscv_reg_t.SP in self.reserved_rd
+        is_SP_in_reserved_regs = riscv_reg_t.SP in cfg.reserved_regs
+        is_SP_in_avail_regs = riscv_reg_t.SP in self.avail_regs
+        if ((is_SP_in_reserved_rd or is_SP_in_reserved_regs) or (not is_SP_in_avail_regs)):
             exclude_instr.append(riscv_instr_name_t.C_ADDI4SPN)
             exclude_instr.append(riscv_instr_name_t.C_ADDI16SP)
             exclude_instr.append(riscv_instr_name_t.C_LWSP)
