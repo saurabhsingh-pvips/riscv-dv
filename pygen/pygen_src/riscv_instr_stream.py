@@ -14,9 +14,11 @@ limitations under the License.
 Regression script for RISC-V random instruction generator
 """
 
-from pygen_src.isa.riscv_instr import *
-from pygen_src.riscv_instr_gen_config import *
-from pygen_src.riscv_instr_pkg import *
+from pygen_src.isa.riscv_instr import riscv_instr
+from pygen_src.riscv_instr_gen_config import riscv_instr_gen_config
+from pygen_src.riscv_instr_pkg import riscv_instr_name_t, riscv_instr_format_t,\
+    riscv_instr_category_t
+from riscv_instr_pkg import riscv_reg_t
 import random
 
 
@@ -60,7 +62,7 @@ class riscv_instr_stream:
             while self.instr_list[idx].atomic:
                 idx = idx + 1
                 if idx == (current_instr_cnt - 1):
-                    instr_list.append(instr)
+                    self.instr_list.append(instr)
                     return
         elif idx > current_instr_cnt or idx < 0:
             # TO DO: print an error
@@ -87,12 +89,12 @@ class riscv_instr_stream:
                 if self.instr_list[idx].atomic:
                     break
                 idx = random.randint(0, current_instr_cnt - 1)
-            if instr_list[idx].atomic:
+            if self.instr_list[idx].atomic:
                 for i in range(len(self.instr_list)):
-                    if not instr_list[i].atomic:
+                    if not self.instr_list[i].atomic:
                         idx = i
                         break
-                if instr_list[idx].atomic:
+                if self.instr_list[idx].atomic:
                     print("Error")  # TODO: Put appropriate print here
         elif idx > current_instr_cnt or idx < 0:
             # TODO: Print an error indicating that inserting an instruction
@@ -128,9 +130,9 @@ class riscv_instr_stream:
         if contained:
             insert_instr_position[0] = 0
             if new_instr_cnt > 1:
-                sol[new_instr_cnt - 1] = current_instr_cnt - 1
+                insert_instr_position[new_instr_cnt - 1] = current_instr_cnt - 1
         for i in range(len(new_instr)):
-            self.insert_instr(new_instr[i], sol[i] + i)
+            self.insert_instr(new_instr[i], insert_instr_position[i] + i)
 
     def convert2string(self):
         s = ""
@@ -173,8 +175,8 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         self.setup_instruction_dist(no_branch, no_load_store)
 
     def setup_instruction_dist(self, no_branch=False, no_load_store=True):
-        if cfg.dist_control_mode:
-            self.category_dist = cfg.category_dist
+        if self.cfg.dist_control_mode:
+            self.category_dist = self.cfg.category_dist
             if no_branch:
                 self.category_dist[riscv_instr_category_t.BRANCH.name] = 0
             if no_load_store:
@@ -183,7 +185,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
             # TODO: Print appropriatte error
             print("ERROR")
 
-    def gen_instr(self, not_branch=False, no_load_store=True, is_debug_program=False):
+    def gen_instr(self, no_branch=False, no_load_store=True, is_debug_program=False):
         self.setup_allowed_instr(no_branch, no_load_store)
         for i in range(len(self.instr_list)):
             self.instr_list[i] = self.randomize_instr(self.instr_list[i], is_debug_program)
@@ -195,7 +197,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
     def randomize_instr(self, instr, is_in_debug=False, disable_dist=False):
         exclude_instr = []
         is_SP_in_reserved_rd = riscv_reg_t.SP in self.reserved_rd
-        is_SP_in_reserved_regs = riscv_reg_t.SP in cfg.reserved_regs
+        is_SP_in_reserved_regs = riscv_reg_t.SP in self.cfg.reserved_regs
         is_SP_in_avail_regs = riscv_reg_t.SP in self.avail_regs
         if ((is_SP_in_reserved_rd or is_SP_in_reserved_regs) or (not is_SP_in_avail_regs)):
             exclude_instr.append(riscv_instr_name_t.C_ADDI4SPN)
@@ -213,7 +215,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
     def randomize_gpr(self, instr):
         avail_regs_set = set(self.avail_regs)
         reserved_rd_set = set(self.reserved_rd)
-        reserved_regs_set = set(cfg.reserved_regs)
+        reserved_regs_set = set(self.cfg.reserved_regs)
         excluded_avail_regs = list(avail_regs_set - reserved_rd_set - reserved_regs_set)
         if len(self.avail_regs) > 0:
             if self.has_rs1:
