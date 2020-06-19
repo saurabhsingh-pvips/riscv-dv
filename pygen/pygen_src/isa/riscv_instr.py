@@ -9,27 +9,23 @@ http://www.apache.org/licenses/LICENSE-2.0
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-Regression script for RISC-V random instruction generator
 
 """
 
 
 from collections import defaultdict
 from pygen_src.riscv_instr_gen_config import riscv_instr_gen_config
-from pygen_src.riscv_instr_pkg import riscv_instr_group_t
+from pygen_src.riscv_instr_pkg import riscv_instr_group_t, pkg_ins
 from pygen_src.isa import rv32i_instr  # NOQA
 import random
 from bitstring import BitArray
 import logging
 from copy import copy
 import sys
+import vsc
 
 
 class riscv_instr:
-
-    logging.basicConfig(level=logging.INFO)
     instr_registry = {}
 
     def __init__(self):
@@ -117,7 +113,6 @@ class riscv_instr:
                 self.instr_category[instr_inst.category.name].append(instr_name)
                 self.instr_group[instr_inst.group.name].append(instr_name)
                 self.instr_names.append(instr_name)
-
         self.build_basic_instruction_list(cfg)
         self.create_csr_filter(cfg)
 
@@ -169,8 +164,8 @@ class riscv_instr:
                 self.include_reg.append("USCRATCH")
 
     def get_rand_instr(self, include_instr=[], exclude_instr=[],
-                       include_category=[], exclude_category=[],
-                       include_group=[], exclude_group=[]):
+                   include_category=[], exclude_category=[],
+                   include_group=[], exclude_group=[]):
         idx = BitArray(uint = 0, length = 32)
         name = ""
         allowed_instr = []
@@ -190,36 +185,30 @@ class riscv_instr:
                 disallowed_instr.append(self.instr_group[items])
 
         disallowed_instr.extend(exclude_instr)
-
         if(len(disallowed_instr) == 0):
-            if(len(include_instr) > 0):
-                idx = random.randrange(0, len(include_instr) - 1)
-                name = include_instr[idx]
-            elif(len(allowed_instr > 0)):
-                idx = random.randrange(0, len(allowed_instr) - 1)
-                name = allowed_instr[idx]
-            else:
-                idx = random.randrange(0, len(self.instr_names) - 1)
-                name = self.instr_names[idx]
-        else:
-            # TODO
-            instr_names_set = set(self.instr_names)
-            disallowed_instr_set = set(disallowed_instr)
-            allowed_instr_set = set(allowed_instr)
-            include_instr_set = set(include_instr)
-            excluded_instr_names_list = list(instr_names_set - disallowed_instr_set)
-            excluded_allowed_instr_list = list(allowed_instr_set - disallowed_instr_set)
-            include_instr_list = list(include_instr_set - disallowed_instr_set)
-
-            name = random.choice(excluded_instr_names_list)
-            if(len(include_instr) > 0):
-                name = random.choice(include_instr_list)
-            if(len(allowed_instr) > 0):
-                name = random.choice(excluded_allowed_instr_list)
-            if(name is None):
-                logging.critical("%s Cannot generate random instruction", riscv_instr.__name__)
+            try:
+                if(len(include_instr) > 0):
+                    idx = random.randrange(0, len(include_instr) - 1)
+                    name = include_instr[idx]
+                elif(len(allowed_instr) > 0):
+                    idx = random.randrange(0, len(allowed_instr) - 1)
+                    name = allowed_instr[idx]
+                else:
+                    idx = random.randrange(0, len(self.instr_names) - 1)
+                    name = self.instr_names[idx]
+            except Exception:
+                logging.critical("[%s] Cannot generate random instruction", riscv_instr.__name__)
                 sys.exit(1)
-
+        else:
+            try:
+                name = random.choice(self.instr_names)
+                if(len(include_instr) > 0):
+                    name = random.choice(include_instr)
+                if(len(allowed_instr) > 0):
+                    name = random.choice(allowed_instr)
+            except Exception:
+                logging.critical("[%s] Cannot generate random instruction", riscv_instr.__name__)
+                sys.exit(1)
         instr_h = copy(self.instr_template[name])
         return instr_h
 
@@ -284,8 +273,58 @@ class riscv_instr:
         self.extend_imm()
         self.update_imm_str()
 
-    def convert2asm(self):
-        pass
+    def convert2asm(self, prefix=" "):
+        asm_str = pkg_ins.format_string(get_instr_name(), pkg_ins.MAX_INSTR_STR_LEN())
+        if(self.category.name != "SYSTEM"):
+            if self.format.name == "J_FORMAT":
+                asm_str = '{} {} {}'.format(asm_str, self.rd.name, get_imm())
+            elif self.format.name == "U_FORMAT":
+                asm_str = '{} {} {}'.format(asm_str, self.rd.name, get_imm())
+            elif self.format.name == "I_FORMAT":
+                if(self.instr_name.name == "NOP"):
+                    asm_str = "nop"
+                elif(self.instr_name.name == "WFI"):
+                    asm_str = "wfi"
+                elif(self.instr_name.name == "FENCE"):
+                    asm_str = "fence"
+                elif(self.instr_name.name == "FENCE_I"):
+                    asm_str = "fence.i"
+                elif(self.category.name == "LOAD"):
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rd.name, get_imm(), self.rs1.name)
+                elif(self.category.name == "CSR"):
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rd.name, self.csr, get_imm())
+                else:
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rd.name, self.rs1.name, get_imm())
+            elif self.format.name == "S_FORMAT":
+                if(self.category.name == "STORE"):
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rs2.name, get_imm(), self.rs1.name)
+                else:
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rs1.name, self.rs2.name, get_imm())
+
+            elif self.format.name == "B_FORMAT":
+                if(self.category.name == "STORE"):
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rs2.name, get_imm(), self.rs1.name)
+                else:
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rs1.name, self.rs2.name, get_imm())
+
+            elif self.format.name == "R_FORMAT":
+                if(self.category.name == "CSR"):
+                    sel.asm_str = '{} {} {} {}'.format(asm_str, self.rd.name, self.csr, self.rs1.name)
+                elif(self.instr_name.name == "SFENCE_VMA"):
+                    asm_str = "sfence.vma x0, x0"
+                else:
+                    asm_str = '{} {} {} {}'.format(sel.asm_str, self.rd.name, self.rs1.name, self.rs2.name)
+            else:
+                asm_str = 'Fatal_unsupported_format: {} {}'.format(self.format.name, self.instr_name.name)
+
+
+        else:
+            if(self.instr_name.name == "EBREAK"):
+                asm_str = ".4byte 0x00100073 # ebreak"
+
+        if(self.comment.name != ""):
+            asm_str = asm_str + " #" + self.comment
+        return asm_str.lower()
 
     def get_opcode(self):
         if(self.instr_name.name == "LUI"):
