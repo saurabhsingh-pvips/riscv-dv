@@ -13,13 +13,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 Regression script for RISC-V random instruction generator
 """
-
-from pygen_src.isa.riscv_instr import riscv_instr
-from pygen_src.riscv_instr_gen_config import riscv_instr_gen_config
+import random
 from pygen_src.riscv_instr_pkg import riscv_instr_name_t, riscv_instr_format_t,\
     riscv_instr_category_t
+from pygen_src.riscv_instr_gen_config import riscv_instr_gen_config
+from pygen_src.isa.riscv_instr import riscv_instr, riscv_instr_ins, cfg
 from riscv_instr_pkg import riscv_reg_t
-import random
+import logging
 
 
 class riscv_instr_stream:
@@ -65,8 +65,7 @@ class riscv_instr_stream:
                     self.instr_list.append(instr)
                     return
         elif idx > current_instr_cnt or idx < 0:
-            # TO DO: print an error
-            print("Error!")
+            logging.error("Cannot insert instr:%0s at idx %0d", instr.convert2asm(), idx)
         self.instr_list.insert(idx, instr)
 
     def insert_instr_stream(self, new_instr, idx=-1, replace=0):
@@ -95,19 +94,27 @@ class riscv_instr_stream:
                         idx = i
                         break
                 if self.instr_list[idx].atomic:
-                    print("Error")  # TODO: Put appropriate print here
+                    logging.critical("Cannot inject the instruction")
         elif idx > current_instr_cnt or idx < 0:
-            # TODO: Print an error indicating that inserting an instruction
-            #       in this location is not possible
-            pass
+            logging.error("Cannot insert instr stream at idx %0d", idx)
+            sys.exit(1)
         # When replace is 1, the original instruction at this index will be removed.
         # The label of the original instruction will be copied to the head
         # of inserted instruction stream.
         if replace:
             new_instr[0].label = self.instr_list[idx].label
             new_instr[0].has_label = self.instr_list[idx].has_label
-        self.instr_list = self.instr_list[0:idx] + new_instr + \
-            self.instr_list[idx + 1:current_instr_cnt]
+            if idx == 0:
+                self.instr_list = new_instr + self.instr_list[idx + 1:current_instr_cnt - 1]
+            else:
+                self.instr_list = self.instr_list[0:idx - 1] + new_instr + \
+                    self.instr_list[idx + 1:current_instr_cnt - 1]
+        else:
+            if idx == 0:
+                self.instr_list = new_instr + self.instr_list[idx:current_instr_cnt - 1]
+            else:
+                self.instr_list = self.instr_list[0:idx - 1] + new_instr + \
+                    self.instr_list[idx:current_instr_cnt - 1]
 
     def mix_instr_stream(self, new_instr, contained=0):
         """
@@ -117,7 +124,6 @@ class riscv_instr_stream:
         stream.
         new_instr is a list of riscv_instr
         """
-        # TODO: Verify the logic of function
         current_instr_cnt = len(self.instr_list)
         new_instr_cnt = len(new_instr)
         insert_instr_position = [0] * new_instr_cnt
@@ -154,7 +160,6 @@ class riscv_rand_instr_stream(riscv_instr_stream):
     def __init__(self):
         # calling super constructor
         riscv_instr_stream.__init__(self)
-        self.cfg = riscv_instr_gen_config()
         self.kernel_mode = 0
         self.allowed_instr = []
         self.category_dist = []
@@ -163,29 +168,29 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         for i in range(self.instr_cnt):
             self.instr_list.append(None)
 
-    def setup_allowed_instr(self, no_branch=False, no_load_store=True):
-        # TODO: check if this should be shallow copy or deep copy
-        self.allowed_instr = riscv_instr.basic_instr
+    def setup_allowed_instr(self, no_branch=0, no_load_store=1):
+        self.allowed_instr = riscv_instr_ins.basic_instr
         if no_branch == 0:
             self.allowed_instr.append(
-                riscv_instr.instr_category[riscv_instr_category_t.BRANCH.name])
+                riscv_instr_ins.instr_category[riscv_instr_category_t.BRANCH.name])
         if no_load_store == 0:
-            self.allowed_instr.append(riscv_instr.instr_category[riscv_instr_category_t.LOAD.name])
-            self.allowed_instr.append(riscv_instr.instr_category[riscv_instr_category_t.STORE.name])
+            self.allowed_instr.append(
+                riscv_instr_ins.instr_category[riscv_instr_category_t.LOAD.name])
+            self.allowed_instr.append(
+                riscv_instr_ins.instr_category[riscv_instr_category_t.STORE.name])
         self.setup_instruction_dist(no_branch, no_load_store)
 
-    def setup_instruction_dist(self, no_branch=False, no_load_store=True):
-        if self.cfg.dist_control_mode:
-            self.category_dist = self.cfg.category_dist
+    def setup_instruction_dist(self, no_branch=0, no_load_store=1):
+        if cfg.dist_control_mode:
+            self.category_dist = cfg.category_dist
             if no_branch:
                 self.category_dist[riscv_instr_category_t.BRANCH.name] = 0
             if no_load_store:
                 self.category_dist[riscv_instr_category_t.LOAD.name] = 0
                 self.category_dist[riscv_instr_category_t.STORE.name] = 0
-            # TODO: Print appropriatte error
-            print("ERROR")
+            logging.info("setup_instruction_dist: %0d", category_dist.size())
 
-    def gen_instr(self, no_branch=False, no_load_store=True, is_debug_program=False):
+    def gen_instr(self, no_branch=0, no_load_store=1, is_debug_program=0):
         self.setup_allowed_instr(no_branch, no_load_store)
         for i in range(len(self.instr_list)):
             self.instr_list[i] = self.randomize_instr(self.instr_list[i], is_debug_program)
@@ -194,20 +199,20 @@ class riscv_rand_instr_stream(riscv_instr_stream):
             if len(self.instr_list):
                 break
 
-    def randomize_instr(self, instr, is_in_debug=False, disable_dist=False):
+    def randomize_instr(self, instr, is_in_debug=0, disable_dist=0):
         exclude_instr = []
         is_SP_in_reserved_rd = riscv_reg_t.SP in self.reserved_rd
-        is_SP_in_reserved_regs = riscv_reg_t.SP in self.cfg.reserved_regs
+        is_SP_in_reserved_regs = riscv_reg_t.SP in cfg.reserved_regs
         is_SP_in_avail_regs = riscv_reg_t.SP in self.avail_regs
         if ((is_SP_in_reserved_rd or is_SP_in_reserved_regs) or (not is_SP_in_avail_regs)):
             exclude_instr.append(riscv_instr_name_t.C_ADDI4SPN)
             exclude_instr.append(riscv_instr_name_t.C_ADDI16SP)
             exclude_instr.append(riscv_instr_name_t.C_LWSP)
             exclude_instr.append(riscv_instr_name_t.C_LDSP)
-        if is_in_debug and (not self.cfg.enable_ebreak_in_debug_rom):
+        if is_in_debug and (not cfg.enable_ebreak_in_debug_rom):
             exclude_instr.append(riscv_instr_name_t.EBREAK)
             exclude_instr.append(riscv_instr_name_t.C_EBREAK)
-        instr = riscv_instr.get_rand_instr(
+        instr = riscv_instr_ins.get_rand_instr(
             include_instr=self.allowed_instr, exclude_instr=exclude_instr)
         instr = self.randomize_gpr(instr)
         return instr
@@ -215,7 +220,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
     def randomize_gpr(self, instr):
         avail_regs_set = set(self.avail_regs)
         reserved_rd_set = set(self.reserved_rd)
-        reserved_regs_set = set(self.cfg.reserved_regs)
+        reserved_regs_set = set(cfg.reserved_regs)
         excluded_avail_regs = list(avail_regs_set - reserved_rd_set - reserved_regs_set)
         if len(self.avail_regs) > 0:
             if self.has_rs1:
