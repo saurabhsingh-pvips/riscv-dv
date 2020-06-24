@@ -18,7 +18,7 @@ from pygen_src.riscv_instr_pkg import riscv_instr_name_t, riscv_instr_format_t,\
     riscv_instr_category_t
 from pygen_src.riscv_instr_gen_config import riscv_instr_gen_config
 from pygen_src.isa.riscv_instr import riscv_instr, riscv_instr_ins, cfg
-from riscv_instr_pkg import riscv_reg_t
+#from riscv_instr_pkg import riscv_reg_t
 import logging
 
 

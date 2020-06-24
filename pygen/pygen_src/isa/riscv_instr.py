@@ -166,8 +166,69 @@ class riscv_instr:
             else:                                              # User Mode
                 self.include_reg.append("USCRATCH")
 
-    def get_rand_instr(self):
-        pass  # TODO
+    def get_rand_instr(self, include_instr=[], exclude_instr=[],
+                       include_category=[], exclude_category=[],
+                       include_group=[], exclude_group=[]):
+        idx = BitArray(uint = 0, length = 32)
+        name = ""
+        allowed_instr = []
+        disallowed_instr = []
+        # allowed_categories = []
+
+        for items in include_category:
+            allowed_instr.append(self.instr_category[items])
+
+        for items in exclude_category:
+            if(items in self.instr_category):
+                disallowed_instr.append(self.instr_category[items])
+        for items in include_group:
+            allowed_instr.append(self.instr_group[items])
+        for items in exclude_group:
+            if(items in self.instr_group):
+                disallowed_instr.append(self.instr_group[items])
+
+        disallowed_instr.extend(exclude_instr)
+
+        if(len(disallowed_instr) == 0):
+            if(len(include_instr) > 0):
+                idx = random.randrange(0, len(include_instr) - 1)
+                name = include_instr[idx]
+            elif(len(allowed_instr) > 0):
+                idx = random.randrange(0, len(allowed_instr) - 1)
+                name = allowed_instr[idx]
+            else:
+                idx = random.randrange(0, len(self.instr_names) - 1)
+                name = self.instr_names[idx]
+        else:
+            # TODO
+            excluded_instr_names_list = []
+            excluded_allowed_instr_list = []
+            include_instr_list = []
+
+            for elem in self.instr_names + disallowed_instr:
+                if elem not in excluded_instr_names_list:
+                    excluded_instr_names_list.append(elem)
+
+            for elem in allowed_instr + disallowed_instr:
+                if elem not in excluded_allowed_instr_list:
+                    excluded_allowed_instr_list.append(elem)
+
+            for elem in include_instr + disallowed_instr:
+                if elem not in include_instr_list:
+                    include_instr_list.append(elem)
+
+            name = random.choice(excluded_instr_names_list)
+            if(len(include_instr) > 0):
+                name = random.choice(include_instr_list)
+            if(len(allowed_instr) > 0):
+                name = random.choice(excluded_allowed_instr_list)
+            if(name is None):
+                logging.critical("%s Cannot generate random instruction", riscv_instr.__name__)
+                sys.exit(1)
+        
+        name.split("riscv_instr_name_t.",1)
+        instr_h = copy(self.instr_template[name])
+        return instr_h
 
     def get_load_store_instr(self, load_store_instr):
         instr_h = riscv_instr()
