@@ -17,6 +17,7 @@ import constraint
 from pygen_src.target.rv32i import riscv_core_setting as rcs
 from pygen_src.riscv_instr_gen_config import cfg
 from pygen_src.riscv_instr_gen_config import riscv_instr_gen_config
+from pygen_src.riscv_instr_pkg import pkg_ins
 import logging
 
 class riscv_instr_sequence:
@@ -164,8 +165,33 @@ class riscv_instr_sequence:
 
 
   def generate_instr_stream(self):
-    pass
+        self.no_label = 0
+        self.prefix = ''
+        self.str = ''
+        self.instr_string_list = []
+        
+        # print("[ INSTR_SEQUENCE ] [ GENERATE_INSTR_STREAM] LABEL_NAME = ",self.label_name)
+        for i in range(len(self.instr_stream.instr_list)):
+            if i == 0:
+                if self.no_label:
+                    self.prefix = pkg_ins.format_string(string=' ',length=pkg_ins.LABEL_STR_LEN)
+                else:
+                    self.prefix = \
+                        pkg_ins.format_string(string='{}:'.format(self.label_name), length=pkg_ins.LABEL_STR_LEN)
+            
+            self.instr_stream.instr_list[i].has_label = 1
+            self.str = pkg_ins.format_string(self.instr_stream.instr_list[i].convert2asm(self.prefix),pkg_ins.TEMP)
+            self.instr_string_list.append(self.str)
 
+            '''
+            if instr_stream.instr_list[i].has_label:
+                self.prefix = \
+                    pkg_ins.format_string('{}:'.format(
+                        self.instr_stream.instr_list[i].label), pkg_ins.LABEL_STR_LEN)
+            else:
+                self.prefix = pkg_ins.format_string(' ', pkg_ins.LABEL_STR_LEN)
+             '''
+        # print("[ INSTR_SEQUENCE ] [ GENERATE_INSTR_STREAM] PREFIX = ",self.prefix)
 
   def generate_return_routine(self):
     pass

@@ -84,9 +84,9 @@ class riscv_asm_program_gen:
             # # logging.info("Generating callstack...done")
             # main_program[hart].post_process_instr()
             # logging.info("Post-processing main program...done")
-            # main_program[hart].generate_instr_stream()
-            # logging.info("Generating main program instruction stream...done")
-        self.instr_stream.append(self.main_program[hart].instr_string_list)
+        self.main_program[hart].generate_instr_stream()
+        logging.info("Generating main program instruction stream...done")
+        self.instr_stream.extend(self.main_program[hart].instr_string_list)
         self.instr_stream.append("{}j test_done".format(pkg_ins.indent))
 
         if(hart == 0 and not(rcs.support_pmp)):
