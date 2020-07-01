@@ -29,8 +29,9 @@ class riscv_instr_stream:
     def __init__(self):
         self.instr_list = []
         self.instr_cnt = 0
-        self.label = ""
+        self.label = " "
         # User can specify a small group of available registers to generate various hazard condition
+        # Temporary patch
         self.avail_regs = []
         # Some additional reserved registers that should not be used as rd register
         # by this instruction stream
@@ -166,6 +167,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
             self.instr_list.append(None)
 
     def setup_allowed_instr(self, no_branch=0, no_load_store=1):
+        print(no_branch)
         self.allowed_instr = riscv_instr_ins.basic_instr
         if no_branch == 0:
             self.allowed_instr.extend(
@@ -195,6 +197,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         self.setup_allowed_instr(no_branch, no_load_store)
         for i in range(len(self.instr_list)):
             self.instr_list[i] = self.randomize_instr(self.instr_list[i], is_debug_program)
+        
         while self.instr_list[-1].category == riscv_instr_category_t.BRANCH:
             self.instr_list.pop()
             if len(self.instr_list):
@@ -219,19 +222,11 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         return instr
 
     def randomize_gpr(self, instr):
-        # TODO
-        avail_regs_set = set(self.avail_regs)
-        reserved_rd_set = set(self.reserved_rd)
-        reserved_regs_set = set(cfg.reserved_regs)
-        excluded_avail_regs = list(avail_regs_set - reserved_rd_set - reserved_regs_set)
-        if len(self.avail_regs) > 0:
-            if self.has_rs1:
-                if self.format == riscv_instr_format_t.CB_FORMAT:
-                    self.rs1 = random.choice(excluded_avail_regs)
-                else:
-                    self.rs1 = random.choice(self.avail_regs)
-            if self.has_rs2:
-                self.rs2 = random.choice(self.avail_regs)
-            if self.has_rd:
-                self.rd = random.choice(excluded_avail_regs)
+        # TODO 
+        """
+        PyVSC library doesn't support constraint for enum types.
+        The randomization is done directly here. 
+        t will be updated once constraint for enum types supported in PyVSC.
+        """
+        instr.randomize()
         return instr
