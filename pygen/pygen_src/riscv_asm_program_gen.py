@@ -69,7 +69,7 @@ class riscv_asm_program_gen:
             self.main_program.append(gt_lbl_str)
             self.main_program[hart].instr_cnt = cfg.main_program_instr_cnt
             self.main_program[hart].is_debug_program = 0
-            self.main_program[hart].label_name = "main" + str(hart)
+            self.main_program[hart].label_name = "main"
             """If PMP is supported, we want to generate the associated trap handlers and the test_done
             section at the start of the program so we can allow access through the pmpcfg0 CSR"""
 

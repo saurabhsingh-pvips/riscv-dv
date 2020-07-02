@@ -1188,22 +1188,22 @@ class riscv_instr_pkg:
         self.MPRV_BIT_MASK = BitArray(uint= 0x1 << 0x17, length = riscv_core_setting.XLEN)
         self.SUM_BIT_MASK = BitArray(uint = 0x1 << 0x18, length = riscv_core_setting.XLEN)
         self.MPP_BIT_MASK = BitArray(uint = 0x3 << 0x11, length = riscv_core_setting.XLEN)
-        self.IMM25_WIDTH = BitArray(uint = 25, length = 32)
-        self.IMM12_WIDTH = BitArray(uint = 12, length = 32)
-        self.INSTR_WIDTH = BitArray(uint = 32, length = 32)
+        self.IMM25_WIDTH = 25
+        self.IMM12_WIDTH = 12
+        self.INSTR_WIDTH = 32
         self.DATA_WIDTH = 32
-        self.MAX_INSTR_STR_LEN = BitArray(uint = 11, length = 32)
-        self.LABEL_STR_LEN = BitArray(uint = 18, length = 32)
-        self.MAX_CALLSTACK_DEPTH = BitArray(uint = 20, length = 32)
-        self.MAX_SUB_PROGRAM_CNT = BitArray(uint = 20, length = 32)
-        self.MAX_CALL_PER_FUNC = BitArray(uint = 5, length = 32)
-        self.indent = "{:18s}".format(" ")
+        self.MAX_INSTR_STR_LEN = 11
+        self.LABEL_STR_LEN = 18
+        self.MAX_CALLSTACK_DEPTH = 20
+        self.MAX_SUB_PROGRAM_CNT = 20
+        self.MAX_CALL_PER_FUNC = 5
+        self.indent = self.LABEL_STR_LEN*" "
 
     def hart_prefix(self, hart = 0):
         if(riscv_core_setting.NUM_HARTS <= 1):
             return ""
         else:
-            return f"h{hart}_"
+            return f"h{hart}_"  
             
     def get_label(self,label, hart=0):
         return (self.hart_prefix(hart) + label)
@@ -1212,10 +1212,10 @@ class riscv_instr_pkg:
     # typedef bit [15:0] program_id_t; Can be achieve by importing riscv_callstack_gen.py
 
     def format_string(self, string, length = 10):
-        formatted_str =  "{:11s}".format(" ")
-        if (int(length.bin) < len(string)):
+        formatted_str =  length*" "
+        if (int(length) < len(string)):
             return string
-        formatted_str = string + formatted_str[0 : (int(length.bin) - len(string) - 1)]
+        formatted_str = string + formatted_str[0 : (int(length) - len(string) - 1)]
         return formatted_str
 
 

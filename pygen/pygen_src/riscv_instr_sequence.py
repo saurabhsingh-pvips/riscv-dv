@@ -33,7 +33,6 @@ class riscv_instr_sequence:
     self.instr_string_list = [] # Save the instruction list
     self.program_stack_len = 0  # Stack space allocated for this program
     self.directed_instr = []    # List of all directed instruction stream
-#    self.illegal_instr = riscv_illegal_instr()
     self.illegal_instr_pct = 0  # Percentage of illegal instructions
     self.hint_instr_pct = 0     # Percentage of hint instructions
 
@@ -50,12 +49,12 @@ class riscv_instr_sequence:
 
   def gen_stack_enter_instr(self):
     allow_branch = 0
-# TBD, illegal/hint instructions are not supported yet
-#    if (self.illegal_instr_pct > 0) or (hint_instr_pct > 0):
-#      allow_branch = 0
-#    else 
-#      allow_branch = 1
-#    allow_branch &= not cfg.no_branch_jump
+    # TBD, illegal/hint instructions are not supported yet
+    #    if (self.illegal_instr_pct > 0) or (hint_instr_pct > 0):
+    #      allow_branch = 0
+    #    else 
+    #      allow_branch = 1
+    #    allow_branch &= not cfg.no_branch_jump
     problem = constraint.Problem(constraint.MinConflictsSolver())
     problem.addVariable(stk_len, range(cfg.min_stack_len_per_program, cfg.min_stack_len_per_program))
 
