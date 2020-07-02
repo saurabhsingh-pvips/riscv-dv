@@ -9,9 +9,6 @@ http://www.apache.org/licenses/LICENSE-2.0
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-Regression script for RISC-V random instruction generator
 
 """
 
@@ -1165,38 +1162,12 @@ class all_categories(Enum):
     AMO = auto()
 
 
-def MAX_USED_VADDR_BITS():
-    return 30
-
-# # TODO - Can be implemented with argparse
-# _VCP = auto()
-# if(_VCP):
-#     class pmp_cfg_reg_t(Enum):
-#         l = 0
-#         zero = auto()
-#         a = auto()
-#         x = auto()
-#         w = auto()
-#         r = auto()
-#         addr = auto()
-#         offset = auto()
-# else:
-#     class pmp_cfg_reg_t(Enum):
-#         l = 0
-#         zero = auto()
-#         a = auto()
-#         x = auto()
-#         w = auto()
-#         r = auto()
-#         addr = auto()
-#         offset = auto()
-
-
 class riscv_instr_pkg:
     def __init__(self):
         self.MPRV_BIT_MASK = BitArray(uint= 0x1 << 0x17, length = rcs.XLEN)
         self.SUM_BIT_MASK = BitArray(uint = 0x1 << 0x18, length = rcs.XLEN)
         self.MPP_BIT_MASK = BitArray(uint = 0x3 << 0x11, length = rcs.XLEN)
+        self.MAX_USED_VADDR_BITS = 30
         self.IMM25_WIDTH = 25
         self.IMM12_WIDTH = 12
         self.INSTR_WIDTH = 32

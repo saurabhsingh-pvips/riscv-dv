@@ -12,7 +12,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 """
 
-
 from collections import defaultdict
 from pygen_src.riscv_instr_pkg import pkg_ins, riscv_reg_t
 from pygen_src.isa import rv32i_instr  # NOQA
@@ -337,7 +336,6 @@ class riscv_instr:
 
         if(self.comment != ""):
             asm_str = asm_str + " #" + self.comment
-
         return asm_str.lower()
 
     def get_opcode(self):
@@ -453,5 +451,6 @@ class riscv_instr:
 
     def do_copy(self):
         pass  # TODO
+
 
 riscv_instr_ins = riscv_instr()

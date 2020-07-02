@@ -20,8 +20,6 @@ from pygen_src.target.rv32i import riscv_core_setting as rcs
 import logging
 import random
 from bitstring import BitArray
-
-
 '''
     RISC-V assembly program generator
 
