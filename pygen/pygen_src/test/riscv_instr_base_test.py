@@ -15,8 +15,7 @@ import sys
 sys.path.append("../../")
 from pygen_src.isa.rv32i_instr import *  # NOQA
 from pygen_src.isa.riscv_instr import cfg, riscv_instr_ins  # NOQA
-from pygen_src.riscv_asm_program_gen import riscv_asm_program_gen  # NOQA
-
+from pygen_src.riscv_asm_program_gen import riscv_asm_program_gen # NOQA
 
 class riscv_instr_base_test:
     def __init__(self):

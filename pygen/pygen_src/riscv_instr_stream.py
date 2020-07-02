@@ -31,7 +31,6 @@ class riscv_instr_stream:
         self.instr_cnt = 0
         self.label = " "
         # User can specify a small group of available registers to generate various hazard condition
-        # Temporary patch
         self.avail_regs = []
         # Some additional reserved registers that should not be used as rd register
         # by this instruction stream
@@ -167,7 +166,6 @@ class riscv_rand_instr_stream(riscv_instr_stream):
             self.instr_list.append(None)
 
     def setup_allowed_instr(self, no_branch=0, no_load_store=1):
-        print(no_branch)
         self.allowed_instr = riscv_instr_ins.basic_instr
         if no_branch == 0:
             self.allowed_instr.extend(
@@ -197,7 +195,6 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         self.setup_allowed_instr(no_branch, no_load_store)
         for i in range(len(self.instr_list)):
             self.instr_list[i] = self.randomize_instr(self.instr_list[i], is_debug_program)
-        
         while self.instr_list[-1].category == riscv_instr_category_t.BRANCH:
             self.instr_list.pop()
             if len(self.instr_list):

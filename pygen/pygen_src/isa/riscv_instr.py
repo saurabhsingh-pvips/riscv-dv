@@ -63,7 +63,7 @@ class riscv_instr:
         self.is_floating_point = None
         self.imm_str = None
         self.comment = ""
-        self.label = " "
+        self.label = None
         self.is_local_numeric_label = None
         self.idx = -1
         self.has_rs1 = 1
@@ -271,16 +271,13 @@ class riscv_instr:
 
     def post_randomize(self):
         pass
-        # self.extend_imm()
-        # self.update_imm_str()
-
     def convert2asm(self, prefix=" "):
         asm_str = pkg_ins.format_string(string=self.get_instr_name(), length = pkg_ins.MAX_INSTR_STR_LEN)
         if(self.category.name != "SYSTEM"):
             if self.format.name == "J_FORMAT":
-                asm_str = '{} {} {}'.format(asm_str, self.rd.name, str(self.imm))
+                asm_str = '{} {} {}'.format(asm_str, self.rd.name, self.get_imm())
             elif self.format.name == "U_FORMAT":
-                asm_str = '{} {} {}'.format(asm_str, self.rd.name, str(self.imm))
+                asm_str = '{} {} {}'.format(asm_str, self.rd.name, self.get_imm())
             elif self.format.name == "I_FORMAT":
                 if(self.instr_name.name == "NOP"):
                     asm_str = "nop"
@@ -310,6 +307,23 @@ class riscv_instr:
                 else:
                     asm_str = '{} {} {} {}'.format(asm_str, self.rs1.name, self.rs2.name, str(self.imm))
 
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rd.name, self.get_imm(), self.rs1.name)
+                elif(self.category.name == "CSR"):
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rd.name, self.csr, self.get_imm())
+                else:
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rd.name, self.rs1.name, self.get_imm())
+            elif self.format.name == "S_FORMAT":
+                if(self.category.name == "STORE"):
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rs2.name, self.get_imm(), self.rs1.name)
+                else:
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rs1.name, self.rs2.name, self.get_imm())
+
+            elif self.format.name == "B_FORMAT":
+                if(self.category.name == "STORE"):
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rs2.name, self.get_imm(), self.rs1.name)
+                else:
+                    asm_str = '{} {} {} {}'.format(asm_str, self.rs1.name, self.rs2.name, self.get_imm())
+
             elif self.format.name == "R_FORMAT":
                 if(self.category.name == "CSR"):
                     sel.asm_str = '{} {} {} {}'.format(asm_str, self.rd.name, self.csr, self.rs1.name)
@@ -327,7 +341,6 @@ class riscv_instr:
 
         if(self.comment != ""):
             asm_str = asm_str + " #" + self.comment
-
         return asm_str.lower()
 
     def get_opcode(self):

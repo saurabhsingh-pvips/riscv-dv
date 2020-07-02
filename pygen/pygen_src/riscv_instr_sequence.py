@@ -163,7 +163,6 @@ class riscv_instr_sequence:
   
       self.instr_stream.insert_instr_stream(jump_instr.instr_list)
 
-
   def generate_instr_stream(self, no_label = 0):
         prefix = ''
         string = ''
@@ -185,6 +184,35 @@ class riscv_instr_sequence:
                 prefix = pkg_ins.format_string(string = " ", length = pkg_ins.LABEL_STR_LEN)
             string = prefix + self.instr_stream.instr_list[i].convert2asm()
             self.instr_string_list.append(string)
+            
+  def generate_instr_stream(self):
+        self.no_label = 0
+        self.prefix = ''
+        self.str = ''
+        self.instr_string_list = []
+        
+        # print("[ INSTR_SEQUENCE ] [ GENERATE_INSTR_STREAM] LABEL_NAME = ",self.label_name)
+        for i in range(len(self.instr_stream.instr_list)):
+            if i == 0:
+                if self.no_label:
+                    self.prefix = pkg_ins.format_string(string=' ',length=pkg_ins.LABEL_STR_LEN)
+                else:
+                    self.prefix = \
+                        pkg_ins.format_string(string='{}:'.format(self.label_name), length=pkg_ins.LABEL_STR_LEN)
+            
+            self.instr_stream.instr_list[i].has_label = 1
+            self.str = pkg_ins.format_string(self.instr_stream.instr_list[i].convert2asm(self.prefix),pkg_ins.TEMP)
+            self.instr_string_list.append(self.str)
+
+            '''
+            if instr_stream.instr_list[i].has_label:
+                self.prefix = \
+                    pkg_ins.format_string('{}:'.format(
+                        self.instr_stream.instr_list[i].label), pkg_ins.LABEL_STR_LEN)
+            else:
+                self.prefix = pkg_ins.format_string(' ', pkg_ins.LABEL_STR_LEN)
+             '''
+            
   def generate_return_routine(self):
     pass
 
