@@ -11,9 +11,10 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 import random
-from pygen_src.riscv_instr_pkg import riscv_instr_name_t, riscv_instr_format_t,\
+from pygen_src.riscv_instr_pkg import riscv_instr_name_t,\
     riscv_instr_category_t, riscv_reg_t
-from pygen_src.isa.riscv_instr import riscv_instr, riscv_instr_ins, cfg
+from pygen_src.isa.riscv_instr import riscv_instr, riscv_instr_ins
+from pygen_src.riscv_instr_gen_config import cfg
 import logging
 import sys
 
@@ -167,7 +168,6 @@ class riscv_rand_instr_stream(riscv_instr_stream):
             self.instr_list.append(None)
 
     def setup_allowed_instr(self, no_branch=0, no_load_store=1):
-        print(no_branch)
         self.allowed_instr = riscv_instr_ins.basic_instr
         if no_branch == 0:
             self.allowed_instr.extend(
@@ -191,13 +191,12 @@ class riscv_rand_instr_stream(riscv_instr_stream):
             if no_load_store:
                 self.category_dist[riscv_instr_category_t.LOAD.name] = 0
                 self.category_dist[riscv_instr_category_t.STORE.name] = 0
-            logging.info("setup_instruction_dist: %0d", category_dist.size())
+            logging.info("setup_instruction_dist: %0d", len(self.category_dist))
 
     def gen_instr(self, no_branch=0, no_load_store=1, is_debug_program=0):
         self.setup_allowed_instr(no_branch, no_load_store)
         for i in range(len(self.instr_list)):
             self.instr_list[i] = self.randomize_instr(self.instr_list[i], is_debug_program)
-        
         while self.instr_list[-1].category == riscv_instr_category_t.BRANCH:
             self.instr_list.pop()
             if len(self.instr_list):
@@ -222,11 +221,11 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         return instr
 
     def randomize_gpr(self, instr):
-        # TODO 
+        # TODO
         """
-        PyVSC library doesn't support constraint for enum types.
-        The randomization is done directly here. 
-        t will be updated once constraint for enum types supported in PyVSC.
+        PyVSC library doesn't support inline randomization for list of enum types.
+        The randomization is done directly here.
+        it will be updated once randomization for list of enum types supports in PyVSC.
         """
         instr.randomize()
         return instr

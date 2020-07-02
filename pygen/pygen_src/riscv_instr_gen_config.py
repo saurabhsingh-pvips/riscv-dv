@@ -20,8 +20,6 @@ from pygen_src.riscv_instr_pkg import mtvec_mode_t, f_rounding_mode_t, \
     riscv_reg_t, privileged_mode_t, \
     riscv_instr_group_t
 from pygen_src.target.rv32i import riscv_core_setting as rcs
-logging.basicConfig(format="%(asctime)s %(filename)s %(lineno)s %(levelname)s %(message)s",
-                    level=logging.DEBUG)
 
 
 class riscv_instr_gen_config:

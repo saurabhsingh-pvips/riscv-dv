@@ -14,15 +14,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 
 from collections import defaultdict
-from pygen_src.riscv_instr_gen_config import riscv_instr_gen_config
-from pygen_src.riscv_instr_pkg import riscv_instr_group_t, pkg_ins, riscv_reg_t
+from pygen_src.riscv_instr_pkg import pkg_ins, riscv_reg_t
 from pygen_src.isa import rv32i_instr  # NOQA
+from pygen_src.target.rv32i import riscv_core_setting as rcs
 import random
 from bitstring import BitArray
 import logging
 from copy import copy
 import sys
 import vsc
+logging.basicConfig(format="%(asctime)s %(filename)s %(lineno)s %(levelname)s %(message)s",
+                    level=logging.DEBUG)
+
 
 @vsc.randobj
 class riscv_instr:
@@ -49,9 +52,9 @@ class riscv_instr:
         self.rs2 = vsc.rand_enum_t(riscv_reg_t)
         self.rs1 = vsc.rand_enum_t(riscv_reg_t)
         self.rd = vsc.rand_enum_t(riscv_reg_t)
-        self.imm = vsc.rand_int_t(32)
+        self.imm = vsc.rand_int32_t()
 
-        self.imm_mask = 0xffffffff # vsc.bitBitArray(hex="0xffffffff")
+        self.imm_mask = BitArray(hex="0xffffffff")
         self.is_branch_target = None
         self.has_label = 1
         self.atomic = 0
@@ -63,19 +66,13 @@ class riscv_instr:
         self.is_floating_point = None
         self.imm_str = None
         self.comment = ""
-        self.label = " "
+        self.label = ""
         self.is_local_numeric_label = None
         self.idx = -1
         self.has_rs1 = 1
         self.has_rs2 = 1
         self.has_rd = 1
         self.has_imm = 1
-
-        # Fields Added for debugging These fields are actually from a different files.
-        self.unsupported_instr = []
-        self.XLEN = 32
-        self.supported_isa = [riscv_instr_group_t.RV32I]
-        self.implemented_csr = []
 
     @classmethod
     def register(cls, instr_name):
@@ -90,14 +87,14 @@ class riscv_instr:
         self.instr_group.clear()
         self.instr_category.clear()
         for instr_name, values in self.instr_registry.items():
-            if(instr_name in self.unsupported_instr):
+            if(instr_name in rcs.unsupported_instr):
                 continue
             instr_inst = self.create_instr(instr_name)
             self.instr_template[instr_name] = instr_inst
 
             if (not instr_inst.is_supported(cfg)):
                 continue
-            if ((self.XLEN != 32) and (instr_name == "C_JAL")):
+            if ((rcs.XLEN != 32) and (instr_name == "C_JAL")):
                 continue
             if (("SP" in cfg.reserved_regs) and (instr_name == "C_ADDI16SP")):
                 continue
@@ -105,7 +102,7 @@ class riscv_instr:
                 continue
             if (instr_name in ["FENCE", "FENCE_I", "SFENCE_VMA"]):
                 continue
-            if (instr_inst.group in self.supported_isa and
+            if (instr_inst.group.name in rcs.supported_isa and
                     not(cfg.disable_compressed_instr and
                         instr_inst.group in ["RV32C", "RV64C", "RV32DC", "RV32FC", "RV128C"]) and
                     not(not(cfg.enable_floating_point) and instr_inst.group in
@@ -134,8 +131,8 @@ class riscv_instr:
                             self.instr_category["LOGICAL"] + self.instr_category["COMPARE"])
         if(cfg.no_ebreak == 0):
             self.basic_instr.append("EBREAK")
-            for items in self.supported_isa:
-                if("RV32C" in self.supported_isa and not(cfg.disable_compressed_instr)):
+            for items in rcs.supported_isa:
+                if("RV32C" in rcs.supported_isa and not(cfg.disable_compressed_instr)):
                     self.basic_instr.append("C_EBREAK")
                     break
         if(cfg.no_dret == 0):
@@ -152,7 +149,7 @@ class riscv_instr:
         self.exclude_reg.clear()
 
         if(cfg.enable_illegal_csr_instruction):
-            self.exclude_reg = self.implemented_csr
+            self.exclude_reg = rcs.implemented_csr
         elif(cfg.enable_access_invalid_csr_level):
             self.include_reg = cfg.invalid_priv_mode_csrs
         else:
@@ -164,8 +161,8 @@ class riscv_instr:
                 self.include_reg.append("USCRATCH")
 
     def get_rand_instr(self, include_instr=[], exclude_instr=[],
-                   include_category=[], exclude_category=[],
-                   include_group=[], exclude_group=[]):
+                       include_category=[], exclude_category=[],
+                       include_group=[], exclude_group=[]):
         idx = BitArray(uint = 0, length = 32)
         name = ""
         allowed_instr = []
@@ -185,6 +182,8 @@ class riscv_instr:
                 disallowed_instr.append(self.instr_group[items])
 
         disallowed_instr.extend(exclude_instr)
+
+        # TODO Randomization logic needs to be frame with PyVSC library
         if(len(disallowed_instr) == 0):
             try:
                 if(len(include_instr) > 0):
@@ -263,20 +262,23 @@ class riscv_instr:
     def extend_imm(self):
         sign = 0
         self.imm = self.imm << (32 - self.imm_len)
-        # sign = imm[31]
+        '''
+        TODO Commenting out for now.
+        Part select is only supported inside the constraint in PyVSC
         sign = self.imm[31]
+        '''
         self.imm = self.imm >> (32 - self.imm_len)
         # Signed extension
         if((sign and not(self.format == "U_FORMAT")) or (self.imm_type in ["UIMM", "NZUIMM"])):
             self.imm = self.imm_mask | self.imm
 
     def post_randomize(self):
-        # pass
         self.extend_imm()
         self.get_imm()
 
     def convert2asm(self, prefix=" "):
-        asm_str = pkg_ins.format_string(string=self.get_instr_name(), length = pkg_ins.MAX_INSTR_STR_LEN)
+        asm_str = pkg_ins.format_string(string = self.get_instr_name(),
+                                        length = pkg_ins.MAX_INSTR_STR_LEN)
         if(self.category.name != "SYSTEM"):
             if self.format.name == "J_FORMAT":
                 asm_str = '{} {}, {}'.format(asm_str, self.rd.name, self.get_imm())
@@ -292,33 +294,42 @@ class riscv_instr:
                 elif(self.instr_name.name == "FENCE_I"):
                     asm_str = "fence.i"
                 elif(self.category.name == "LOAD"):
-                    asm_str = '{} {}, {}, ({})'.format(asm_str, self.rd.name, self.get_imm(), self.rs1.name)
+                    asm_str = '{} {}, {}, ({})'.format(
+                        asm_str, self.rd.name, self.get_imm(), self.rs1.name)
                 elif(self.category.name == "CSR"):
-                    asm_str = '{} {}, 0x{}, {}'.format(asm_str, self.rd.name, self.csr, self.get_imm())
+                    asm_str = '{} {}, 0x{}, {}'.format(
+                        asm_str, self.rd.name, self.csr, self.get_imm())
                 else:
-                    asm_str = '{} {}, {}, {}'.format(asm_str, self.rd.name, self.rs1.name, self.get_imm())
+                    asm_str = '{} {}, {}, {}'.format(
+                        asm_str, self.rd.name, self.rs1.name, self.get_imm())
             elif self.format.name == "S_FORMAT":
                 if(self.category.name == "STORE"):
-                    asm_str = '{} {}, {}, {}'.format(asm_str, self.rs2.name, self.get_imm(), self.rs1.name)
+                    asm_str = '{} {}, {}, {}'.format(
+                        asm_str, self.rs2.name, self.get_imm(), self.rs1.name)
                 else:
-                    asm_str = '{} {}, {}, {}'.format(asm_str, self.rs1.name, self.rs2.name, self.get_imm())
+                    asm_str = '{} {}, {}, {}'.format(
+                        asm_str, self.rs1.name, self.rs2.name, self.get_imm())
 
             elif self.format.name == "B_FORMAT":
                 if(self.category.name == "STORE"):
-                    asm_str = '{} {}, {}, ({})'.format(asm_str, self.rs2.name, self.get_imm(), self.rs1.name)
+                    asm_str = '{} {}, {}, ({})'.format(
+                        asm_str, self.rs2.name, self.get_imm(), self.rs1.name)
                 else:
-                    asm_str = '{} {}, {}, {}'.format(asm_str, self.rs1.name, self.rs2.name, self.get_imm())
+                    asm_str = '{} {}, {}, {}'.format(
+                        asm_str, self.rs1.name, self.rs2.name, self.get_imm())
 
             elif self.format.name == "R_FORMAT":
                 if(self.category.name == "CSR"):
-                    sel.asm_str = '{} {}, 0x{}, {}'.format(asm_str, self.rd.name, self.csr, self.rs1.name)
+                    asm_str = '{} {}, 0x{}, {}'.format(
+                        asm_str, self.rd.name, self.csr, self.rs1.name)
                 elif(self.instr_name.name == "SFENCE_VMA"):
                     asm_str = "sfence.vma x0, x0"
                 else:
-                    asm_str = '{} {}, {}, {}'.format(asm_str, self.rd.name, self.rs1.name, self.rs2.name)
+                    asm_str = '{} {}, {}, {}'.format(
+                        asm_str, self.rd.name, self.rs1.name, self.rs2.name)
             else:
-                asm_str = 'Fatal_unsupported_format: {} {}'.format(self.format.name, self.instr_name.name)
-
+                asm_str = 'Fatal_unsupported_format: {} {}'.format(
+                    self.format.name, self.instr_name.name)
 
         else:
             if(self.instr_name.name == "EBREAK"):
@@ -443,9 +454,4 @@ class riscv_instr:
     def do_copy(self):
         pass  # TODO
 
-    # def update_imm_str(self):
-        # self.imm_str = str(self.imm)
-
-
 riscv_instr_ins = riscv_instr()
-cfg = riscv_instr_gen_config()
