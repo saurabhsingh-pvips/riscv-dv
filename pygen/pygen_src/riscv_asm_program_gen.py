@@ -194,22 +194,18 @@ class riscv_asm_program_gen:
         for dist_val in range(5):
             if dist_val == 0:
                 reg_val = BitArray(hex='0x0')
-                dist_lst.append(reg_val)
             elif dist_val == 1:
                 reg_val = BitArray(hex='0x80000000')
-                dist_lst.append(reg_val)
             elif dist_val == 2:
                 temp = random.randrange(0x1, 0xf)
                 reg_val = BitArray(hex(temp), length=32)
-                dist_lst.append(reg_val)
             elif dist_val == 3:
                 temp = random.randrange(0x10, 0xefffffff)
                 reg_val = BitArray(hex(temp), length=32)
-                dist_lst.append(reg_val)
             else:
                 temp = random.randrange(0xf0000000, 0xffffffff)
                 reg_val = BitArray(hex(temp), length=32)
-                dist_lst.append(reg_val)
+            dist_lst.append(reg_val)
 
         for i in range(32):
             init_string = "{}li x{}, {}".format(pkg_ins.indent, i, random.choice(dist_lst))
@@ -389,7 +385,7 @@ class riscv_asm_program_gen:
         logging.info("%0s is generated", test_name)
 
     def gen_signature_handshake(self, instr, signature_type, core_status = "INITIALIZED",
-                                test_result = "TEST_FAIL", csr = "MSCRATCH", addr_lebel = ""):
+                                test_result = "TEST_FAIL", csr = "MSCRATCH", addr_label = ""):
         pass
 
     def add_directed_instr_stream(self, name, ratio):

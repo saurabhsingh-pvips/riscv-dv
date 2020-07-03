@@ -51,9 +51,9 @@ class riscv_instr:
         self.rs2 = vsc.rand_enum_t(riscv_reg_t)
         self.rs1 = vsc.rand_enum_t(riscv_reg_t)
         self.rd = vsc.rand_enum_t(riscv_reg_t)
-        self.imm = vsc.rand_int32_t()
+        self.imm = vsc.rand_uint32_t()
 
-        self.imm_mask = BitArray(hex="0xffffffff")
+        self.imm_mask = 0xffffffff
         self.is_branch_target = None
         self.has_label = 1
         self.atomic = 0
@@ -72,6 +72,7 @@ class riscv_instr:
         self.has_rs2 = 1
         self.has_rd = 1
         self.has_imm = 1
+        self.shift_t = 2 ** 32 - 1
 
     @classmethod
     def register(cls, instr_name):
@@ -256,24 +257,21 @@ class riscv_instr:
                 self.imm_len = 5
             else:
                 self.imm_len = 11
-        self.imm_mask = self.imm_mask << self.imm_len
+        self.imm_mask = (self.imm_mask << self.imm_len) & self.shift_t
 
     def extend_imm(self):
         sign = 0
-        self.imm = self.imm << (32 - self.imm_len)
-        '''
-        TODO Commenting out for now.
-        Part select is only supported inside the constraint in PyVSC
-        sign = self.imm[31]
-        '''
-        self.imm = self.imm >> (32 - self.imm_len)
+        # self.shift_t = 2 ** 32 -1 is used to limit the width after shift operation
+        self.imm = self.imm << (32 - self.imm_len) & self.shift_t
+        sign = (self.imm & 0x80000000) >> 31
+        self.imm = self.imm >> (32 - self.imm_len) & self.shift_t
         # Signed extension
         if((sign and not(self.format == "U_FORMAT")) or (self.imm_type in ["UIMM", "NZUIMM"])):
             self.imm = self.imm_mask | self.imm
 
     def post_randomize(self):
         self.extend_imm()
-        self.get_imm()
+        self.update_imm_str()
 
     def convert2asm(self, prefix=" "):
         asm_str = pkg_ins.format_string(string = self.get_instr_name(),
@@ -293,7 +291,7 @@ class riscv_instr:
                 elif(self.instr_name.name == "FENCE_I"):
                     asm_str = "fence.i"
                 elif(self.category.name == "LOAD"):
-                    asm_str = '{} {}, {}, ({})'.format(
+                    asm_str = '{} {}, {},({})'.format(
                         asm_str, self.rd.name, self.get_imm(), self.rs1.name)
                 elif(self.category.name == "CSR"):
                     asm_str = '{} {}, 0x{}, {}'.format(
@@ -303,7 +301,7 @@ class riscv_instr:
                         asm_str, self.rd.name, self.rs1.name, self.get_imm())
             elif self.format.name == "S_FORMAT":
                 if(self.category.name == "STORE"):
-                    asm_str = '{} {}, {}, {}'.format(
+                    asm_str = '{} {}, {},({})'.format(
                         asm_str, self.rs2.name, self.get_imm(), self.rs1.name)
                 else:
                     asm_str = '{} {}, {}, {}'.format(
@@ -311,7 +309,7 @@ class riscv_instr:
 
             elif self.format.name == "B_FORMAT":
                 if(self.category.name == "STORE"):
-                    asm_str = '{} {}, {}, ({})'.format(
+                    asm_str = '{} {}, {},({})'.format(
                         asm_str, self.rs2.name, self.get_imm(), self.rs1.name)
                 else:
                     asm_str = '{} {}, {}, {}'.format(
@@ -442,7 +440,6 @@ class riscv_instr:
         return self.gpr
 
     def get_imm(self):
-        self.imm_str = str(self.imm)
         return self.imm_str
 
     def clear_unused_label(self):
@@ -451,6 +448,16 @@ class riscv_instr:
 
     def do_copy(self):
         pass  # TODO
+
+    def update_imm_str(self):
+        self.imm_str = str(self.uintToInt(self.imm))
+
+    def uintToInt(self, x):
+        if x < (2 ** rcs.XLEN) / 2:
+            signed_x = x
+        else:
+            signed_x = x - 2 ** rcs.XLEN
+        return signed_x
 
 
 riscv_instr_ins = riscv_instr()

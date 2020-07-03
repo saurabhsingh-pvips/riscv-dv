@@ -34,8 +34,8 @@ class riscv_instr_sequence:
         self.is_main_program = is_main_program
         self.instr_stream.initialize_instr_list(self.instr_cnt)
         logging.info("Start generating %d instruction" % len(self.instr_stream.instr_list))
-        self.instr_stream.gen_instr(no_branch = no_branch, no_load_store=1,
-                                    is_debug_program =self.is_debug_program)
+        self.instr_stream.gen_instr(no_branch = no_branch, no_load_store = 1,
+                                    is_debug_program = self.is_debug_program)
 
         if not is_main_program:
             self.gen_stack_enter_instr()
@@ -65,10 +65,10 @@ class riscv_instr_sequence:
         for i in range(len(self.instr_stream.instr_list)):
             if i == 0:
                 if no_label:
-                    prefix = pkg_ins.format_string(string=' ', length=pkg_ins.LABEL_STR_LEN)
+                    prefix = pkg_ins.format_string(string = ' ', length = pkg_ins.LABEL_STR_LEN)
                 else:
-                    prefix = pkg_ins.format_string(string='{}:'.format(
-                        self.label_name), length=pkg_ins.LABEL_STR_LEN)
+                    prefix = pkg_ins.format_string(string = '{}:'.format(
+                        self.label_name), length = pkg_ins.LABEL_STR_LEN)
 
                 self.instr_stream.instr_list[i].has_label = 1
             else:

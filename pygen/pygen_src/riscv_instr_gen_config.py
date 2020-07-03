@@ -24,6 +24,7 @@ from pygen_src.target.rv32i import riscv_core_setting as rcs
 
 class riscv_instr_gen_config:
     def __init__(self):
+        # TODO Support for command line argument
         self.main_program_instr_cnt = 100  # count of main_prog
         self.sub_program_instr_cnt = []  # count of sub_prog
         self.debug_program_instr_cnt = 0  # count of debug_rom

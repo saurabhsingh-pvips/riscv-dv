@@ -207,7 +207,8 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         is_SP_in_reserved_rd = riscv_reg_t.SP in self.reserved_rd
         is_SP_in_reserved_regs = riscv_reg_t.SP in cfg.reserved_regs
         is_SP_in_avail_regs = riscv_reg_t.SP in self.avail_regs
-        if ((is_SP_in_reserved_rd or is_SP_in_reserved_regs) or (not is_SP_in_avail_regs)):
+        if ((is_SP_in_reserved_rd or is_SP_in_reserved_regs) or
+                (len(self.avail_regs) > 0 and not is_SP_in_avail_regs)):
             exclude_instr.append(riscv_instr_name_t.C_ADDI4SPN.name)
             exclude_instr.append(riscv_instr_name_t.C_ADDI16SP.name)
             exclude_instr.append(riscv_instr_name_t.C_LWSP.name)
