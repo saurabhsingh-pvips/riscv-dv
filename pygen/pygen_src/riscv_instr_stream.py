@@ -49,7 +49,7 @@ class riscv_instr_stream:
             instr = riscv_instr()
             self.instr_list.append(instr)
 
-    def insert_instr(self, instr, idx=-1):
+    def insert_instr(self, instr, idx = -1):
         """
            Insert an instruction to the existing instruction stream at the given index
            When index is -1, the instruction is injected at a random location
@@ -66,7 +66,7 @@ class riscv_instr_stream:
             logging.error("Cannot insert instr:%0s at idx %0d", instr.convert2asm(), idx)
         self.instr_list.insert(idx, instr)
 
-    def insert_instr_stream(self, new_instr, idx=-1, replace=0):
+    def insert_instr_stream(self, new_instr, idx = -1, replace = 0):
         """
             Insert an instruction to the existing instruction stream at the given index
             When index is -1, the instruction is injected at a random location
@@ -115,7 +115,7 @@ class riscv_instr_stream:
                 self.instr_list = self.instr_list[0:idx - 1] + new_instr + \
                     self.instr_list[idx:current_instr_cnt - 1]
 
-    def mix_instr_stream(self, new_instr, contained=0):
+    def mix_instr_stream(self, new_instr, contained = 0):
         """
         Mix the input instruction stream with the original instruction, the instruction order is
         preserved. When 'contained' is set, the original instruction stream will be inside the
@@ -167,7 +167,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         for i in range(self.instr_cnt):
             self.instr_list.append(None)
 
-    def setup_allowed_instr(self, no_branch=0, no_load_store=1):
+    def setup_allowed_instr(self, no_branch = 0, no_load_store = 1):
         self.allowed_instr = riscv_instr_ins.basic_instr
         if no_branch == 0:
             self.allowed_instr.extend(
@@ -183,7 +183,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
     def randomize_avail_regs(self):
         pass
 
-    def setup_instruction_dist(self, no_branch=0, no_load_store=1):
+    def setup_instruction_dist(self, no_branch = 0, no_load_store = 1):
         if cfg.dist_control_mode:
             self.category_dist = cfg.category_dist
             if no_branch:
@@ -193,16 +193,16 @@ class riscv_rand_instr_stream(riscv_instr_stream):
                 self.category_dist[riscv_instr_category_t.STORE.name] = 0
             logging.info("setup_instruction_dist: %0d", len(self.category_dist))
 
-    def gen_instr(self, no_branch=0, no_load_store=1, is_debug_program=0):
+    def gen_instr(self, no_branch = 0, no_load_store = 1, is_debug_program = 0):
         self.setup_allowed_instr(no_branch, no_load_store)
         for i in range(len(self.instr_list)):
             self.instr_list[i] = self.randomize_instr(self.instr_list[i], is_debug_program)
         while self.instr_list[-1].category == riscv_instr_category_t.BRANCH:
             self.instr_list.pop()
-            if len(self.instr_list):
+            if len(self.instr_list) == 0:
                 break
 
-    def randomize_instr(self, instr, is_in_debug=0, disable_dist=0):
+    def randomize_instr(self, instr, is_in_debug = 0, disable_dist = 0):
         exclude_instr = []
         is_SP_in_reserved_rd = riscv_reg_t.SP in self.reserved_rd
         is_SP_in_reserved_regs = riscv_reg_t.SP in cfg.reserved_regs

@@ -84,24 +84,25 @@ class riscv_asm_program_gen:
             self.main_program[hart].label_name = "main"
             self.main_program[hart].gen_instr(is_main_program = 1, no_branch = cfg.no_branch_jump)
 
-        self.main_program[hart].generate_instr_stream()
-        logging.info("Generating main program instruction stream...done")
-        self.instr_stream.extend(self.main_program[hart].instr_string_list)
-        """
-        If PMP is supported, need to jump from end of main program to test_done section at the end
-        of main_program, as the test_done will have moved to the beginning of the program
-        """
-        self.instr_stream.append("{}j test_done".format(pkg_ins.indent))
-        '''
-        Test done section
-        If PMP isn't supported, generate this in the normal location
-        '''
-        if(hart == 0 and not(rcs.support_pmp)):
-            self.gen_test_done()
+            self.main_program[hart].generate_instr_stream()
+            logging.info("Generating main program instruction stream...done")
+            self.instr_stream.extend(self.main_program[hart].instr_string_list)
+            """
+            If PMP is supported, need to jump from end of main program
+            to test_done section at the end of main_program, as the test_done
+            will have moved to the beginning of the program
+            """
+            self.instr_stream.append("{}j test_done".format(pkg_ins.indent))
+            '''
+            Test done section
+            If PMP isn't supported, generate this in the normal location
+            '''
+            if(hart == 0 and not(rcs.support_pmp)):
+                self.gen_test_done()
 
-        logging.info("Main/sub program generation...done")
-        # program end
-        self.gen_program_end(hart)
+            logging.info("Main/sub program generation...done")
+            # program end
+            self.gen_program_end(hart)
 
     def gen_kernel_sections(self, hart):
         pass
@@ -124,12 +125,12 @@ class riscv_asm_program_gen:
     def gen_program_header(self):
         string = []
         self.instr_stream.append(".include \"user_define.h\"")
-        self.instr_stream.append(".global_start")
+        self.instr_stream.append(".globl _start")
         self.instr_stream.append(".section .text")
         if(cfg.disable_compressed_instr):
             self.instr_stream.append(".option norvc;")
-
-        string.append("csrr x5 mhartid")
+        string.append(".include \"user_init.s\"")
+        string.append("csrr x5, mhartid")
 
         for hart in range(cfg.num_of_harts):
             string.append("li x6, {}\n{}beq x5, x6, {}f".format(hart, pkg_ins.indent, hart))
@@ -141,7 +142,7 @@ class riscv_asm_program_gen:
 
     def gen_program_end(self, hart):
         if(hart == 0):
-            self.gen_section("write_tohost", ["sw gp", "tohost", "t5"])
+            self.gen_section("write_tohost", ["sw gp, tohost, t5"])
             self.gen_section("_exit", ["j write_tohost"])
 
     def gen_data_page_begin(self, hart):
@@ -161,8 +162,8 @@ class riscv_asm_program_gen:
         self.instr_stream.append(string)
         self.init_gpr()
         # Init stack pointer to point to the end of the user stack
-        string = "{}la x{} {}user_stack_end".format(
-            pkg_ins.indent, cfg.sp, pkg_ins.hart_prefix(hart))
+        string = "{}la x{}, {}user_stack_end".format(
+            pkg_ins.indent, cfg.sp.value, pkg_ins.hart_prefix(hart))
         self.instr_stream.append(string)
         if (cfg.enable_floating_point):
             self.init_floating_point_gpr()
@@ -178,8 +179,8 @@ class riscv_asm_program_gen:
     def setup_misa(self):
         # TO DO
         misa = 0b01000000
-        self.instr_stream.append("{}li x{}, {}".format(pkg_ins.indent, cfg.gpr[0], hex(misa)))
-        self.instr_stream.append("{}csrw misa, x{}".format(pkg_ins.indent, cfg.gpr[0]))
+        self.instr_stream.append("{}li x{}, {}".format(pkg_ins.indent, cfg.gpr[0].value, hex(misa)))
+        self.instr_stream.append("{}csrw misa, x{}".format(pkg_ins.indent, cfg.gpr[0].value))
 
     def core_is_initialized(self):
         pass
@@ -234,7 +235,7 @@ class riscv_asm_program_gen:
         instr = []
         string = []
 
-        string.append("la x{}, {}kernel_stack_end".format(cfg.tp, pkg_ins.hart_prefix(hart)))
+        string.append("la x{}, {}kernel_stack_end".format(cfg.tp.value, pkg_ins.hart_prefix(hart)))
         self.gen_section(pkg_ins.get_label("kernel_sp", hart), string)
 
         if(not cfg.no_delegation and (cfg.init_privileged_mode != "MACHINE_MODE")):
@@ -256,12 +257,12 @@ class riscv_asm_program_gen:
 
     def setup_epc(self, hart):
         instr = []
-        instr.append("la x{}, {}init".format(cfg.gpr[0], pkg_ins.hart_prefix(hart)))
+        instr.append("la x{}, {}init".format(cfg.gpr[0].value, pkg_ins.hart_prefix(hart)))
         # if(cfg.virtual_addr_translation_on):
         # instr.append("slli x{}, x{}")
         # TODO
         mode_name = cfg.init_privileged_mode
-        instr.append("csrw mepc, x{}".format(cfg.gpr[0]))
+        instr.append("csrw mepc, x{}".format(cfg.gpr[0].value))
         if(not rcs.support_pmp):  # TODO
             instr.append("j {}init_{}".format(pkg_ins.hart_prefix(hart), mode_name.name.lower()))
 
@@ -305,14 +306,17 @@ class riscv_asm_program_gen:
             tvec_name = trap_vec_reg.name
             tvec_name = tvec_name.lower()
             instr.append("la x{}, {}{}_handler".format(
-                cfg.gpr[0], pkg_ins.hart_prefix(hart), tvec_name))
+                cfg.gpr[0].value, pkg_ins.hart_prefix(hart), tvec_name))
             if(rcs.SATP_MODE != "BARE" and items != "MACHINE_MODE"):
-                instr.append("slli x{}, x{}, {}\n".format(cfg.gpr[0], cfg.gpr[0], rcs.XLEN - 20) +
-                             "srli x{}, x{}, {}".format(cfg.gpr[0], cfg.gpr[0], rcs.XLEN - 20))
+                instr.append("slli x{}, x{}, {}\n".format(cfg.gpr[0].value,
+                                                          cfg.gpr[0].value, rcs.XLEN - 20) +
+                             "srli x{}, x{}, {}".format(cfg.gpr[0].value,
+                                                        cfg.gpr[0].value, rcs.XLEN - 20))
 
-            instr.append("ori x{}, x{}, {}".format(cfg.gpr[0], cfg.gpr[0], cfg.mtvec_mode))
-            instr.append("csrw {}, x{}, # {}".format(
-                hex(trap_vec_reg.value), cfg.gpr[0], trap_vec_reg.name))
+            instr.append("ori x{}, x{}, {}".format(
+                cfg.gpr[0].value, cfg.gpr[0].value, cfg.mtvec_mode.value))
+            instr.append("csrw {}, x{} # {}".format(
+                hex(trap_vec_reg.value), cfg.gpr[0].value, trap_vec_reg.name))
 
         self.gen_section(pkg_ins.get_label("trap_vec_init", hart), instr)
 
@@ -394,8 +398,8 @@ class riscv_asm_program_gen:
     def get_directed_instr_stream(self):
         pass
 
-    def generate_directed_instr_stream(self, hart=0, label="", original_instr_cnt=None,
-                                       min_insert_cnt=0, kernel_mode=0, instr_stream=[]):
+    def generate_directed_instr_stream(self, hart = 0, label = "", original_instr_cnt = None,
+                                       min_insert_cnt = 0, kernel_mode = 0, instr_stream = []):
         pass
 
     def gen_debug_rom(self, hart):

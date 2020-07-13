@@ -22,8 +22,9 @@ import logging
 from copy import copy
 import sys
 import vsc
-logging.basicConfig(format="%(asctime)s %(filename)s %(lineno)s %(levelname)s %(message)s",
-                    level=logging.DEBUG)
+logging.basicConfig(filename = "logname.log", filemode ='w',
+                    format = "%(asctime)s %(filename)s %(lineno)s %(levelname)s %(message)s",
+                    level = logging.DEBUG)
 
 
 @vsc.randobj
@@ -47,13 +48,13 @@ class riscv_instr:
         self.imm_type = None
         self.imm_len = 0
 
-        self.csr = None
+        self.csr = vsc.rand_bit_t(12)
         self.rs2 = vsc.rand_enum_t(riscv_reg_t)
         self.rs1 = vsc.rand_enum_t(riscv_reg_t)
         self.rd = vsc.rand_enum_t(riscv_reg_t)
-        self.imm = vsc.rand_uint32_t()
+        self.imm = vsc.rand_bit_t(32)
 
-        self.imm_mask = 0xffffffff
+        self.imm_mask = vsc.uint32_t(0xffffffff)
         self.is_branch_target = None
         self.has_label = 1
         self.atomic = 0
@@ -72,7 +73,7 @@ class riscv_instr:
         self.has_rs2 = 1
         self.has_rd = 1
         self.has_imm = 1
-        self.shift_t = 2 ** 32 - 1
+        self.shift_t = vsc.uint32_t(0xffffffff)
 
     @classmethod
     def register(cls, instr_name):
@@ -96,7 +97,7 @@ class riscv_instr:
                 continue
             if ((rcs.XLEN != 32) and (instr_name == "C_JAL")):
                 continue
-            if (("SP" in cfg.reserved_regs) and (instr_name == "C_ADDI16SP")):
+            if ((riscv_reg_t.SP in cfg.reserved_regs) and (instr_name == "C_ADDI16SP")):
                 continue
             if (cfg.enable_sfence and instr_name == "SFENCE_VMA"):
                 continue
@@ -282,13 +283,13 @@ class riscv_instr:
             elif self.format.name == "U_FORMAT":
                 asm_str = '{} {}, {}'.format(asm_str, self.rd.name, self.get_imm())
             elif self.format.name == "I_FORMAT":
-                if(self.instr_name.name == "NOP"):
+                if(self.instr_name == "NOP"):
                     asm_str = "nop"
-                elif(self.instr_name.name == "WFI"):
+                elif(self.instr_name == "WFI"):
                     asm_str = "wfi"
-                elif(self.instr_name.name == "FENCE"):
+                elif(self.instr_name == "FENCE"):
                     asm_str = "fence"
-                elif(self.instr_name.name == "FENCE_I"):
+                elif(self.instr_name == "FENCE_I"):
                     asm_str = "fence.i"
                 elif(self.category.name == "LOAD"):
                     asm_str = '{} {}, {},({})'.format(
@@ -319,17 +320,17 @@ class riscv_instr:
                 if(self.category.name == "CSR"):
                     asm_str = '{} {}, 0x{}, {}'.format(
                         asm_str, self.rd.name, self.csr, self.rs1.name)
-                elif(self.instr_name.name == "SFENCE_VMA"):
+                elif(self.instr_name == "SFENCE_VMA"):
                     asm_str = "sfence.vma x0, x0"
                 else:
                     asm_str = '{} {}, {}, {}'.format(
                         asm_str, self.rd.name, self.rs1.name, self.rs2.name)
             else:
                 asm_str = 'Fatal_unsupported_format: {} {}'.format(
-                    self.format.name, self.instr_name.name)
+                    self.format.name, self.instr_name)
 
         else:
-            if(self.instr_name.name == "EBREAK"):
+            if(self.instr_name == "EBREAK"):
                 asm_str = ".4byte 0x00100073 # ebreak"
 
         if(self.comment != ""):
@@ -337,100 +338,100 @@ class riscv_instr:
         return asm_str.lower()
 
     def get_opcode(self):
-        if(self.instr_name.name == "LUI"):
+        if(self.instr_name == "LUI"):
             return (BitArray(uint = 55, length = 7).bin)
-        elif(self.instr_name.name == "AUIPC"):
+        elif(self.instr_name == "AUIPC"):
             return (BitArray(uint = 23, length = 7).bin)
-        elif(self.instr_name.name == "JAL"):
+        elif(self.instr_name == "JAL"):
             return (BitArray(uint = 23, length = 7).bin)
-        elif(self.instr_name.name == "JALR"):
+        elif(self.instr_name == "JALR"):
             return (BitArray(uint = 111, length = 7).bin)
-        elif(self.instr_name.name in ["BEQ", "BNE", "BLT", "BGE", "BLTU", "BGEU"]):
+        elif(self.instr_name in ["BEQ", "BNE", "BLT", "BGE", "BLTU", "BGEU"]):
             return (BitArray(uint = 103, length = 7).bin)
-        elif(self.instr_name.name in ["LB", "LH", "LW", "LBU", "LHU", "LWU", "LD"]):
+        elif(self.instr_name in ["LB", "LH", "LW", "LBU", "LHU", "LWU", "LD"]):
             return (BitArray(uint = 99, length = 7).bin)
-        elif(self.instr_name.name in ["SB", "SH", "SW", "SD"]):
+        elif(self.instr_name in ["SB", "SH", "SW", "SD"]):
             return (BitArray(uint = 35, length = 7).bin)
-        elif(self.instr_name.name in ["ADDI", "SLTI", "SLTIU", "XORI", "ORI", "ANDI",
-                                      "SLLI", "SRLI", "SRAI", "NOP"]):
+        elif(self.instr_name in ["ADDI", "SLTI", "SLTIU", "XORI", "ORI", "ANDI",
+                                 "SLLI", "SRLI", "SRAI", "NOP"]):
             return (BitArray(uint = 19, length = 7).bin)
-        elif(self.instr_name.name in ["ADD", "SUB", "SLL", "SLT", "SLTU", "XOR", "SRL",
-                                      "SRA", "OR", "AND", "MUL", "MULH", "MULHSU", "MULHU",
-                                      "DIV", "DIVU", "REM", "REMU"]):
+        elif(self.instr_name in ["ADD", "SUB", "SLL", "SLT", "SLTU", "XOR", "SRL",
+                                 "SRA", "OR", "AND", "MUL", "MULH", "MULHSU", "MULHU",
+                                 "DIV", "DIVU", "REM", "REMU"]):
             return (BitArray(uint = 51, length = 7).bin)
-        elif(self.instr_name.name in ["ADDIW", "SLLIW", "SRLIW", "SRAIW"]):
+        elif(self.instr_name in ["ADDIW", "SLLIW", "SRLIW", "SRAIW"]):
             return (BitArray(uint = 27, length = 7).bin)
-        elif(self.instr_name.name in ["MULH", "MULHSU", "MULHU", "DIV", "DIVU", "REM", "REMU"]):
+        elif(self.instr_name in ["MULH", "MULHSU", "MULHU", "DIV", "DIVU", "REM", "REMU"]):
             return (BitArray(uint = 51, length = 7).bin)
-        elif(self.instr_name.name in ["FENCE", "FENCE_I"]):
+        elif(self.instr_name in ["FENCE", "FENCE_I"]):
             return (BitArray(uint = 15, length = 7).bin)
-        elif(self.instr_name.name in ["ECALL", "EBREAK", "CSRRW", "CSRRS", "CSRRC", "CSRRWI",
-                                      "CSRRSI", "CSRRCI"]):
+        elif(self.instr_name in ["ECALL", "EBREAK", "CSRRW", "CSRRS", "CSRRC", "CSRRWI",
+                                 "CSRRSI", "CSRRCI"]):
             return (BitArray(uint = 115, length = 7).bin)
-        elif(self.instr_name.name in ["ADDW", "SUBW", "SLLW", "SRLW", "SRAW", "MULW", "DIVW",
-                                      "DIVUW", "REMW", "REMUW"]):
+        elif(self.instr_name in ["ADDW", "SUBW", "SLLW", "SRLW", "SRAW", "MULW", "DIVW",
+                                 "DIVUW", "REMW", "REMUW"]):
             return (BitArray(uint = 59, length = 7).bin)
-        elif(self.instr_name.name in ["ECALL", "EBREAK", "URET", "SRET", "MRET", "DRET", "WFI",
-                                      "SFENCE_VMA"]):
+        elif(self.instr_name in ["ECALL", "EBREAK", "URET", "SRET", "MRET", "DRET", "WFI",
+                                 "SFENCE_VMA"]):
             return (BitArray(uint = 115, length = 7).bin)
         else:
-            logging.critical("Unsupported instruction %0s", self.instr_name.name)
+            logging.critical("Unsupported instruction %0s", self.instr_name)
             sys.exit(1)
 
     def get_func3(self):
-        if(self.instr_name.name in ["JALR", "BEQ", "LB", "SB", "ADDI", "NOP", "ADD", "SUB",
-                                    "FENCE", "ECALL", "EBREAK", "ADDIW", "ADDW", "SUBW", "MUL",
-                                    "MULW", "ECALL", "EBREAK", "URET", "SRET", "MRET", "DRET",
-                                    "WFI", "SFENCE_VMA"]):
+        if(self.instr_name in ["JALR", "BEQ", "LB", "SB", "ADDI", "NOP", "ADD", "SUB",
+                               "FENCE", "ECALL", "EBREAK", "ADDIW", "ADDW", "SUBW", "MUL",
+                               "MULW", "ECALL", "EBREAK", "URET", "SRET", "MRET", "DRET",
+                               "WFI", "SFENCE_VMA"]):
             return (BitArray(uint = 0, length = 3).bin)
-        elif(self.instr_name.name in ["BNE", "LH", "SH", "SLLI", "SLL", "FENCE_I", "CSRRW", "SLLIW",
-                                      "SLLW", "MULH"]):
+        elif(self.instr_name in ["BNE", "LH", "SH", "SLLI", "SLL", "FENCE_I", "CSRRW", "SLLIW",
+                                 "SLLW", "MULH"]):
             return (BitArray(uint = 1, length = 3).bin)
-        elif(self.instr_name.name in ["LW", "SW", "SLTI", "SLT", "CSRRS", "MULHS"]):
+        elif(self.instr_name in ["LW", "SW", "SLTI", "SLT", "CSRRS", "MULHS"]):
             return (BitArray(uint = 2, length = 3).bin)
-        elif(self.instr_name.name in ["SLTIU", "SLTU", "CSRRC", "LD", "SD", "MULHU"]):
+        elif(self.instr_name in ["SLTIU", "SLTU", "CSRRC", "LD", "SD", "MULHU"]):
             return (BitArray(uint = 3, length = 3).bin)
-        elif(self.instr_name.name in ["BLT", "LBU", "XORI", "XOR", "DIV", "DIVW"]):
+        elif(self.instr_name in ["BLT", "LBU", "XORI", "XOR", "DIV", "DIVW"]):
             return (BitArray(uint = 4, length = 3).bin)
-        elif(self.instr_name.name in ["BGE", "LHU", "SRLI", "SRAI", "SRL", "SRA", "CSRRWI", "SRLIW",
-                                      "SRAIW", "SRLW",
-                                      "SRAW", "DIVU", "DIVUW"]):
+        elif(self.instr_name in ["BGE", "LHU", "SRLI", "SRAI", "SRL", "SRA", "CSRRWI", "SRLIW",
+                                 "SRAIW", "SRLW",
+                                 "SRAW", "DIVU", "DIVUW"]):
             return (BitArray(uint = 5, length = 3).bin)
-        elif(self.instr_name.name in ["BLTU", "ORI", "OR", "CSRRSI", "LWU", "REM", "REMW"]):
+        elif(self.instr_name in ["BLTU", "ORI", "OR", "CSRRSI", "LWU", "REM", "REMW"]):
             return (BitArray(uint = 6, length = 3).bin)
-        elif(self.instr_name.name in ["BGEU", "ANDI", "AND", "CSRRCI", "REMU", "REMUW"]):
+        elif(self.instr_name in ["BGEU", "ANDI", "AND", "CSRRCI", "REMU", "REMUW"]):
             return (BitArray(uint = 7, length = 3).bin)
         else:
-            logging.critical("Unsupported instruction %0s", self.instr_name.name)
+            logging.critical("Unsupported instruction %0s", self.instr_name)
             sys.exit(1)
 
     def get_func7(self):
-        if(self.instr_name.name in ["SLLI", "SRLI", "ADD", "SLL", "SLT", "SLTU", "XOR",
-                                    "SRL", "OR", "AND", "FENCE", "FENCE_I", "SLLIW",
-                                    "SRLIW", "ADDW", "SLLW", "SRLW", "ECALL", "EBREAK", "URET"]):
+        if(self.instr_name in ["SLLI", "SRLI", "ADD", "SLL", "SLT", "SLTU", "XOR",
+                               "SRL", "OR", "AND", "FENCE", "FENCE_I", "SLLIW",
+                               "SRLIW", "ADDW", "SLLW", "SRLW", "ECALL", "EBREAK", "URET"]):
             return (BitArray(uint = 0, length = 7).bin)
-        elif(self.instr_name.name in ["SUB", "SRA", "SRAIW", "SUBW", "SRAW"]):
+        elif(self.instr_name in ["SUB", "SRA", "SRAIW", "SUBW", "SRAW"]):
             return (BitArray(uint = 32, length = 7).bin)
-        elif(self.instr_name.name in ["MUL", "MULH", "MULHSU", "MULHU", "DIV", "DIVU", "REM",
-                                      "REMU", "MULW", "DIVW", "DIVUW", "REMW", "REMUW"]):
+        elif(self.instr_name in ["MUL", "MULH", "MULHSU", "MULHU", "DIV", "DIVU", "REM",
+                                 "REMU", "MULW", "DIVW", "DIVUW", "REMW", "REMUW"]):
             return (BitArray(uint = 1, length = 7).bin)
-        elif(self.instr_name.name in ["SRET", "WFI"]):
+        elif(self.instr_name in ["SRET", "WFI"]):
             return (BitArray(uint = 8, length = 7).bin)
-        elif(self.instr_name.name == "MRET"):
+        elif(self.instr_name == "MRET"):
             return (BitArray(uint = 24, length = 7).bin)
-        elif(self.instr_name.name == "DRET"):
+        elif(self.instr_name == "DRET"):
             return (BitArray(uint = 61, length = 7).bin)
-        elif(self.instr_name.name == "SFENCE_VMA"):
+        elif(self.instr_name == "SFENCE_VMA"):
             return (BitArray(uint = 9, length = 7).bin)
         else:
-            logging.critical("Unsupported instruction %0s", self.instr_name.name)
+            logging.critical("Unsupported instruction %0s", self.instr_name)
             sys.exit(1)
 
     def convert2bin(self):
         pass  # TODO
 
     def get_instr_name(self):
-        get_instr_name = self.instr_name.name
+        get_instr_name = self.instr_name
         for i in get_instr_name:
             if(i == "_"):
                 get_instr_name = get_instr_name.replace(i, ".")
