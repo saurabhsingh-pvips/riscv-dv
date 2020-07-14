@@ -12,6 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 """
 
+import argparse
 import logging
 import sys
 from bitstring import BitArray
@@ -24,7 +25,7 @@ from pygen_src.target.rv32i import riscv_core_setting as rcs
 
 @vsc.randobj
 class riscv_instr_gen_config:
-    def __init__(self):
+    def __init__(self, argv):
         # TODO Support for command line argument
         self.main_program_instr_cnt = 100  # count of main_prog
         self.sub_program_instr_cnt = []  # count of sub_prog
@@ -58,7 +59,7 @@ class riscv_instr_gen_config:
         self.mstatus_vs = BitArray(bin(0b0), length=2)
         self.mtvec_mode = vsc.rand_enum_t(mtvec_mode_t)
 
-        self.tvec_alignment = 2
+        self.tvec_alignment = argv.tvec_alignment
 
         self.fcsr_rm = list(map(lambda csr_rm: csr_rm.name, f_rounding_mode_t))
         self.enable_sfence = 0
@@ -86,60 +87,60 @@ class riscv_instr_gen_config:
         self.kernel_program_instr_cnt = 400
         # list of main implemented CSRs
         self.invalid_priv_mode_csrs = []
-        self.num_of_sub_program = 5
-        self.instr_cnt = 200
-        self.num_of_tests = 1
-        self.no_data_page = 0
-        self.no_branch_jump = 1
-        self.no_load_store = 0
-        self.no_csr_instr = 0
-        self.no_ebreak = 1
-        self.no_dret = 1
-        self.no_fence = 1
-        self.no_wfi = 1
-        self.enable_unaligned_load_store = 0
-        self.illegal_instr_ratio = 0
-        self.hint_instr_ratio = 0
-        self.num_of_harts = rcs.NUM_HARTS
-        self.fix_sp = 0
-        self.use_push_data_section = 0
+        self.num_of_sub_program = argv.num_of_sub_program
+        self.instr_cnt = argv.instr_cnt
+        self.num_of_tests = argv.num_of_tests
+        self.no_data_page = argv.no_data_page
+        self.no_branch_jump = argv.no_branch_jump
+        self.no_load_store = argv.no_load_store
+        self.no_csr_instr = argv.no_csr_instr
+        self.no_ebreak = argv.no_ebreak
+        self.no_dret = argv.no_dret
+        self.no_fence = argv.no_fence
+        self.no_wfi = argv.no_wfi
+        self.enable_unaligned_load_store = argv.enable_unaligned_load_store
+        self.illegal_instr_ratio = argv.illegal_instr_ratio
+        self.hint_instr_ratio = argv.hint_instr_ratio
+        self.num_of_harts = argv.num_of_harts
+        self.fix_sp = argv.fix_sp
+        self.use_push_data_section = argv.use_push_data_section
         self.boot_mode_opts = ""
-        self.enable_page_table_exception = 0
-        self.no_directed_instr = 0
+        self.enable_page_table_exception = argv.enable_page_table_exception
+        self.no_directed_instr = argv.no_directed_instr
         self.asm_test_suffix = ""
-        self.enable_interrupt = 0
-        self.enable_nested_interrupt = 0
-        self.enable_timer_irq = 0
-        self.bare_program_mode = 0
-        self.enable_illegal_csr_instruction = 0
-        self.enable_access_invalid_csr_level = 0
-        self.enable_misaligned_instr = 0
-        self.enable_dummy_csr_write = 0
-        self.randomize_csr = 0
-        self.allow_sfence_exception = 0
-        self.no_delegation = 1
-        self.force_m_delegation = 0
-        self.force_s_delegation = 0
+        self.enable_interrupt = argv.enable_interrupt
+        self.enable_nested_interrupt = argv.enable_nested_interrupt
+        self.enable_timer_irq = argv.enable_timer_irq
+        self.bare_program_mode = argv.bare_program_mode
+        self.enable_illegal_csr_instruction = argv.enable_illegal_csr_instruction
+        self.enable_access_invalid_csr_level = argv.enable_access_invalid_csr_level
+        self.enable_misaligned_instr = argv.enable_misaligned_instr
+        self.enable_dummy_csr_write = argv.enable_dummy_csr_write
+        self.randomize_csr = argv.randomize_csr
+        self.allow_sfence_exception = argv.allow_sfence_exception
+        self.no_delegation = argv.no_delegation
+        self.force_m_delegation = argv.force_m_delegation
+        self.force_s_delegation = argv.force_s_delegation
         self.support_supervisor_mode = 0
-        self.disable_compressed_instr = 0
+        self.disable_compressed_instr = argv.disable_compressed_instr
         self.signature_addr = 0xdeadbeef
-        self.require_signature_addr = 0
-        self.gen_debug_section = 0
-        self.enable_ebreak_in_debug_rom = 0
-        self.set_dcsr_ebreak = 0
-        self.num_debug_sub_program = 0
-        self.enable_debug_single_step = 0
+        self.require_signature_addr = argv.require_signature_addr
+        self.gen_debug_section = argv.gen_debug_section
+        self.enable_ebreak_in_debug_rom = argv.enable_ebreak_in_debug_rom
+        self.set_dcsr_ebreak = argv.set_dcsr_ebreak
+        self.num_debug_sub_program = argv.num_debug_sub_program
+        self.enable_debug_single_step = argv.enable_debug_single_step
         self.single_step_iterations = 0
-        self.set_mstatus_tw = 0
-        self.set_mstatus_mprv = 0
+        self.set_mstatus_tw = argv.set_mstatus_tw
+        self.set_mstatus_mprv = argv.set_mstatus_mprv
         self.min_stack_len_per_program = 10 * (rcs.XLEN / 8)
         self.max_stack_len_per_program = 16 * (rcs.XLEN / 8)
         self.max_branch_step = 20
         self.max_directed_instr_stream_seq = 20
         self.reserved_regs = vsc.list_t(vsc.enum_t(riscv_reg_t))
-        self.enable_floating_point = 0
-        self.enable_vector_extension = 0
-        self.enable_b_extension = 0
+        self.enable_floating_point = argv.enable_floating_point
+        self.enable_vector_extension = argv.enable_vector_extension
+        self.enable_b_extension = argv.enable_b_extension
         # Commenting out for now
         # self.enable_bitmanip_groups = ['ZBB', 'ZBS', 'ZBP', 'ZBE', 'ZBF',
         # 'ZBC', 'ZBR', 'ZBM', 'ZBT', 'ZB_TMP']
@@ -272,4 +273,59 @@ class riscv_instr_gen_config:
         self.get_invalid_priv_lvl_csr()
 
 
-cfg = riscv_instr_gen_config()
+def parse_args():
+    parse = argparse.ArgumentParser()
+    parse.add_argument('--num_of_tests', help='num_of_tests', type=int, default=1)
+    parse.add_argument('--enable_page_table_exception', help='enable_page_table_exception', type=int, default=0)
+    parse.add_argument('--enable_interrupt', help='enable_interrupt', type=int, default=0)
+    parse.add_argument('--enable_nested_interrupt', help='enable_nested_interrupt', type=int, default=0)
+    parse.add_argument('--enable_timer_irq', help='enable_timer_irq', type=int, default=0)
+    parse.add_argument('--num_of_sub_program', help='num_of_sub_program', type=int, default=5)
+    parse.add_argument('--instr_cnt', help='instr_cnt', type=int, default=200)
+    parse.add_argument('--tvec_alignment', help='tvec_alignment', type=int, default=2)
+    parse.add_argument('--no_ebreak', help='no_ebreak', type=int, default=1)
+    parse.add_argument('--no_dret', help='no_dret', type=int, default=1)
+    parse.add_argument('--no_wfi', help='no_wfi', type=int, default=1)
+    parse.add_argument('--no_branch_jump', help='no_branch_jump', type=int, default=0)
+    parse.add_argument('--no_load_store', help='no_load_store', type=int, default=0)
+    parse.add_argument('--no_csr_instr', help='no_csr_instr', type=int, default=0)
+    parse.add_argument('--fix_sp', help='fix_sp', type=int, default=0)
+    parse.add_argument('--use_push_data_section', help='use_push_data_section', type=int, default=0)
+    parse.add_argument('--enable_illegal_csr_instruction', help='enable_illegal_csr_instruction', type=int, default=0)
+    parse.add_argument('--enable_access_invalid_csr_level', help='enable_access_invalid_csr_level', type=int, default=0)
+    parse.add_argument('--enable_misaligned_instr', help='enable_misaligned_instr', type=int, default=0)
+    parse.add_argument('--enable_dummy_csr_write', help='enable_dummy_csr_write', type=int, default=0)
+    parse.add_argument('--allow_sfence_exception', help='allow_sfence_exception', type=int, default=0)
+    parse.add_argument('--no_data_page', help='no_data_page', type=int, default=0)
+    parse.add_argument('--no_directed_instr', help='no_directed_instr', type=int, default=0)
+    parse.add_argument('--no_fence', help='no_fence', type=int, default=1)
+    parse.add_argument('--no_delegation', help='no_delegation', type=int, default=1)
+    parse.add_argument('--illegal_instr_ratio', help='illegal_instr_ratio', type=int, default=0)
+    parse.add_argument('--hint_instr_ratio', help='hint_instr_ratio', type=int, default=0)
+    parse.add_argument('--num_of_harts', help='num_of_harts', type=int, default=rcs.NUM_HARTS)
+    parse.add_argument('--enable_unaligned_load_store', help='enable_unaligned_load_store', type=int, default=0)
+    parse.add_argument('--force_m_delegation', help='force_m_delegation', type=int, default=0)
+    parse.add_argument('--force_s_delegation', help='force_s_delegation', type=int, default=0)
+    parse.add_argument('--require_signature_addr', help='require_signature_addr', type=int, default=0)
+    parse.add_argument('--disable_compressed_instr', help='disable_compressed_instr', type=int, default=0)
+    parse.add_argument('--randomize_csr', help='randomize_csr', type=int, default=0)
+    # TO DO
+    parse.add_argument('--gen_debug_section', help='gen_debug_section', type=int, default=0)
+    parse.add_argument('--bare_program_mode', help='bare_program_mode', type=int, default=0)
+    parse.add_argument('--num_debug_sub_program', help='num_debug_sub_program', type=int, default=0)
+    parse.add_argument('--enable_ebreak_in_debug_rom', help='enable_ebreak_in_debug_rom', type=int, default=0)
+    parse.add_argument('--set_dcsr_ebreak', help='set_dcsr_ebreak', type=int, default=0)
+    parse.add_argument('--enable_debug_single_step', help='enable_debug_single_step', type=int, default=0)
+    parse.add_argument('--set_mstatus_tw', help='set_mstatus_tw', type=int, default=0)
+    parse.add_argument('--set_mstatus_mprv', help='set_mstatus_mprv', type=int, default=0)
+    parse.add_argument('--enable_floating_point', help='enable_floating_point', type=int, default=0)
+    parse.add_argument('--enable_vector_extension', help='enable_vector_extension', type=int, default=0)
+    parse.add_argument('--enable_b_extension', help='enable_b_extension', type=int, default=0)
+
+    args = parse.parse_args()
+
+    return args
+
+
+args = parse_args()
+cfg = riscv_instr_gen_config(args)
