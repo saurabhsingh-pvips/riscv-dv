@@ -123,8 +123,13 @@ class riscv_instr_gen_config:
         self.force_s_delegation = argv.force_s_delegation
         self.support_supervisor_mode = 0
         self.disable_compressed_instr = argv.disable_compressed_instr
-        self.signature_addr = 0xdeadbeef
         self.require_signature_addr = argv.require_signature_addr
+
+        if(self.require_signature_addr):
+            self.signature_addr = int(argv.signature_addr, 16)
+        else:
+            self.signature_addr = 0xdeadbeef
+
         self.gen_debug_section = argv.gen_debug_section
         self.enable_ebreak_in_debug_rom = argv.enable_ebreak_in_debug_rom
         self.set_dcsr_ebreak = argv.set_dcsr_ebreak
@@ -276,54 +281,80 @@ class riscv_instr_gen_config:
 def parse_args():
     parse = argparse.ArgumentParser()
     parse.add_argument('--num_of_tests', help='num_of_tests', type=int, default=1)
-    parse.add_argument('--enable_page_table_exception', help='enable_page_table_exception', type=int, default=0)
-    parse.add_argument('--enable_interrupt', help='enable_interrupt', type=int, default=0)
-    parse.add_argument('--enable_nested_interrupt', help='enable_nested_interrupt', type=int, default=0)
-    parse.add_argument('--enable_timer_irq', help='enable_timer_irq', type=int, default=0)
+    parse.add_argument('--enable_page_table_exception',
+                       help='enable_page_table_exception', type=int, default=0)
+    parse.add_argument('--enable_interrupt', help='enable_interrupt',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_nested_interrupt', help='enable_nested_interrupt',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_timer_irq', help='enable_timer_irq',
+                       choices=[0, 1], type=int, default=0)
     parse.add_argument('--num_of_sub_program', help='num_of_sub_program', type=int, default=5)
     parse.add_argument('--instr_cnt', help='instr_cnt', type=int, default=200)
     parse.add_argument('--tvec_alignment', help='tvec_alignment', type=int, default=2)
-    parse.add_argument('--no_ebreak', help='no_ebreak', type=int, default=1)
-    parse.add_argument('--no_dret', help='no_dret', type=int, default=1)
-    parse.add_argument('--no_wfi', help='no_wfi', type=int, default=1)
-    parse.add_argument('--no_branch_jump', help='no_branch_jump', type=int, default=0)
-    parse.add_argument('--no_load_store', help='no_load_store', type=int, default=0)
-    parse.add_argument('--no_csr_instr', help='no_csr_instr', type=int, default=0)
-    parse.add_argument('--fix_sp', help='fix_sp', type=int, default=0)
-    parse.add_argument('--use_push_data_section', help='use_push_data_section', type=int, default=0)
-    parse.add_argument('--enable_illegal_csr_instruction', help='enable_illegal_csr_instruction', type=int, default=0)
-    parse.add_argument('--enable_access_invalid_csr_level', help='enable_access_invalid_csr_level', type=int, default=0)
-    parse.add_argument('--enable_misaligned_instr', help='enable_misaligned_instr', type=int, default=0)
-    parse.add_argument('--enable_dummy_csr_write', help='enable_dummy_csr_write', type=int, default=0)
-    parse.add_argument('--allow_sfence_exception', help='allow_sfence_exception', type=int, default=0)
-    parse.add_argument('--no_data_page', help='no_data_page', type=int, default=0)
-    parse.add_argument('--no_directed_instr', help='no_directed_instr', type=int, default=0)
-    parse.add_argument('--no_fence', help='no_fence', type=int, default=1)
-    parse.add_argument('--no_delegation', help='no_delegation', type=int, default=1)
+    parse.add_argument('--no_ebreak', help='no_ebreak', choices=[0, 1], type=int, default=1)
+    parse.add_argument('--no_dret', help='no_dret', choices=[0, 1], type=int, default=1)
+    parse.add_argument('--no_wfi', help='no_wfi', choices=[0, 1], type=int, default=1)
+    parse.add_argument('--no_branch_jump', help='no_branch_jump',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--no_load_store', help='no_load_store', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--no_csr_instr', help='no_csr_instr', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--fix_sp', help='fix_sp', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--use_push_data_section', help='use_push_data_section',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_illegal_csr_instruction',
+                       help='enable_illegal_csr_instruction', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_access_invalid_csr_level',
+                       help='enable_access_invalid_csr_level', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_misaligned_instr', help='enable_misaligned_instr',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_dummy_csr_write', help='enable_dummy_csr_write',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--allow_sfence_exception', help='allow_sfence_exception',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--no_data_page', help='no_data_page', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--no_directed_instr', help='no_directed_instr',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--no_fence', help='no_fence', choices=[0, 1], type=int, default=1)
+    parse.add_argument('--no_delegation', help='no_delegation', choices=[0, 1], type=int, default=1)
     parse.add_argument('--illegal_instr_ratio', help='illegal_instr_ratio', type=int, default=0)
     parse.add_argument('--hint_instr_ratio', help='hint_instr_ratio', type=int, default=0)
     parse.add_argument('--num_of_harts', help='num_of_harts', type=int, default=rcs.NUM_HARTS)
-    parse.add_argument('--enable_unaligned_load_store', help='enable_unaligned_load_store', type=int, default=0)
-    parse.add_argument('--force_m_delegation', help='force_m_delegation', type=int, default=0)
-    parse.add_argument('--force_s_delegation', help='force_s_delegation', type=int, default=0)
-    parse.add_argument('--require_signature_addr', help='require_signature_addr', type=int, default=0)
-    parse.add_argument('--disable_compressed_instr', help='disable_compressed_instr', type=int, default=0)
-    parse.add_argument('--randomize_csr', help='randomize_csr', type=int, default=0)
-    # TO DO
-    parse.add_argument('--gen_debug_section', help='gen_debug_section', type=int, default=0)
-    parse.add_argument('--bare_program_mode', help='bare_program_mode', type=int, default=0)
+    parse.add_argument('--enable_unaligned_load_store',
+                       help='enable_unaligned_load_store', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--force_m_delegation', help='force_m_delegation',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--force_s_delegation', help='force_s_delegation',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--require_signature_addr', help='require_signature_addr',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--signature_addr', help='signature_addr', default=0xdeadbeef)
+    parse.add_argument('--disable_compressed_instr',
+                       help='disable_compressed_instr', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--randomize_csr', help='randomize_csr', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--gen_debug_section', help='gen_debug_section',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--bare_program_mode', help='bare_program_mode',
+                       choices=[0, 1], type=int, default=0)
     parse.add_argument('--num_debug_sub_program', help='num_debug_sub_program', type=int, default=0)
-    parse.add_argument('--enable_ebreak_in_debug_rom', help='enable_ebreak_in_debug_rom', type=int, default=0)
-    parse.add_argument('--set_dcsr_ebreak', help='set_dcsr_ebreak', type=int, default=0)
-    parse.add_argument('--enable_debug_single_step', help='enable_debug_single_step', type=int, default=0)
-    parse.add_argument('--set_mstatus_tw', help='set_mstatus_tw', type=int, default=0)
-    parse.add_argument('--set_mstatus_mprv', help='set_mstatus_mprv', type=int, default=0)
-    parse.add_argument('--enable_floating_point', help='enable_floating_point', type=int, default=0)
-    parse.add_argument('--enable_vector_extension', help='enable_vector_extension', type=int, default=0)
-    parse.add_argument('--enable_b_extension', help='enable_b_extension', type=int, default=0)
-
+    parse.add_argument('--enable_ebreak_in_debug_rom',
+                       help='enable_ebreak_in_debug_rom', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--set_dcsr_ebreak', help='set_dcsr_ebreak',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_debug_single_step',
+                       help='enable_debug_single_step', choices=[0, 1], type=int, default=0)
+    parse.add_argument('--set_mstatus_tw', help='set_mstatus_tw',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--set_mstatus_mprv', help='set_mstatus_mprv',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_floating_point', help='enable_floating_point',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_vector_extension', help='enable_vector_extension',
+                       choices=[0, 1], type=int, default=0)
+    parse.add_argument('--enable_b_extension', help='enable_b_extension',
+                       choices=[0, 1], type=int, default=0)
+    # TO DO
     args = parse.parse_args()
-
     return args
 
 
