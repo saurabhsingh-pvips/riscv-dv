@@ -104,7 +104,13 @@ class riscv_asm_program_gen:
         self.gen_program_end(hart)
 
     def gen_kernel_sections(self, hart):
+<<<<<<< Updated upstream
         pass
+=======
+        # pass
+        for x in rcs.supported_privileged_mode:
+            self.gen_interrupt_handler_section(x, hart)
+>>>>>>> Stashed changes
 
     def gen_kernel_program(self, hart, seq):
         pass
@@ -362,7 +368,79 @@ class riscv_asm_program_gen:
         pass
 
     def gen_interrupt_handler_section(self, mode, hart):
+<<<<<<< Updated upstream
         pass
+=======
+        interrupt_handler_instr = []
+        # ls_unit = "w" if (rcs.XLEN == 32) else "d"
+        # if(mode.value < cfg.init_privileged_mode.value):
+        #    return
+
+        if(mode == privileged_mode_t.USER_MODE.name and not (rcs.support_umode_trap)):
+            return
+
+        if(mode == privileged_mode_t.MACHINE_MODE.name):
+            mode_prefix = "m"
+            status = privileged_reg_t.MSTATUS
+            ip = privileged_reg_t.MIP
+            ie = privileged_reg_t.MIE
+            scratch = privileged_reg_t.MSCRATCH
+        elif(mode == privileged_mode_t.SUPERVISOR_MODE.name):
+            mode_prefix = "s"
+            status = privileged_reg_t.SSTATUS
+            ip = privileged_reg_t.SIP
+            ie = privileged_reg_t.SIE
+            scratch = privileged_reg_t.SSCRATCH
+        elif(mode == privileged_mode_t.USER_MODE.name):
+            mode_prefix = "u"
+            status = privileged_reg_t.USTATUS
+            ip = privileged_reg_t.UIP
+            ie = privileged_reg_t.UIE
+            scratch = privileged_reg_t.USCRATCH
+        else:
+            logging.critical("Unsupported mode: %0s" % (mode))
+
+        if(cfg.enable_nested_interrupt):
+            interrupt_handler_instr.append("csrr x%0d, 0x%0x" % (cfg.gpr[0].value, scratch.value))
+            interrupt_handler_instr.append("bgtz x%0d, 1f" % (cfg.gpr[0].value))
+            interrupt_handler_instr.append("csrwi 0x%0x, 0x1" % (scratch.value))
+
+            if(status == privileged_reg_t.MSTATUS):
+                interrupt_handler_instr.append("csrsi 0x%0x, 0x%0x" % (status.value, 8))
+            elif(status == privileged_reg_t.SSTATUS):
+                interrupt_handler_instr.append("csrsi 0x%0x, 0x%0x" % (status.value, 2))
+            elif(status == privileged_reg_t.USTATUS):
+                interrupt_handler_instr.append("csrsi 0x%0x, 0x%0x" % (status.value, 1))
+            else:
+                logging.critical("Unsupported status %0s" % (status.value))
+
+            interrupt_handler_instr.append("1: csrwi 0x%0x,0" % (scratch.value))
+
+        to_extend_interrupt_hanlder_instr = ["csrr  x%0d, 0x%0x # %0s;" % (cfg.gpr[0].value,
+                                                                           status.value,
+                                                                           status.name),
+                                             "csrr  x%0d, 0x%0x # %0s;" % (cfg.gpr[0].value,
+                                                                           ie.value, ie.name),
+                                             "csrr  x%0d, 0x%0x # %0s;" % (cfg.gpr[0].value,
+                                                                           ip.value, ip.name),
+                                             "csrrc x%0d, 0x%0x, x%0d # %0s;" % (cfg.gpr[0].value,
+                                                                                 ip.value,
+                                                                                 cfg.gpr[0].value,
+                                                                                 ip.name)]
+        interrupt_handler_instr.extend(to_extend_interrupt_hanlder_instr)
+        self.gen_plic_section(interrupt_handler_instr)
+        # self.pop_gpr_from_kernel_stack(status.name, scratch.name, cfg.mstatus_mprv,
+        #                               cfg.sp, cfg.tp, interrupt_handler_instr)
+        interrupt_handler_instr.append("%0sret;" % (mode_prefix))
+
+        if(rcs.SATP_MODE[0] != 'BARE'):
+            self.instr_stream.append(".align 12")
+        else:
+            self.instr_stream.append(".align 2")
+
+        self.gen_section(pkg_ins.get_label("%0smode_intr_handler" %
+                                           (mode_prefix), hart), interrupt_handler_instr)
+>>>>>>> Stashed changes
 
     def format_section(self, instr):
         pass
