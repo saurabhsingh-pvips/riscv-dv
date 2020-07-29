@@ -115,11 +115,11 @@ class riscv_instr_gen_config:
         if(self.boot_mode_opts):
             logging.info("Got boot mode option - %0s", self.boot_mode_opts)
             if(self.boot_mode_opts == "m"):
-                self.init_privileged_mode = privileged_mode_t.MACHINE_MODE.name
+                self.init_privileged_mode = privileged_mode_t.MACHINE_MODE
             elif(self.boot_mode_opts == "s"):
-                self.init_privileged_mode = privileged_mode_t.SUPERVISOR_MODE.name
+                self.init_privileged_mode = privileged_mode_t.SUPERVISOR_MODE
             elif(self.boot_mode_opts == "u"):
-                self.init_privileged_mode = privileged_mode_t.USER_MODE.name
+                self.init_privileged_mode = privileged_mode_t.USER_MODE
             else:
                 logging.critical("Illegal boot mode option - %0s", self.boot_mode_opts)
 
