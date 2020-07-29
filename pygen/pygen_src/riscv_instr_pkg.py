@@ -1191,7 +1191,7 @@ class riscv_instr_pkg:
         formatted_str = length * " "
         if (int(length) < len(string)):
             return string
-        formatted_str = string + formatted_str[0: (int(length) - len(string) - 1)]
+        formatted_str = string + formatted_str[0: (int(length) - len(string))]
         return formatted_str
 
     def format_data(self, data, byte_per_group = 4):
@@ -1201,6 +1201,9 @@ class riscv_instr_pkg:
                 string = string + ", 0x"
             string = string + f"{hex(data[i])}"
         return string
+
+    def push_gpr_to_kernel_stack(self, status, scratch, mprv, sp, tp, instr):
+        pass
 
 
 pkg_ins = riscv_instr_pkg()

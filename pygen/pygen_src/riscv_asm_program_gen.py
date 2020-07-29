@@ -17,7 +17,9 @@ import logging
 import random
 from bitstring import BitArray
 from pygen_src.riscv_instr_sequence import riscv_instr_sequence
-from pygen_src.riscv_instr_pkg import (pkg_ins, privileged_reg_t)
+from pygen_src.riscv_instr_pkg import (
+    pkg_ins, privileged_reg_t, privileged_mode_t, mtvec_mode_t, exception_cause_t)
+from pygen_src.riscv_signature_pkg import signature_type_t, core_status_t, test_result_t
 from pygen_src.riscv_instr_gen_config import cfg
 from pygen_src.target.rv32i import riscv_core_setting as rcs
 '''
@@ -103,9 +105,30 @@ class riscv_asm_program_gen:
             logging.info("Main/sub program generation...done")
             # program end
             self.gen_program_end(hart)
+            for hart in range(cfg.num_of_harts):
+                self.gen_data_page_begin(hart)
+                if(cfg.no_data_page):
+                    self.gen_data_page()
+
+                    if((hart == 0) and ("RV32A" in rcs.supported_isa)):
+                        self.gen_data_page(hart, amo = 1)
+
+            self.gen_stack_section(hart)
+            if(not cfg.bare_program_mode):
+                self.gen_kernel_sections(hart)
 
     def gen_kernel_sections(self, hart):
-        pass
+        if(rcs.SATP_MODE != "BARE"):
+            self.instr_stream.append(".align 12")
+        else:
+            self.instr_stream.append(".align 2")
+        self.instr_stream.append(pkg_ins.get_label("kernel_instr_start:", hart))
+        self.instr_stream.append(".text")
+
+        self.gen_all_trap_handler(hart)
+        self.gen_interrupt_handler_section("MACHINE_MODE", hart)
+
+        self.gen_kernel_stack_section(hart)
 
     def gen_kernel_program(self, hart, seq):
         pass
@@ -146,16 +169,57 @@ class riscv_asm_program_gen:
             self.gen_section("_exit", ["j write_tohost"])
 
     def gen_data_page_begin(self, hart):
-        pass
+        self.instr_stream.append(".section .data")
+        if (hart == 0):
+            self.instr_stream.append(".align 6; .global tohost; tohost: .dword 0;")
+            self.instr_stream.append(".align 6; .global fromhost; fromhost: .dword 0;")
 
     def gen_data_page(self, hart, is_kernel = 0, amo = 0):
         pass
 
     def gen_stack_section(self, hart):
-        pass
+        hart_prefix_string = pkg_ins.hart_prefix(hart)
+        if(cfg.use_push_data_section):
+            self.instr_stream.append(
+                ".pushsection .{}user_stack,\"aw\",@progbits;".format(hart_prefix_string))
+        else:
+            self.instr_stream.append(
+                ".section .{}user_stack,\"aw\",@progbits;".format(hart_prefix_string))
+        if(rcs.SATP_MODE != "BARE"):
+            self.instr_stream.append(".align 12")
+        else:
+            self.instr_stream.append(".align 2")
+
+        self.instr_stream.append(pkg_ins.get_label("user_stack_start:", hart))
+        self.instr_stream.append(".rept {}".format(cfg.kernel_stack_len - 1))
+        self.instr_stream.append(".{}byte 0x0".format(rcs.XLEN // 8))
+        self.instr_stream.append(".endr")
+        self.instr_stream.append(pkg_ins.get_label("user_stack_end:", hart))
+        self.instr_stream.append(".{}byte 0x0".format(rcs.XLEN // 8))
+        if (cfg.use_push_data_section):
+            self.instr_stream.push_back(".popsection;")
 
     def gen_kernel_stack_section(self, hart):
-        pass
+        hart_prefix_string = pkg_ins.hart_prefix(hart)
+        if(cfg.use_push_data_section):
+            self.instr_stream.append(
+                ".pushsection .{}kernel_stack,\"aw\",@progbits;".format(hart_prefix_string))
+        else:
+            self.instr_stream.append(
+                ".section .{}kernel_stack,\"aw\",@progbits;".format(hart_prefix_string))
+        if(rcs.SATP_MODE != "BARE"):
+            self.instr_stream.append(".align 12")
+        else:
+            self.instr_stream.append(".align 2")
+
+        self.instr_stream.append(pkg_ins.get_label("kernel_stack_start:", hart))
+        self.instr_stream.append(".rept {}".format(cfg.kernel_stack_len - 1))
+        self.instr_stream.append(".{}byte 0x0".format(rcs.XLEN // 8))
+        self.instr_stream.append(".endr")
+        self.instr_stream.append(pkg_ins.get_label("kernel_stack_end:", hart))
+        self.instr_stream.append(".{}byte 0x0".format(rcs.XLEN // 8))
+        if (cfg.use_push_data_section):
+            self.instr_stream.push_back(".popsection;")
 
     def gen_init_section(self, hart):
         string = pkg_ins.format_string("init:", pkg_ins.LABEL_STR_LEN)
@@ -229,7 +293,20 @@ class riscv_asm_program_gen:
             self.instr_stream.append(pkg_ins.indent + "ecall")
 
     def gen_register_dump(self):
-        pass
+        tstr = ""
+        # load base address
+        tstr = "{} la x{}, _start".format(pkg_ins.indent, cfg.gpr[0].value)
+        self.instr_stream.append(tstr)
+
+        # Generate sw/sd instructions
+        for i in range(32):
+            if (rcs.XLEN == 64):
+                tstr = "{} sd x{}, {}(x{})".format(
+                    pkg_ins.indent, i, i * (rcs.XLEN / 8), cfg.gpr[0].value)
+            else:
+                tstr = "{} sw x{}, {}(x{})".format(
+                    pkg_ins.indent, i, int(i * (rcs.XLEN / 8)), cfg.gpr[0].value)
+            self.instr_stream.append(tstr)
 
     def pre_enter_privileged_mode(self, hart):
         instr = []
@@ -247,7 +324,7 @@ class riscv_asm_program_gen:
             self.page_table_list.process_page_table(instr)
             self.gen_section(pkg_ins.get_label("process_pt", hart), instr)
 
-        self.setup_epc(hart)
+        # self.setup_epc(hart)
 
         if(rcs.support_pmp):
             self.gen_privileged_mode_switch_routine(hart)
@@ -321,21 +398,130 @@ class riscv_asm_program_gen:
         self.gen_section(pkg_ins.get_label("trap_vec_init", hart), instr)
 
     def gen_all_trap_handler(self, hart):
-        pass
+        instr = []
+        if(not rcs.support_pmp):
+            self.gen_trap_handlers(hart)
+            self.gen_ecall_handler(hart)
+            self.gen_instr_fault_handler(hart)
+            self.gen_load_fault_handler(hart)
+            self.gen_store_fault_handler(hart)
 
     def gen_trap_handlers(self, hart):
-        pass
+        self.gen_trap_handler_section(hart, "m", privileged_reg_t.MCAUSE, privileged_reg_t.MTVEC,
+                                      privileged_reg_t.MTVAL, privileged_reg_t.MEPC, privileged_reg_t.MSCRATCH,
+                                      privileged_reg_t.MSTATUS, privileged_reg_t.MIE, privileged_reg_t.MIP)
 
     def gen_trap_handler_section(self, hart, mode, cause, tvec,
                                  tval, epc, scratch, status, ie, ip):
-        pass
+        is_interrupt = 1
+        tvec_name = ""
+        instr = []
+        if (cfg.mtvec_mode == mtvec_mode_t.VECTORED):
+            self.gen_interrupt_vector_table(hart, mode, status, cause, ie, ip, scratch, instr)
+        else:
+            # Push user mode GPR to kernel stack before executing exception handling, this is to avoid
+            # exception handling routine modify user program state unexpectedly
+            # TODO
+            pkg_ins.push_gpr_to_kernel_stack(
+                status, scratch, cfg.mstatus_mprv, cfg.sp, cfg.tp, instr)
+
+            # Checking xStatus can be optional if ISS (like spike) has different implementation of
+            # certain fields compared with the RTL processor.
+
+            # TODO keeping the mtvec_handler section only for the time being to complete the simulation
+            # This needs to be fix later as it is not correctly implemented.
+            '''
+            if cfg.check_xstatus:
+                instr.append("csrr x{}, 0x{} # {}".format(
+                    cfg.gpr[0].value, status.value, status.name))
+
+            # Use scratch CSR to save a GPR value
+            # Check if the exception is caused by an interrupt, if yes, jump to interrupt
+            # handler Interrupt is indicated by xCause[XLEN-1]
+            instr.append("csrr x{}, 0x{} # {}\n".format(cfg.gpr[0].value, cause.value, cause.name) +
+                         "{}srli x{}, x{}, {}\n".format(pkg_ins.indent, cfg.gpr[0].value,
+                                                        cfg.gpr[0].value, rcs.XLEN - 1) +
+                         "{}bne x{}, x0, {}{}mode_intr_handler".format(pkg_ins.indent,
+                                                                       cfg.gpr[0].value, pkg_ins.hart_prefix(hart), mode)
+                         )
+            '''
+
+        # The trap handler will occupy one 4KB page, it will be allocated one entry in the page table
+        # with a specific privileged mode.
+
+        if (rcs.SATP_MODE[0] != "BARE"):
+            self.instr_stream.append(".align 12")
+        else:
+            self.instr_stream.append(".align {}".format(cfg.tvec_alignment))
+
+        tvec_name = tvec.name
+        self.gen_section(pkg_ins.get_label("{}_handler".format(tvec_name.lower()), hart), instr)
+
+        # # Exception handler
+        instr = []
+
+        # if (cfg.mtvec_mode == mtvec_mode_t.VECTORED):
+        #     pkg_ins.push_gpr_to_kernel_stack(status, scratch, cfg.mstatus_mprv, cfg.sp, cfg.tp, instr)
+
+        # # gen_signature_handshake(instr) TODO : signature package is not implemented yet.
+
+        # # The trap is caused by an exception, read back xCAUSE, xEPC to see if these
+        # # CSR values are set properly. The checking is done by comparing against the log
+        # # generated by ISA simulator (spike).
+
+        # instr.append( "csrr x{}, 0x{} # {}\n".format(cfg.gpr[0].value, epc.value, epc.name) +
+        #         "{}csrr x{}, 0x{} # {}\n".format(pkg_ins.indent, cfg.gpr[0].value, cause.value, cause.name) +
+        #         # Breakpoint
+        #         "{}li x{}, 0x{} # BREAKPOINT\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.BREAKPOINT.value) +
+        #         "{}beq x{}, x{}, {}ebreak_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+
+        #         # Check if it's an ECALL exception. Jump to ECALL exception handler
+        #         "{}li x{}, 0x{} # ECALL_UMODE\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.ECALL_UMODE.value) +
+        #         "{}beq x{}, x{}, {}ecall_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+        #         "{}li x{}, 0x{} # ECALL_SMODE\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.ECALL_SMODE.value) +
+        #         "{}beq x{}, x{}, {}ecall_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+        #         "{}li x{}, 0x{} # ECALL_MMODE\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.ECALL_MMODE.value) +
+        #         "{}beq x{}, x{}, {}ecall_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+
+        #         # Page table fault or access fault conditions
+        #         "{}li x{}, 0x{}\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.INSTRUCTION_ACCESS_FAULT.value) +
+        #         "{}beq x{}, x{}, {}instr_fault_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+        #         "{}li x{}, 0x{}\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.LOAD_ACCESS_FAULT.value) +
+        #         "{}beq x{}, x{}, {}load_fault_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+        #         "{}li x{}, 0x{}\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.STORE_AMO_ACCESS_FAULT.value) +
+        #         "{}beq x{}, x{}, {}store_fault_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+        #         "{}li x{}, 0x{}\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.INSTRUCTION_PAGE_FAULT.value) +
+        #         "{}beq x{}, x{}, {}spt_fault_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+        #         "{}li x{}, 0x{}\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.LOAD_PAGE_FAULT.value) +
+        #         "{}beq x{}, x{}, {}spt_fault_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+        #         "{}li x{}, 0x{}\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.STORE_AMO_ACCESS_FAULT.value) +
+        #         "{}beq x{}, x{}, {}spt_fault_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+
+        #         # Illegal instruction exception
+        #         "{}li x{}, 0x{} # ILLEGAL_INSTRUCTION\n".format(pkg_ins.indent, cfg.gpr[1].value, exception_cause_t.ILLEGAL_INSTRUCTION.value) +
+        #         "{}beq x{}, x{}, {}illegal_instruction_handler\n".format(pkg_ins.indent, cfg.gpr[0].value, cfg.gpr[1].value, pkg_ins.hart_prefix(hart)) +
+
+        #         # Skip checking tval for illegal instruction as it's implementation specific
+        #         "{}csrr x{}, 0x{} # {}\n".format(pkg_ins.indent, cfg.gpr[0].value, tval.value, tval.name) +
+        #         "{}1: jal x1, test_done ".format(pkg_ins.indent)
+        # )
+
+        # self.gen_section(pkg_ins.get_label("{}smode_exception_handler".format(mode), hart), instr)
 
     def gen_interrupt_vector_table(self, hart, mode, status, cause, ie,
                                    ip, scratch, instr):
         pass
 
     def gen_ecall_handler(self, hart):
-        pass
+        tstr = ""
+        tstr = pkg_ins.format_string(pkg_ins.get_label(
+            "ecall_handler:", hart), pkg_ins.LABEL_STR_LEN)
+        self.instr_stream.append(tstr)
+        self.dump_perf_stats()
+        self.gen_register_dump()
+        tstr = pkg_ins.format_string(" ", pkg_ins.LABEL_STR_LEN)
+        tstr = tstr + "j write_tohost"
+        self.instr_stream.append(tstr)
 
     def gen_ebreak_handler(self, hart):
         pass
@@ -362,7 +548,73 @@ class riscv_asm_program_gen:
         pass
 
     def gen_interrupt_handler_section(self, mode, hart):
-        pass
+        interrupt_handler_instr = []
+        # ls_unit = "w" if (rcs.XLEN == 32) else "d"
+        # if(mode.value < cfg.init_privileged_mode.value):
+        #    return
+        if(mode is privileged_mode_t.USER_MODE.name and not (rcs.support_umode_trap)):
+            return
+        if(mode == privileged_mode_t.MACHINE_MODE.name):
+            mode_prefix = "m"
+            status = privileged_reg_t.MSTATUS
+            ip = privileged_reg_t.MIP
+            ie = privileged_reg_t.MIE
+            scratch = privileged_reg_t.MSCRATCH
+        elif(mode is privileged_mode_t.SUPERVISOR_MODE.name):
+            mode_prefix = "s"
+            status = privileged_reg_t.SSTATUS
+            ip = privileged_reg_t.SIP
+            ie = privileged_reg_t.SIE
+            scratch = privileged_reg_t.SSCRATCH
+        elif(mode == privileged_mode_t.USER_MODE.name):
+            mode_prefix = "u"
+            status = privileged_reg_t.USTATUS
+            ip = privileged_reg_t.UIP
+            ie = privileged_reg_t.UIE
+            scratch = privileged_reg_t.USCRATCH
+        else:
+            logging.critical("Unsupported mode: %0s" % (mode))
+
+        if(cfg.enable_nested_interrupt):
+            interrupt_handler_instr.append("csrr x%0d, 0x%0x" % (cfg.gpr[0].value, scratch.value))
+            interrupt_handler_instr.append("bgtz x%0d, 1f" % (cfg.gpr[0].value))
+            interrupt_handler_instr.append("csrwi 0x%0x, 0x1" % (scratch.value))
+
+            if(status == privileged_reg_t.MSTATUS):
+                interrupt_handler_instr.append("csrsi 0x%0x, 0x%0x" % (status.value, 8))
+            elif(status == privileged_reg_t.SSTATUS):
+                interrupt_handler_instr.append("csrsi 0x%0x, 0x%0x" % (status.value, 2))
+            elif(status == privileged_reg_t.USTATUS):
+                interrupt_handler_instr.append("csrsi 0x%0x, 0x%0x" % (status.value, 1))
+            else:
+                logging.critical("Unsupported status %0s" % (status.value))
+
+            interrupt_handler_instr.append("1: csrwi 0x%0x,0" % (scratch.value))
+
+        to_extend_interrupt_hanlder_instr = ["csrr  x%0d, 0x%0x # %0s;" % (cfg.gpr[0].value,
+                                                                           status.value,
+                                                                           status.name),
+                                             "csrr  x%0d, 0x%0x # %0s;" % (cfg.gpr[0].value,
+                                                                           ie.value, ie.name),
+                                             "csrr  x%0d, 0x%0x # %0s;" % (cfg.gpr[0].value,
+                                                                           ip.value, ip.name),
+                                             "csrrc x%0d, 0x%0x, x%0d # %0s;" % (cfg.gpr[0].value,
+                                                                                 ip.value,
+                                                                                 cfg.gpr[0].value,
+                                                                                 ip.name)]
+        interrupt_handler_instr.extend(to_extend_interrupt_hanlder_instr)
+        self.gen_plic_section(interrupt_handler_instr)
+        # self.pop_gpr_from_kernel_stack(status.name, scratch.name, cfg.mstatus_mprv,
+        #                               cfg.sp, cfg.tp, interrupt_handler_instr)
+        interrupt_handler_instr.append("%0sret;" % (mode_prefix))
+
+        if(rcs.SATP_MODE[0] != 'BARE'):
+            self.instr_stream.append(".align 12")
+        else:
+            self.instr_stream.append(".align 2")
+
+        self.gen_section(pkg_ins.get_label("%0smode_intr_handler" %
+                                           (mode_prefix), hart), interrupt_handler_instr)
 
     def format_section(self, instr):
         pass
@@ -377,7 +629,13 @@ class riscv_asm_program_gen:
         self.instr_stream.append("")
 
     def dump_perf_stats(self):
-        pass
+        perf_stats = []
+        '''
+        for i in range(len(implemented_csr)):
+            self.gen_signature_handshake()
+        '''
+        self.format_section(perf_stats)
+        # self.instr_stream.append(perf_stats)
 
     def gen_test_file(self, test_name):
         subprocess.run(["mkdir", "-p", "out/asm_tests"])
@@ -388,9 +646,44 @@ class riscv_asm_program_gen:
         file.close()
         logging.info("%0s is generated", test_name)
 
-    def gen_signature_handshake(self, instr, signature_type, core_status = "INITIALIZED",
-                                test_result = "TEST_FAIL", csr = "MSCRATCH", addr_label = ""):
-        pass
+    def gen_signature_handshake(self, instr, signature_type, core_status = core_status_t.INITIALIZED,
+                                test_result = test_result_t.TEST_FAIL, csr = privileged_reg_t.MSCRATCH, addr_label = ""):
+        if(cfg.require_signature_addr):
+            string = []
+            string.append("li x{}, 0x{}".format(cfg.gpr[1].value, cfg.signature_addr))
+            instr.append(string)
+            if(signature_type == signature_type_t.CORE_STATUS):
+                string.append("li x{}, 0x{}\n".format(cfg.gpr[0].value, core_status) +
+                              "slli x{}, x{}, 8\n".format(cfg.gpr[0].value, cfg.gpr[0].value) +
+                              "addi x%{}, x{}, 0x{}\n".format(cfg.gpr[0].value,
+                                                              cfg.gpr[0].value, signature_type) +
+                              "sw x{}, 0(x{})".format(cfg.gpr[0].value, cfg.gpr[1].value))
+                instr.append(string)
+            elif(signature_type == signature_type_t.TEST_RESULT):
+                string.append("li x{}, 0x{}\n".format(cfg.gpr[0].value, test_result) +
+                              "slli x{}, x{}, 8\n".format(cfg.gpr[0].value, cfg.gpr[0].value) +
+                              "addi x%{}, x{}, 0x{}\n".format(cfg.gpr[0].value,
+                                                              cfg.gpr[0].value, signature_type) +
+                              "sw x{}, 0(x{})".format(cfg.gpr[0].value, cfg.gpr[1].value))
+                instr.append(string)
+            elif(signature_type == signature_type_t.WRITE_GPR):
+                string.append("li x{}, 0x{}\n".format(cfg.gpr[0].value, signature_type) +
+                              "sw x{}, 0(x{})".format(cfg.gpr[0].value, cfg.gpr[1].value))
+                instr.append(string)
+                for i in range(32):
+                    string.append("sw x{}, 0(x{})".format(i, cfg.gpr[1].value))
+                    instr.append(string)
+            elif(signature_type == signature_type_t.WRITE_CSR):
+                string.append("li x{}, 0x{}\n".format(cfg.gpr[0].value, csr) +
+                              "slli x{}, x{}, 8\n".format(cfg.gpr[0].value, cfg.gpr[0].value) +
+                              "addi x%{}, x{}, 0x{}\n".format(cfg.gpr[0].value,
+                                                              cfg.gpr[0].value, signature_type) +
+                              "sw x{}, 0(x{})".format(cfg.gpr[0].value, cfg.gpr[1].value) +
+                              "csrr x{}, 0x{}".format(cfg.gpr[0].value, csr) +
+                              "sw x{}, 0(x{})".format(cfg.gpr[0].value, cfg.gpr[1].value))
+                instr.append(string)
+            else:
+                logging.critical("signature_type is not defined")
 
     def add_directed_instr_stream(self, name, ratio):
         pass
