@@ -1,0 +1,164 @@
+<session version="1.1" release="Q-2020.03" timestp="2020-07-29 06:04:51 GMT">
+  <info>
+    <attr name="datetime" value="Wed Jul 29 11:35:21 2020
+"/>
+    <attr name="command" value="urg -dir test.vdb/"/>
+  </info>
+  <hvp>
+    <datadef>
+      <metdef name="Group" type="percent" aggregator="average" builtin="1" />
+    </datadef>
+  </hvp>
+  <old_coverage>
+  <scope type="top" name="top">
+    <metric name="Group" value="47.9765%" />
+  </scope>
+  <scope type="instance" name="top">
+  </scope>
+  <scope type="group" name="top">
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::mepc_alignment_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::branch_hit_history_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::csrrci_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::csrrsi_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::csrrwi_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::csrrc_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::csrrs_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::sw_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::sh_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::sb_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::lhu_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::lbu_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::lw_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::lh_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::lb_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::bltu_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::bgeu_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::bge_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::blt_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::bne_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::jalr_cg">
+      <metric name="Group" value="0%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::rv32i_misc_cg">
+      <metric name="Group" value="20%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::opcode_cg">
+      <metric name="Group" value="21.875%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::jal_cg">
+      <metric name="Group" value="38.2812%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::csrrw_cg">
+      <metric name="Group" value="40.625%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::beq_cg">
+      <metric name="Group" value="50.7812%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::auipc_cg">
+      <metric name="Group" value="91.6667%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::lui_cg">
+      <metric name="Group" value="91.6667%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::addi_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::ori_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::andi_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::and_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::sub_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::sltiu_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::srli_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::sra_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::slt_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::or_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::xor_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::add_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::slti_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::sll_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::srl_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::xori_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::slli_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::sltu_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+    <scope type="group" name="riscv_instr_pkg::riscv_instr_cover_group::srai_cg">
+      <metric name="Group" value="100%" />
+    </scope>
+  </scope>
+  <scope type="assert" name="Statistics">
+  </scope>
+  </old_coverage>
+</session>
