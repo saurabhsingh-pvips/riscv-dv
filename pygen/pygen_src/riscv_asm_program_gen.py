@@ -24,6 +24,7 @@ from pygen_src.riscv_instr_gen_config import cfg, args, args_dict
 from pygen_src.target.rv32i import riscv_core_setting as rcs
 from pygen_src.riscv_instr_stream import riscv_rand_instr_stream
 from pygen_src.riscv_utils import factory
+from pygen_src.riscv_callstack_gen import riscv_callstack_gen
 '''
     RISC-V assembly program generator
 
@@ -41,7 +42,7 @@ class riscv_asm_program_gen:
         self.hart = 0
         self.page_table_list = []
         self.main_program = []
-        self.sub_program = []
+        self.sub_program = [0] * rcs.XLEN
 
     # Main function to generate the whole program
 
@@ -51,8 +52,7 @@ class riscv_asm_program_gen:
         self.instr_stream.clear()
         self.gen_program_header()
         for hart in range(cfg.num_of_harts):
-            # Commenting out for now
-            # sub_program_name = []
+            sub_program_name = []
             self.instr_stream.append(f"h{int(hart)}_start:")
             if(not(cfg.bare_program_mode)):
                 self.setup_misa()
@@ -78,7 +78,8 @@ class riscv_asm_program_gen:
                 # Store fault handler
                 self.gen_store_fault_handler(hart)
                 self.gen_test_done()
-
+            # Generate sub program
+            self.gen_sub_program(hart, self.sub_program[hart], sub_program_name, cfg.num_of_sub_program)
             # Generate main program
             gt_lbl_str = pkg_ins.get_label("main", hart)
             label_name = gt_lbl_str
@@ -93,8 +94,10 @@ class riscv_asm_program_gen:
                                                 min_insert_cnt=1,
                                                 instr_stream=self.main_program[hart].directed_instr)
             self.main_program[hart].gen_instr(is_main_program=1, no_branch=cfg.no_branch_jump)
-
+            self.gen_callstack(
+                self.main_program[hart], self.sub_program[hart], sub_program_name, cfg.num_of_sub_program)
             self.main_program[hart].post_process_instr()
+            logging.info("Post-processing main program...done")
             self.main_program[hart].generate_instr_stream()
             logging.info("Generating main program instruction stream...done")
             self.instr_stream.extend(self.main_program[hart].instr_string_list)
@@ -146,14 +149,59 @@ class riscv_asm_program_gen:
     def gen_sub_program(self, hart, sub_program,
                         sub_program_name, num_sub_program,
                         is_debug = 0, prefix = "sub"):
-        pass
+        if(num_sub_program > 0):
+            # self.sub_program = [0] * num_sub_program
+            for i in range(len(self.sub_program)):
+                gt_label_str = pkg_ins.get_label("{}_{}".format(prefix, i + 1), hart)
+                label_name = gt_label_str
+                gt_label_str = riscv_instr_sequence()
+
+                self.sub_program[i].append(gt_label_str)
+                logging.info("Sub program name: %s", label_name)
+                if(is_debug):
+                    self.sub_program[i].instr_cnt = cfg.debug_sub_program_instr_cnt[i]
+                else:
+                    self.sub_program[i].instr_cnt = cfg.sub_program_instr_cnt[i]
+
+                self.generate_directed_instr_stream(hart=hart,
+                                                    label=self.main_program[i].label_name,
+                                                    original_instr_cnt=self.sub_program[hart].instr_cnt,
+                                                    min_insert_cnt=0,
+                                                    instr_stream=self.sub_program[i].directed_instr)
+
+                self.sub_program[i].label_name = label_name
+                self.sub_program[i].gen_instr(is_main_program=0, no_branch=cfg.no_branch_jump)
+                sub_program_name.append(self.sub_program[i].label_name)
 
     def gen_callstack(self, main_program, sub_program,
                       sub_program_name, num_sub_program):
-        pass
+        if(num_sub_program != 0):
+            self.call_stack_gen = riscv_callstack_gen()
+            self.call_stack_gen.init(num_sub_program + 1)
+            logging.info("Randomizing call stack")
+            if(call_stack_gen.randomize()):
+                idx = 0
+                # Insert the jump instruction based on the call stack
+                for i in range(len(callstack_gen.program_h)):
+                    for j in range(len(callstack_gen.program_h.sub_program_id)):
+                        idx += 1
+                        pid = callstack_gen.program_id[i].sub_program_id[j] - 1
+                        logging.info("Gen jump instr %0s -> sub[%0d] %0d", i, j, pid + 1)
+                        if(i == 0):
+                            self.main_program[i].insert_jump_instr(sub_program_name[pid], idx)
+                        else:
+                            self.sub_program[i - 1].insert_jump_instr(sub_program_name[pid], idx)
+            else:
+                logging.critical("Failed to generate callstack")
+                sys.exit(1)
+        logging.info("Randomizing call stack..done")
 
     def insert_sub_program(self, sub_program, instr_list):
-        pass
+        self.sub_program.suffle()
+        for i in range(len(self.sub_program)):
+            self.sub_program[i].post_process_instr()
+            self.sub_program[i].generate_instr_stream()
+            self.instr_list.append(self.sub_program[i].instr_string_list)
 
     def gen_program_header(self):
         string = []
