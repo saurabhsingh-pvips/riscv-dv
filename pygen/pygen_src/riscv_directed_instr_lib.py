@@ -17,7 +17,7 @@ from enum import IntEnum, auto
 from pygen_src.riscv_instr_stream import riscv_rand_instr_stream
 from pygen_src.isa.riscv_instr import riscv_instr, riscv_instr_ins
 from pygen_src.riscv_instr_gen_config import cfg
-from pygen_src.riscv_instr_pkg import riscv_reg_t, riscv_pseudo_instr_name_t, riscv_instr_name_t
+from pygen_src.riscv_instr_pkg import riscv_reg_t, riscv_pseudo_instr_name_t, riscv_instr_name_t, mem_region_t
 from pygen_src.target.rv32i import riscv_core_setting as rcs
 from pygen_src.riscv_pseudo_instr import riscv_pseudo_instr
 
@@ -39,6 +39,24 @@ class riscv_directed_instr_stream(riscv_rand_instr_stream):
         if riscv_directed_instr_stream.label != "":
             self.instr_list[0].label = riscv_directed_instr_stream.label
             self.instr_list[0].has_label = 1
+
+
+@vsc.randobj
+class riscv_mem_access_stream(riscv_directed_instr_stream):
+    def __init__(self):
+        super().__init__()
+        self.max_data_page_id = 0
+        self.load_store_shred_memory = 0
+        self.data_page = {}
+
+    def pre_randomize(self):
+        if(self.load_store_shared_memory):
+            self.data_page = cfg.amo_region
+        elif(self.kernel_mode):
+            self.data_page = cfg.s_mem_region
+        else:
+            self.data_page = cfg.mem_region
+        self.max_data_page_id = len(self.data_page)
 
 
 @vsc.randobj

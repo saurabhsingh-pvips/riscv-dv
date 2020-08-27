@@ -15,14 +15,16 @@ import sys
 import logging
 from pygen_src.riscv_directed_instr_lib import (riscv_directed_instr_stream,
                                                 riscv_int_numeric_corner_stream,
-                                                riscv_jal_instr)
+                                                riscv_jal_instr,
+                                                riscv_mem_access_stream)
 
 
 def factory(obj_of):
     objs = {
         "riscv_directed_instr_stream": riscv_directed_instr_stream,
         "riscv_int_numeric_corner_stream": riscv_int_numeric_corner_stream,
-        "riscv_jal_instr": riscv_jal_instr
+        "riscv_jal_instr": riscv_jal_instr,
+        "riscv_mem_access_stream": riscv_mem_access_stream
     }
 
     try:

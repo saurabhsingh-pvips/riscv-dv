@@ -83,12 +83,19 @@ class riscv_instr_gen_config:
         # Commenting out for now
         # vector_cfg = riscv_vector_cfg # TODO
         # pmp_cfg = riscv_pmp_cfg  # TODO
-        # self.mem_region = [] # TODO
-        # Self.amo_region = [] # TODO
 
+        self.mem_region = {
+                              1 : {'name': "region_0", 'size_in_bytes': 4096, 'xwr': "111"},
+                              2 : {'name': "region_1", 'size_in_bytes': 4096*16, 'xwr': "111"}
+                          }
+        self.amo_region = {
+                              1: {'name': "amo_0", 'size_in_bytes': 64, 'xwr': "111"}
+                          }
         self.stack_len = 5000
-
-        # Self.s_mem_region = [] # TODO
+        self.s_mem_region = {
+                              1 : {'name': "s_region_0", 'size_in_bytes': 4096, 'xwr': "111"},
+                              2 : {'name': "s_region_1", 'size_in_bytes': 4096, 'xwr': "111"}
+                            }
 
         self.kernel_stack_len = 4000
         self.kernel_program_instr_cnt = 400
