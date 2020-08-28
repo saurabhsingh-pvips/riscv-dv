@@ -46,7 +46,7 @@ class riscv_mem_access_stream(riscv_directed_instr_stream):
     def __init__(self):
         super().__init__()
         self.max_data_page_id = 0
-        self.load_store_shred_memory = 0
+        self.load_store_shared_memory = 0
         self.data_page = {}
 
     def pre_randomize(self):
@@ -57,6 +57,11 @@ class riscv_mem_access_stream(riscv_directed_instr_stream):
         else:
             self.data_page = cfg.mem_region
         self.max_data_page_id = len(self.data_page)
+    def add_rs1_init_la_instr(self, gpr, id, base):
+        pass
+
+    def add_mixed_instr(self, instr_cnt):
+        pass
 
 
 @vsc.randobj
