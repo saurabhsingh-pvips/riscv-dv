@@ -38,6 +38,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
         self.addr = []
         self.load_store_instr = []
         self.data_page_id = vsc.rand_uint32_t()
+        print("sadas",self.data_page_id)
         self.rs1_reg = vsc.rand_enum_t(riscv_reg_t)
         self.locality = vsc.rand_enum_t(locality_e)
         self.mix_load_store_offset = vsc.rand_int32_t()
@@ -58,7 +59,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
 
     @vsc.constraint
     def addr_c(self):
-        pass # TODO
+        self.data_page_id == self.max_data_page_id
     
     def randomize_offset(self):
         self.offset = [0] * self.num_load_store
@@ -103,7 +104,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
                     allowed_instr.extend([riscv_instr_name_t.LW.name, riscv_instr_name_t.SW.name])
                     if(cfg.enable_floating_point):
                         allowed_instr.extend([riscv_instr_name_t.FLW.name, riscv_instr_name_t.FSW.name])
-                    if((self.offset[i] in range(127)) and (self.offset[i]%4 == 0) and
+                    if((self.offset[i] in range(128)) and (self.offset[i]%4 == 0) and
                         (riscv_instr_group_t.RV32C in rcs.supported_isa) and
                         (enable_compressed_load_store)):
                         if(self.rs1_reg == riscv_reg_t.SP):
@@ -117,7 +118,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
                     allowed_instr.extend([riscv_instr_name_t.LWU.name, riscv_instr_name_t.LD.name, riscv_instr_name_t.SD.name])
                     if(cfg.enable_floating_point and (riscv_instr_group_t.RV32D in rcs.supported_isa)):
                         allowed_instr.extend([riscv_instr_name_t.FLD.name, riscv_instr_name_t.FSD.name])
-                    if((self.offset[i] in range(255)) and (self.offset[i] %8 ==0) and 
+                    if((self.offset[i] in range(256)) and (self.offset[i] %8 ==0) and 
                         (riscv_instr_group_t.RV64C in rcs.supported_isa) and
                         enable_compressed_load_store):
                         if(self.rs1_reg == riscv_get_t.SP):
@@ -130,7 +131,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
                     allowed_instr.extend([riscv_instr_name_t.LW.name, riscv_instr_name_t.SW.name, riscv_instr_name_t.LH.name,
                          riscv_instr_name_t.LHU.name, riscv_instr_name_t.SH.name])
                     # Compressed load/store still needs to be alligned
-                    if((self.offset[i] in range(127)) and (self.offset[i] % 4 == 0) and
+                    if((self.offset[i] in range(128)) and (self.offset[i] % 4 == 0) and
                         (riscv_instr_group_t.RV32C in rcs.supported_isa) and
                         enable_compressed_load_store):
                         if(self.rs1_reg == riscv_reg_t.SP):
@@ -139,22 +140,23 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
                             allowed_instr.extend([riscv_instr_name_t.C_LW.name, riscv_instr_name_t.C_SW.name])
                     if(rcs.XLEN >= 64):
                         allowed_instr.extend([riscv_instr_name_t.LWU.name, riscv_instr_name_t.LD.name, riscv_instr_name_t.SD.name])
-                        if((self.offset[i] in range(255)) and (self.offset[i] % 8 == 0) and
+                        if((self.offset[i] in range(256)) and (self.offset[i] % 8 == 0) and
                         (riscv_instr_group_t.RV64C in rcs.supported_isa) and
                         enable_compressed_load_store):
                             if(self.rs1_reg == riscv_reg_t.SP):
                                 allowed_instr.extend([riscv_instr_name_t.C_LWSP.name, riscv_instr_name_t.C_SWSP.name])
                             else:
                                 allowed_instr.extend([riscv_instr_name_t.C_LD.name, riscv_instr_name_t.C_SD.name])
-        instr = riscv_instr_ins.get_load_store_instr(allowed_instr)
-        instr.has_rs1 = 0
-        instr.has_imm = 0
-        self.randomize_gpr(instr)
-        instr.rs1 = self.rs1_reg
-        instr.imm_str = str(instr.uintToInt(self.offset[i]))
-        instr.process_load_store = 0
-        self.instr_list.append(instr)
-        self.load_store_instr.append(instr)
+            instr = riscv_instr_ins.get_load_store_instr(allowed_instr)
+            instr.has_rs1 = 0
+            instr.has_imm = 0
+            self.randomize_gpr(instr)
+            print("Instr", instr)
+            instr.rs1 = self.rs1_reg
+            instr.imm_str = str(instr.uintToInt(self.offset[i]))
+            instr.process_load_store = 0
+            self.instr_list.append(instr)
+            self.load_store_instr.append(instr)
 
 
 class riscv_single_load_store_instr_stream(riscv_load_store_base_instr_stream):

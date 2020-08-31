@@ -17,7 +17,7 @@ from enum import IntEnum, auto
 from pygen_src.riscv_instr_stream import riscv_rand_instr_stream
 from pygen_src.isa.riscv_instr import riscv_instr, riscv_instr_ins
 from pygen_src.riscv_instr_gen_config import cfg
-from pygen_src.riscv_instr_pkg import riscv_reg_t, riscv_pseudo_instr_name_t, riscv_instr_name_t, mem_region_t
+from pygen_src.riscv_instr_pkg import riscv_reg_t, riscv_pseudo_instr_name_t, riscv_instr_name_t, mem_region_t, pkg_ins
 from pygen_src.target.rv32i import riscv_core_setting as rcs
 from pygen_src.riscv_pseudo_instr import riscv_pseudo_instr
 
@@ -29,6 +29,9 @@ class riscv_directed_instr_stream(riscv_rand_instr_stream):
     def __init__(self):
         super().__init__()
         self.name = ""
+
+    def pre_randomize(self):
+        self.reserved_rd.clear()
 
     def post_randomize(self):
         for i in range(len(self.instr_list)):
@@ -57,11 +60,29 @@ class riscv_mem_access_stream(riscv_directed_instr_stream):
         else:
             self.data_page = cfg.mem_region
         self.max_data_page_id = len(self.data_page)
-    def add_rs1_init_la_instr(self, gpr, id, base):
-        pass
+        print("data_page_length = ", self.max_data_page_id)
+
+    def add_rs1_init_la_instr(self, gpr, idx, base = 0):
+        la_instr = riscv_pseudo_instr()
+        la_instr.pseudo_instr_name = riscv_pseudo_instr_name_t.LA
+        la_instr.rd = gpr
+        print("id", idx)
+        if(self.load_store_shared_memory):
+            la_instr.imm_str = "{}+{}".format(cfg.amo_region[idx]['name'], base)
+        elif(self.kernel_mode):
+            la_instr.imm_str = "{}{}+{}".format(pkg_ins.hart_prefix(self.hart),
+                                                cfg.s_mem_region[idx]['name'], base)
+        else:
+            la_instr.imm_str = "{}{}+{}".format(pkg_ins.hart_prefix(self.hart),
+                                                cfg.mem_region[idx]['name'], base)
+        self.instr_list.insert(0, la_instr)
 
     def add_mixed_instr(self, instr_cnt):
-        pass
+        self.setup_allowed_instr(1, 1)
+        for i in range(instr_cnt):
+            instr = riscv_instr()
+            self.randomize_instr(instr)
+            self.insert_instr(instr)
 
 
 @vsc.randobj
