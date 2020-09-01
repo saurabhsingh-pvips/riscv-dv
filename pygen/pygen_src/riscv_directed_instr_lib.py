@@ -81,7 +81,7 @@ class riscv_mem_access_stream(riscv_directed_instr_stream):
         self.setup_allowed_instr(1, 1)
         for i in range(instr_cnt):
             instr = riscv_instr()
-            self.randomize_instr(instr)
+            instr = self.randomize_instr(instr)
             self.insert_instr(instr)
 
 
