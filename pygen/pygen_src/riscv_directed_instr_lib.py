@@ -48,7 +48,7 @@ class riscv_directed_instr_stream(riscv_rand_instr_stream):
 class riscv_mem_access_stream(riscv_directed_instr_stream):
     def __init__(self):
         super().__init__()
-        self.max_data_page_id = 0
+        self.max_data_page_id = vsc.int32_t()
         self.load_store_shared_memory = 0
         self.data_page = {}
 
@@ -60,13 +60,11 @@ class riscv_mem_access_stream(riscv_directed_instr_stream):
         else:
             self.data_page = cfg.mem_region
         self.max_data_page_id = len(self.data_page)
-        print("data_page_length = ", self.max_data_page_id)
 
     def add_rs1_init_la_instr(self, gpr, idx, base = 0):
         la_instr = riscv_pseudo_instr()
         la_instr.pseudo_instr_name = riscv_pseudo_instr_name_t.LA
         la_instr.rd = gpr
-        print("id", idx)
         if(self.load_store_shared_memory):
             la_instr.imm_str = "{}+{}".format(cfg.amo_region[idx]['name'], base)
         elif(self.kernel_mode):
@@ -97,9 +95,11 @@ class riscv_jal_instr(riscv_rand_instr_stream):
 
     @vsc.constraint
     def instr_c(self):
+        print("JAL instr_c CONSTRAINT")
         self.num_of_jump_instr in vsc.rangelist(vsc.rng(10, 30))
 
     def post_randomize(self):
+        print("JAL POST")
         order = []
         RA = cfg.ra
         order = [0] * self.num_of_jump_instr

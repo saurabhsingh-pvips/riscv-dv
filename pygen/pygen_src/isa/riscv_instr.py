@@ -455,7 +455,6 @@ class riscv_instr:
 
     def get_instr_name(self):
         get_instr_name = self.instr_name
-        print(get_instr_name)
         for i in get_instr_name:
             if(i == "_"):
                 get_instr_name = get_instr_name.replace(i, ".")

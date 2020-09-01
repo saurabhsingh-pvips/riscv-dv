@@ -11,6 +11,8 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 
+import random
+import logging
 import vsc
 from enum import IntEnum, auto
 from pygen_src.riscv_directed_instr_lib import riscv_mem_access_stream
@@ -30,7 +32,9 @@ class locality_e(IntEnum):
 @vsc.randobj
 class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
     def __init__(self):
+        print("Before Super")
         super().__init__()
+        print("After Super")
         self.num_load_store = vsc.rand_uint32_t()
         self.num_mixed_instr = vsc.rand_uint32_t()
         self.base = vsc.rand_int32_t()
@@ -38,41 +42,81 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
         self.addr = []
         self.load_store_instr = []
         self.data_page_id = vsc.rand_uint32_t()
-        print("sadas",self.data_page_id)
+        print("Load Constructor data_page_id = ",self.data_page_id)
         self.rs1_reg = vsc.rand_enum_t(riscv_reg_t)
         self.locality = vsc.rand_enum_t(locality_e)
-        self.mix_load_store_offset = vsc.rand_int32_t()
+        self.max_load_store_offset = vsc.rand_int32_t()
         self.use_sp_as_rs1 = vsc.rand_bit_t()
 
     @vsc.constraint
     def sp_rnd_order_c(self):
         # solve use_sp_as_rs1 before rs1_reg
+        # TODO
         pass
 
     @vsc.constraint
-    def use_sp_as_rs1(self):
-        pass # TODO
-    
+    def sp_c(self):
+        vsc.dist(self.use_sp_as_rs1, [vsc.weight(1,1), vsc.weight(0,2)])
+        if self.use_sp_as_rs1:
+            self.rs1_reg == riscv_reg_t.SP
+
     @vsc.constraint
     def rs1_c(self):
-        self.rs1_reg.not_inside(vsc.rangelist(cfg.reserved_regs, self.reserved_rd, riscv_reg_t.ZERO))
+        self.rs1_reg.not_inside(vsc.rangelist(cfg.reserved_regs,
+                              self.reserved_rd, riscv_reg_t.ZERO))
 
     @vsc.constraint
     def addr_c(self):
-        self.data_page_id == self.max_data_page_id
+        # solve data_page_id before max_load_store_offset;
+        # solve max_load_store_offset before base;
+        # TODO
+        self.data_page_id < self.max_data_page_id
+        '''with vsc.foreach(self.data_page, idx=True) as i:
+            if i == self.data_page_id:
+                self.max_load_store_offset == self.data_page[i].size_in_bytes'''
+        self.base in vsc.rangelist(vsc.rng(0, self.max_load_store_offset-1))
     
     def randomize_offset(self):
+        addr_ = vsc.rand_int32_t()
+        offset_ = 0
         self.offset = [0] * self.num_load_store
         self.addr = [0] * self.num_load_store
         for i in range(self.num_load_store):
-            pass
+            try:
+                # TODO Randomization for addr_
+                # vsc.randomize(addr_)
+                # print("Addr_ ", addr_)
+                if self.locality == locality_e.NARROW:
+                    offset_ = random.randrange(-16,16) 
+                elif self.locality == locality_e.HIGH:
+                    offset_ = random.randrange(-64,64)
+                elif self.locality == locality_e.MEDIUM:
+                    offset_ = random.randrange(-256,256)
+                elif self.locality == locality_e.SPARSE:
+                    offset_ = random.randrange(-2048,2047)
+                # print("offset_ ", offset_)
+                # print("Base ", self.base)
+                var1 = self.base + offset_ - 1
+                var2 = self.base + offset_ + 1
+                addr_ = random.randrange(var1, var2)
+                
+                print("Addr_ ", addr_)
+                # addr_ == self.base + offset_
+                # addr_ == 100
+                
+            except Exception:
+                logging.critical("Cannot randomize load/store offset")
+            # print("Addr_ after if ", addr_)
+            self.offset[i] = offset_
+            self.addr[i] = addr_
 
     def pre_randomize(self):
         super().pre_randomize()
         if(riscv_reg_t.SP in [cfg.reserved_regs, self.reserved_rd]):
             self.use_sp_as_rs1 = 0
-            # self.use_sp_as_rs1.rand_mode(0)  TODO
-            pass
+            with vsc.raw_mode():
+                self.use_sp_as_rs1.rand_mode = False
+            self.sp_rnd_order_c.constraint_mode(False)
 
     def post_randomize(self):
         self.randomize_offset()
@@ -88,7 +132,6 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
         allowed_instr = []
         enable_compressed_load_store = 0
         self.randomize_avail_regs()
-        print("IN gen_load_store_instr")
         if((self.rs1_reg in [riscv_reg_t.S0, riscv_reg_t.S1, riscv_reg_t.A0, riscv_reg_t.A1,
 			riscv_reg_t.A2, riscv_reg_t.A3,riscv_reg_t.A4, riscv_reg_t.A5, riscv_reg_t.SP]) # TODO
             and not(cfg.disable_compressed_instr)):
