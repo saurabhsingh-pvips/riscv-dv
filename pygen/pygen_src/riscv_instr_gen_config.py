@@ -28,7 +28,7 @@ class riscv_instr_gen_config:
     def __init__(self, argv):
         # TODO Support for command line argument
         self.main_program_instr_cnt = 100  # count of main_prog
-        self.sub_program_instr_cnt = []  # count of sub_prog
+        self.sub_program_instr_cnt = vsc.randsz_list_t(vsc.int32_t()) # count of sub_prog
         self.debug_program_instr_cnt = 0  # count of debug_rom
         self.debug_sub_program_instr_cnt = []  # count of debug sub_progrms
         # Commenting out for now
@@ -175,6 +175,12 @@ class riscv_instr_gen_config:
 
         if(rcs.supported_isa != 'RV32C'):
             self.disable_compressed_instr = 1
+
+    @vsc.constraint
+    def default_c(self):
+        self.sub_program_instr_cnt.size == self.num_of_sub_program 
+        with vsc.foreach(self.sub_program_instr_cnt, idx=True) as i:
+            self.sub_program_instr_cnt[i].inside(vsc.rangelist(vsc.rng(10, self.instr_cnt)))
 
     @vsc.constraint
     def gpr_c(self):
@@ -328,7 +334,7 @@ def parse_args():
                        choices = [0, 1], type = int, default = 0)
     parse.add_argument('--enable_timer_irq', help = 'enable_timer_irq',
                        choices = [0, 1], type = int, default = 0)
-    parse.add_argument('--num_of_sub_program', help = 'num_of_sub_program', type = int, default = 5)
+    parse.add_argument('--num_of_sub_program', help = 'num_of_sub_program', type = int, default = 32) 
     parse.add_argument('--instr_cnt', help = 'instr_cnt', type = int, default = 200)
     parse.add_argument('--tvec_alignment', help = 'tvec_alignment', type = int, default = 2)
     parse.add_argument('--no_ebreak', help = 'no_ebreak', choices = [0, 1], type = int, default = 1)

@@ -43,7 +43,7 @@ class riscv_asm_program_gen:
         self.page_table_list = []
         self.main_program = []
         self.sub_program = [0] * rcs.XLEN
-
+        self.callstack_gen = "" 
     # Main function to generate the whole program
 
     # This is the main function to generate all sections of the program.
@@ -156,7 +156,8 @@ class riscv_asm_program_gen:
                 label_name = gt_label_str
                 gt_label_str = riscv_instr_sequence()
 
-                self.sub_program[i].append(gt_label_str)
+                self.sub_program[i] = gt_label_str
+                #print("sub program", self.sub_program[i], cfg.sub_program_instr_cnt[i], i)
                 logging.info("Sub program name: %s", label_name)
                 if(is_debug):
                     self.sub_program[i].instr_cnt = cfg.debug_sub_program_instr_cnt[i]
@@ -164,7 +165,7 @@ class riscv_asm_program_gen:
                     self.sub_program[i].instr_cnt = cfg.sub_program_instr_cnt[i]
 
                 self.generate_directed_instr_stream(hart=hart,
-                                                    label=self.main_program[i].label_name,
+                                                    label=label_name,
                                                     original_instr_cnt=self.sub_program[hart].instr_cnt,
                                                     min_insert_cnt=0,
                                                     instr_stream=self.sub_program[i].directed_instr)
@@ -176,16 +177,17 @@ class riscv_asm_program_gen:
     def gen_callstack(self, main_program, sub_program,
                       sub_program_name, num_sub_program):
         if(num_sub_program != 0):
-            self.call_stack_gen = riscv_callstack_gen()
-            self.call_stack_gen.init(num_sub_program + 1)
+            self.callstack_gen = riscv_callstack_gen()
+            self.callstack_gen.init(num_sub_program + 1)
             logging.info("Randomizing call stack")
-            if(call_stack_gen.randomize()):
+            print("In gen_callstak")
+            if(self.callstack_gen.randomize()):
                 idx = 0
                 # Insert the jump instruction based on the call stack
-                for i in range(len(callstack_gen.program_h)):
-                    for j in range(len(callstack_gen.program_h.sub_program_id)):
+                for i in range(len(self.callstack_gen.program_h)):
+                    for j in range(len(self.callstack_gen.program_h.sub_program_id)):
                         idx += 1
-                        pid = callstack_gen.program_id[i].sub_program_id[j] - 1
+                        pid = self.callstack_gen.program_id[i].sub_program_id[j] - 1
                         logging.info("Gen jump instr %0s -> sub[%0d] %0d", i, j, pid + 1)
                         if(i == 0):
                             self.main_program[i].insert_jump_instr(sub_program_name[pid], idx)
