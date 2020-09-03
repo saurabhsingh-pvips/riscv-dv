@@ -149,8 +149,9 @@ class riscv_asm_program_gen:
     def gen_sub_program(self, hart, sub_program,
                         sub_program_name, num_sub_program,
                         is_debug = 0, prefix = "sub"):
+        print("length of subprogram: ", len(self.sub_program), sub_program)
         if(num_sub_program > 0):
-            # self.sub_program = [0] * num_sub_program
+            self.sub_program = [0] * num_sub_program
             for i in range(len(self.sub_program)):
                 gt_label_str = pkg_ins.get_label("{}_{}".format(prefix, i + 1), hart)
                 label_name = gt_label_str
@@ -178,6 +179,7 @@ class riscv_asm_program_gen:
                       sub_program_name, num_sub_program):
         if(num_sub_program != 0):
             self.callstack_gen = riscv_callstack_gen()
+            print("num_of_sub_program: ", num_sub_program)
             self.callstack_gen.init(num_sub_program + 1)
             logging.info("Randomizing call stack")
             print("In gen_callstak")
@@ -199,11 +201,11 @@ class riscv_asm_program_gen:
         logging.info("Randomizing call stack..done")
 
     def insert_sub_program(self, sub_program, instr_list):
-        self.sub_program.suffle()
+        random.suffle(self.sub_program)
         for i in range(len(self.sub_program)):
             self.sub_program[i].post_process_instr()
             self.sub_program[i].generate_instr_stream()
-            self.instr_list.append(self.sub_program[i].instr_string_list)
+            instr_list.append(self.sub_program[i].instr_string_list)
 
     def gen_program_header(self):
         string = []

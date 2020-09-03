@@ -334,7 +334,7 @@ def parse_args():
                        choices = [0, 1], type = int, default = 0)
     parse.add_argument('--enable_timer_irq', help = 'enable_timer_irq',
                        choices = [0, 1], type = int, default = 0)
-    parse.add_argument('--num_of_sub_program', help = 'num_of_sub_program', type = int, default = 32) 
+    parse.add_argument('--num_of_sub_program', help = 'num_of_sub_program', type = int, default = 5) 
     parse.add_argument('--instr_cnt', help = 'instr_cnt', type = int, default = 200)
     parse.add_argument('--tvec_alignment', help = 'tvec_alignment', type = int, default = 2)
     parse.add_argument('--no_ebreak', help = 'no_ebreak', choices = [0, 1], type = int, default = 1)

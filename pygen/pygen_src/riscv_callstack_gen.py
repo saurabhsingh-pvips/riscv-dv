@@ -82,6 +82,7 @@ class riscv_callstack_gen:
             self.program_h[i].call_stack_level = self.stack_level[i]
         # Top-down generate the entire call stack.
         # A program can only call the programs in the next level.
+        print("last level: ", last_level)
         for i in range(last_level):
             total_sub_program_cnt = 0
             program_list = []
@@ -89,7 +90,9 @@ class riscv_callstack_gen:
             sub_program_id_pool = []
             sub_program_cnt = []
             idx = 0
-            for j in range(program_cnt):
+            #print("stack_level: ", self.stack_level)
+            #print("program_cnt:", self.program_cnt)
+            for j in range(self.program_cnt):
                 if self.stack_level[j] == i:
                     program_list.append(j)
                 if self.stack_level[j] == i + 1:
@@ -102,7 +105,8 @@ class riscv_callstack_gen:
             sub_program_id_pool = [0] * total_sub_program_cnt
             # TODO std::randomize
 
-            sub_program_id_pool.shuffle()
+            random.shuffle(sub_program_id_pool)
+            #print("length of sub program count: ", program_list)
             sub_program_cnt = [0] * len(program_list)
             logging.info("%0d programs @Lv%0d-> %0d programs at next level",
                          len(program_list), i, len(sub_program_id_pool))
@@ -118,7 +122,7 @@ class riscv_callstack_gen:
                 self.program_h[id].sub_program_id = [0] * sub_program_cnt[j]
                 logging.info("%0d sub programs are assigned to program[%0d]",
                              sub_program_cnt[j], id)
-                for k in range(len(program_h[id].sub_program_id)):
+                for k in range(len(self.program_h[id].sub_program_id)):
                     self.program_h[id].sub_program_id[k] = sub_program_id_pool[idx]
                     idx += 1
 
