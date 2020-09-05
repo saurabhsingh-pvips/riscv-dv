@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import random
 import vsc
+import logging
 from enum import IntEnum, auto
 from pygen_src.riscv_instr_stream import riscv_rand_instr_stream
 from pygen_src.isa.riscv_instr import riscv_instr, riscv_instr_ins
@@ -146,6 +147,76 @@ class riscv_jal_instr(riscv_rand_instr_stream):
         for i in range(len(self.instr_list)):
             self.instr_list[i].has_label = 1
             self.instr_list[i].atomic = 1
+
+
+@vsc.randobj
+class riscv_push_stack_instr(riscv_rand_instr_stream):
+    def __init__(self):
+        super().__init__()
+        self.stack_len = 0
+        self.num_of_reg_to_save = 0
+        self.num_of_redudant_instr = 0
+        self.push_stack_instr = []
+        self.saved_regs = []
+        self.branch_instr = riscv_instr()
+        self.enable_branch = vsc.rand_bit_t()
+        self.push_start_label = ""
+
+    def init(self):
+        self.reserved_rd = [cfg.ra]
+        self.saved_regs = [cfg.ra]
+        self.num_of_reg_to_save = len(self.saved_regs)
+        if(self.num_of_reg_to_save * (rcs.XLEN/8) > self.stack_len):
+            logging.error("stack len [%0d] is not enough to store %d regs",
+                          self.stack_len, self.num_of_reg_to_save)
+        self.num_of_redudant_instr = random.randrange(3,10)
+        self.initialize_instr_list(self.num_of_redudant_instr)
+
+    def gen_push_stack_instr(self, stack_len, allow_branch = 1):
+        self.stack_len = stack_len
+        self.init()
+        self.push_stack_instr = [0] * (self.num_of_reg_to_save + 1)
+        for i in range(len(self.push_stack_instr)):
+            self.push_stack_instr[i] = riscv_instr()
+        self.push_stack_instr[0] = riscv_instr_ins.get_instr("ADDI")
+        """
+        `DV_CHECK_RANDOMIZE_WITH_FATAL(push_stack_instr[0],
+                                   rd == cfg.sp; rs1 == cfg.sp;
+                                   imm == (~stack_len + 1);)
+        """
+        self.push_stack_instr[0].imm_str = "-{}".format(self.stack_len)
+        for i in range(len(self.saved_regs)):
+            if(rcs.XLEN is 32):
+                self.push_stack_instr[i+1] = riscv_instr_ins.get_instr("SW")
+                """
+                `DV_CHECK_RANDOMIZE_WITH_FATAL(push_stack_instr[i+1],
+                    rs2 == saved_regs[i]; rs1 == cfg.sp; imm == 4 * (i+1);)
+                """
+            else:
+                self.push_stack_instr[i+1] = riscv_instr_ins.get_instr("SD")
+                """
+                `DV_CHECK_RANDOMIZE_WITH_FATAL(push_stack_instr[i+1],
+                    instr_name == SD; rs2 == saved_regs[i]; rs1 == cfg.sp; imm == 8 * (i+1);)
+                """
+            self.push_stack_instr[i+1].process_load_store = 0
+        if(allow_branch):
+            # `DV_CHECK_STD_RANDOMIZE_FATAL(enable_branch)
+            pass
+        else:
+            self.enable_branch = 0
+        if(self.enable_branch):
+            self.branch_instr = riscv_instr_ins.get_rand_instr(include_category=["BRANCH"])
+            # `DV_CHECK_RANDOMIZE_FATAL(branch_instr)
+            self.branch_instr.imm_str = self.push_start_label
+            self.branch_instr.brach_assigned = 1
+            self.push_stack_instr[0].label = self.push_start_label
+            self.push_stack_instr[0].has_label = 1
+            self.branch_instr.extend(self.push_stack_instr)
+        self.mix_instr_stream(self.push_stack_instr)
+        for i in range(len(self.instr_list)):
+            self.instr_list[i].atomic = 1
+            if(self.instr_list[i].label == ""):
+                self.instr_list[i].has_label = 0
 
 
 class int_numeric_e(IntEnum):
