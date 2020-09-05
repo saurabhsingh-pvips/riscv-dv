@@ -202,6 +202,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
             self.load_store_instr.append(instr)
 
 
+@vsc.randobj
 class riscv_single_load_store_instr_stream(riscv_load_store_base_instr_stream):
     def __init__(self):
         super().__init__()
@@ -210,6 +211,8 @@ class riscv_single_load_store_instr_stream(riscv_load_store_base_instr_stream):
         self.num_load_store == 1
         self.num_mixed_instr < 5
 
+
+@vsc.randobj
 class riscv_load_store_stress_instr_stream(riscv_load_store_base_instr_stream):
     def __init__(self):
         super().__init__()
@@ -221,6 +224,8 @@ class riscv_load_store_stress_instr_stream(riscv_load_store_base_instr_stream):
         self.num_load_store.inside(vsc.rangelist(self.min_instr_cnt,self.max_instr_cnt))
         self.num_mixed_instr == 0
 
+
+@vsc.randobj
 class riscv_load_store_rand_instr_stream(riscv_load_store_base_instr_stream):
     def __init__(self):
         super().__init__()
@@ -229,3 +234,98 @@ class riscv_load_store_rand_instr_stream(riscv_load_store_base_instr_stream):
     def legal_c(self):
         self.num_load_store.inside(vsc.rangelist(10,30))
         self.num_mixed_instr.inside(vsc.rangelist(10,30))
+
+
+# Back to back load/store instructions
+@vsc.randobj
+class riscv_load_store_shared_mem_stream(riscv_load_store_stress_instr_stream):
+    def __init__(self):
+        super().__init__()
+
+    def pre_randomize(self):
+        self.load_store_shared_memory = 1
+        super().pre_randomize()
+
+
+# Use a small set of GPR to create various WAW, RAW, WAR hazard scenario
+@vsc.randobj
+class riscv_hazard_instr_stream(riscv_load_store_base_instr_stream):
+    def __init__(self):
+        self.num_of_avail_regs = 6;
+
+    @vsc.constraint
+    def legal_c(self):
+        self.num_load_store.inside(vsc.rangelist(vsc.rng(10,30)))
+        self.num_mixed_instr.inside(vsc.rangelist(vsc.rng(10,30)))
+
+    def pre_randomize(self):
+        self.avail_regs = [0] * num_of_avail_regs
+        super().pre_randomize()
+
+
+# Back to back access to multiple data pages
+# This is useful to test data TLB switch and replacement
+@vsc.randobj
+class riscv_multi_page_load_store_instr_stream(riscv_mem_access_stream):
+    def __init__(self):
+        self.load_store_instr_stream = []
+        self.num_of_instr_stream = vsc.rand_uint16_t()
+        self.data_page_id = vsc.randsz_list_t(vsc.uint16_t())
+        self.rs1_reg = vsc.rand_list_t(vsc.enum_t(riscv_reg_t))
+    
+    @vsc.constraint
+    def default_c(self):
+        with vsc.foreach(self.data_page_id, idx=True) as i:
+            self.data_page_id[i] < self.max_data_page_id
+        self.data_page_id.size == self.num_of_instr_stream
+        self.rs1_reg.size == self.num_of_instr_stream
+        vsc.unique(self.rs1_reg)
+        with vsc.foreach(self.rs1_reg, idx=True) as i:
+            self.rs1_reg[i].not_inside(vsc.rangelist(cfg.reserved_regs, "ZERO"))
+
+    @vsc.constraint
+    def page_c(self):
+        #solve self.num_of_instr_stream before self.data_page_id
+        self.num_of_instr_stream.inside(vsc.rangelist(vsc.rng(1,self.max_data_page_id)))
+        vsc.unique(self.data_page_id)
+
+    @vsc.constraint
+    def reasonable_c(self):
+        self.num_of_instr_stream.inside(vsc.rangelist(vsc.rng(2,8)))
+
+    def post_randomize(self):
+        self.load_store_instr_stream = [0] * self.num_of_instr_stream
+        for i in range(len(load_store_instr_stream)):
+            self.load_store_instr_stream[i] = riscv_load_store_stress_instr_stream() # TO DO
+            self.load_store_instr_stream[i].min_instr_cnt = 5
+            self.load_store_instr_stream[i].max_instr_cnt = 10
+            #self.load_store_instr_stream[i].cfg = cfg
+            self.load_store_instr_stream[i].hart = hart
+            self.load_store_instr_stream[i].sp_c.constraint_mode(False)
+
+            for j in range(len(self.rs1_reg)):
+                if(i is not j):
+                     self.load_store_instr_stream[i].reserved_rd.append(rs1_reg[j])
+            """
+            `DV_CHECK_RANDOMIZE_WITH_FATAL(load_store_instr_stream[i],
+                                     rs1_reg == local::rs1_reg[i];
+                                     data_page_id == local::data_page_id[i];,
+                                     "Cannot randomize load/store instruction")
+            """
+            if(i == 0):
+                self.instr_list = self.load_store_instr_stream[i].instr_list
+            else:
+                self.mix_instr_stream(load_store_instr_stream[i].instr_list)
+
+
+@vsc.randobj
+class riscv_mem_region_stress_test(riscv_multi_page_load_store_instr_stream):
+    def __init__(self):
+        super().__init__()
+
+    @vsc.constraint
+    def page_c(self):
+        self.num_of_instr_stream.inside(vsc.rangelist(vsc.rng(2,5)))
+        with vsc.foreach(self.data_page_id, idx=True) as i:
+            if(i > 0):
+               self. data_page_id[i] == self.data_page_id[i-1]
