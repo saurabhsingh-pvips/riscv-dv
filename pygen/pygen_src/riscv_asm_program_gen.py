@@ -23,6 +23,7 @@ from pygen_src.riscv_instr_pkg import pkg_ins, privileged_reg_t, privileged_mode
 from pygen_src.riscv_instr_gen_config import cfg, args, args_dict
 from pygen_src.target.rv32i import riscv_core_setting as rcs
 from pygen_src.riscv_instr_stream import riscv_rand_instr_stream
+from pygen_src.riscv_data_page_gen import riscv_data_page_gen
 from pygen_src.riscv_utils import factory
 '''
     RISC-V assembly program generator
@@ -42,6 +43,7 @@ class riscv_asm_program_gen:
         self.page_table_list = []
         self.main_program = []
         self.sub_program = []
+        self.data_page_gen = None
 
     # Main function to generate the whole program
 
@@ -116,8 +118,8 @@ class riscv_asm_program_gen:
             self.gen_program_end(hart)
             for hart in range(cfg.num_of_harts):
                 self.gen_data_page_begin(hart)
-                if(cfg.no_data_page):
-                    self.gen_data_page()
+                if not cfg.no_data_page:
+                    self.gen_data_page(hart)
 
                     if((hart == 0) and ("RV32A" in rcs.supported_isa)):
                         self.gen_data_page(hart, amo = 1)
@@ -185,7 +187,11 @@ class riscv_asm_program_gen:
             self.instr_stream.append(".align 6; .global fromhost; fromhost: .dword 0;")
 
     def gen_data_page(self, hart, is_kernel = 0, amo = 0):
-        pass
+        print("Inside gen_data_page")
+        self.data_page_gen = riscv_data_page_gen()
+        self.data_page_gen.gen_data_page(hart, cfg.data_page_pattern, is_kernel, amo)
+        print(self.data_page_gen.data_page_str)
+        self.instr_stream.append(self.data_page_gen.data_page_str)
 
     def gen_stack_section(self, hart):
         hart_prefix_string = pkg_ins.hart_prefix(hart)
