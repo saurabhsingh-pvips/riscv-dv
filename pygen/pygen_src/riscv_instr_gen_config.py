@@ -84,16 +84,16 @@ class riscv_instr_gen_config:
         # pmp_cfg = riscv_pmp_cfg  # TODO
 
         self.mem_region = {
-                              0 : {'name': "region_0", 'size_in_bytes': 4096, 'xwr': "111"},
-                              1 : {'name': "region_1", 'size_in_bytes': 4096*16, 'xwr': "111"}
+                              0 : {'name': "region_0", 'size_in_bytes': 4096, 'xwr': 8},
+                              1 : {'name': "region_1", 'size_in_bytes': 4096*16, 'xwr': 8}
                           }
         self.amo_region = {
                               0: {'name': "amo_0", 'size_in_bytes': 64, 'xwr': "111"}
                           }
         self.stack_len = 5000
         self.s_mem_region = {
-                              0 : {'name': "s_region_0", 'size_in_bytes': 4096, 'xwr': "111"},
-                              1 : {'name': "s_region_1", 'size_in_bytes': 4096, 'xwr': "111"}
+                              0 : {'name': "s_region_0", 'size_in_bytes': 4096, 'xwr': 8},
+                              1 : {'name': "s_region_1", 'size_in_bytes': 4096, 'xwr': 8}
                             }
 
         self.kernel_stack_len = 4000

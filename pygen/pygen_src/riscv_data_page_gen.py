@@ -30,18 +30,21 @@ class riscv_data_page_gen:
         temp_data = 0
         data = [0] * num_of_bytes
         print("len of data",len(data))
+        print("data pattern ", pattern)
         for i in range(len(data)):
             if pattern == data_pattern_t.RAND_DATA:
                 # `DV_CHECK_STD_RANDOMIZE_FATAL(temp_data)
-                temp_data = random.randint(0,2**8)
-                print("temp_Data",temp_data)
+                temp_data = random.randrange(0,(2**8)-1)
+                # print("temp_Data",temp_data)
                 data[i] = temp_data
             elif pattern == data_pattern_t.INCR_VAL:
                 data[i] = (idx + i) % 256
+        return data
 
     def gen_data_page(self, hart_id, pattern, is_kernel=0, amo=0):
         tmp_str = ""
         temp_data = []
+        tmp_data = []
         page_cnt = 0
         page_size = 0
         self.data_page_str.clear()
@@ -79,10 +82,11 @@ class riscv_data_page_gen:
             page_size = self.mem_region_setting[i]["size_in_bytes"]
             for i in range(0,page_size,32):
                 if page_size-1 >= 32:
-                    self.gen_data(idx=i, pattern=pattern, num_of_bytes=32, data=temp_data)
+                    temp_data = self.gen_data(idx=i, pattern=pattern, num_of_bytes=32, data=temp_data)
                 else:
-                    self.gen_data(idx=i, pattern=pattern, num_of_bytes=page_size-1, data=temp_data)
-                tmp_str = pkg_ins.format_string("{}".format(pkg_ins.format_data(temp_data)),
+                    temp_data = self.gen_data(idx=i, pattern=pattern, num_of_bytes=page_size-1, data=temp_data)
+                print("temp_data", tmp_data)
+                tmp_str = pkg_ins.format_string(".word {}".format(pkg_ins.format_data(temp_data)),
                             pkg_ins.LABEL_STR_LEN)
                 self.data_page_str.append(tmp_str)
                 if cfg.use_push_data_section:

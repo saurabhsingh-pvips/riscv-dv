@@ -1199,7 +1199,7 @@ class riscv_instr_pkg:
         for i in range(len(data)):
             if ((i % byte_per_group == 0) and (i != len(data) - 1) and (i != 0)):
                 string = string + ", 0x"
-            string = string + f"{hex(data[i])}"
+            string = string + "{:02x}".format(data[i])
         return string
 
     def push_gpr_to_kernel_stack(self, status, scratch, mprv, sp, tp, instr):

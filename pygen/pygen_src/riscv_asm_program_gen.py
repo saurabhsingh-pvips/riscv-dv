@@ -191,7 +191,7 @@ class riscv_asm_program_gen:
         self.data_page_gen = riscv_data_page_gen()
         self.data_page_gen.gen_data_page(hart, cfg.data_page_pattern, is_kernel, amo)
         print(self.data_page_gen.data_page_str)
-        self.instr_stream.append(self.data_page_gen.data_page_str)
+        self.instr_stream.extend(self.data_page_gen.data_page_str)
 
     def gen_stack_section(self, hart):
         hart_prefix_string = pkg_ins.hart_prefix(hart)
