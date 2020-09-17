@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import random
 import logging
+import sys
 import vsc
 from enum import IntEnum, auto
 from pygen_src.riscv_directed_instr_lib import riscv_mem_access_stream
@@ -78,11 +79,32 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
     
     def randomize_offset(self):
         addr_ = vsc.rand_int32_t()
-        offset_ = 0
+        offset_ = vsc.rand_int32_t()
+        print("offset_",offset_)
         self.offset = [0] * self.num_load_store
         self.addr = [0] * self.num_load_store
         for i in range(self.num_load_store):
             try:
+                with vsc.randomize_with(addr_, offset_):
+                    if self.locality == locality_e.NARROW:
+                        offset_.inside(vsc.rangelist(vsc.rng(-16,16)))
+                    elif self.locality == locality_e.HIGH:
+                        offset_.inside(vsc.rangelist(vsc.rng(-64,64)))
+                    elif self.locality == locality_e.MEDIUM:
+                        offset_.inside(vsc.rangelist(vsc.rng(-256,256)))
+                    elif self.locality == locality_e.SPARSE:
+                        offset_.inside(vsc.rangelist(vsc.rng(-2048,2047)))
+                    addr_ == self.base + offset_
+                    addr_.inside(vsc.rangelist(vsc.rng(0,self.max_load_store_offset-1)))
+            except Exception:
+                logging.critical("Cannot randomize load/store offset")
+                sys.exit(1)
+            print("offset_",offset_)
+            print("addr_", addr_)
+            self.offset[i] = offset_
+            self.addr[i] = addr_
+                
+            '''try:
                 # TODO Randomization for addr_
                 # vsc.randomize(addr_)
                 # print("Addr_ ", addr_)
@@ -106,9 +128,9 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
                 
             except Exception:
                 logging.critical("Cannot randomize load/store offset")
-            # print("Addr_ after if ", addr_)
-            self.offset[i] = offset_
-            self.addr[i] = addr_
+            # print("Addr_ after if ", addr_)'''
+            # self.offset[i] = offset_
+            # self.addr[i] = addr_
 
     def pre_randomize(self):
         super().pre_randomize()
@@ -119,6 +141,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
             self.sp_rnd_order_c.constraint_mode(False)
 
     def post_randomize(self):
+        print("Post")
         self.randomize_offset()
         if(not(self.rs1_reg in [self.reserved_rd])):
             self.reserved_rd.append(self.rs1_reg)
