@@ -55,7 +55,7 @@ def get_object(instr_name):
                     except Exception:
                         logging.critical("Failed to create instr: %0s", instr_name.name)
                         sys.exit(1)
-        if cfg.argv.target == "rv32imfc":
+        if cfg.argv.target == "rv32imfdc":
             try:
                 from pygen_src.isa import rv32i_instr
                 instr_inst = eval("rv32i_instr.riscv_" + instr_name.name + "_instr()")
@@ -77,8 +77,19 @@ def get_object(instr_name):
                                 instr_inst = eval("rv32fc_instr.riscv_" +
                                                   instr_name.name + "_instr()")
                             except Exception:
-                                logging.critical("Failed to create instr: %0s", instr_name.name)
-                                sys.exit(1)
+                                try:
+                                    from pygen_src.isa import rv32d_instr
+                                    instr_inst = eval("rv32d_instr.riscv_" +
+                                                      instr_name.name + "_instr()")
+                                except Exception:
+                                    try:
+                                        from pygen_src.isa import rv32dc_instr
+                                        instr_inst = eval("rv32dc_instr.riscv_" +
+                                                          instr_name.name + "_instr()")
+                                    except Exception:
+                                        logging.critical(
+                                            "Failed to create instr: %0s", instr_name.name)
+                                        sys.exit(1)
     except Exception:
         logging.critical("Failed to create instr: %0s", instr_name.name)
         sys.exit(1)
