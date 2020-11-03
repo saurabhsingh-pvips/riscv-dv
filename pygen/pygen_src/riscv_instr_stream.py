@@ -181,9 +181,16 @@ class riscv_rand_instr_stream(riscv_instr_stream):
                 riscv_instr.instr_category[riscv_instr_category_t.STORE.name])
         self.setup_instruction_dist(no_branch, no_load_store)
 
-    # TODO
     def randomize_avail_regs(self):
-        pass
+        if(self.avail_regs.size > 0):
+            try:
+                with vsc.randomize_with(self.avail_regs):
+                    vsc.unique(self.avail_regs)
+                    self.avail_regs[0] in vsc.rangelist(cfg.reserved_regs, self.reserved_rd)
+                    with vsc.foreach(self.avail_regs, idx=True) as i:
+                        self.avail_regs[i].not_inside(cfg.reserved_regs, self.reserved_rd)
+            except Exception:
+                logging.info("Cannot randommize avail_regs")
 
     def setup_instruction_dist(self, no_branch = 0, no_load_store = 1):
         if cfg.dist_control_mode:
@@ -230,6 +237,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         return instr
 
     def randomize_gpr(self, instr):
+        """
         with instr.randomize_with() as it:
             if self.avail_regs.size > 0:
                 if instr.has_rs1:
@@ -249,5 +257,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
                     instr.rd != cfg.reserved_regs[i]
                 with vsc.if_then(instr.format == riscv_instr_format_t.CB_FORMAT):
                     instr.rs1 != cfg.reserved_regs[i]
+        """
+        instr.randomize()
         # TODO: Add constraint for CSR, floating point register
         return instr

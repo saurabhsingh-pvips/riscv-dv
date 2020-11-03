@@ -338,13 +338,12 @@ class riscv_asm_program_gen:
             self.instr_stream.append(init_string)
 
     def init_floating_point_gpr(self):
+        fsrmi_instr = ""
         for i in range(rcs.NUM_FLOAT_GPR):
-            # TODO randselect
-            '''
-            vsc.randselect([(1, lambda:self.init_floating_point_gpr_with_spf(i)),
-        ('RV64D' in rcs.supported_isa, lambda:self.init_floating_point_gpr_with_dpf(i))])
-            '''
-            self.init_floating_point_gpr_with_spf(i)
+            vsc.randselect([
+                (1, lambda: self.init_floating_point_gpr_with_spf(i))
+                # TO DO ('RV64D' in rcs.supported_isa), lambda: self.init_floating_point_gpr_with_dpf(i) 
+            ])
         # Initialize rounding mode of FCSR
         fsrmi_instr = "{}fsrmi {}".format(pkg_ins.indent, cfg.fcsr_rm)
         self.instr_stream.append(fsrmi_instr)
