@@ -113,6 +113,10 @@ const privileged_reg_t implemented_csr[] = {
     MIP         // Machine interrupt pending
 };
 
+// Implementation-specific custom CSRs
+bit [11:0] custom_csr[] = {
+};
+
 // ----------------------------------------------------------------------------
 // Supported interrupt/exception setting, used for functional coverage
 // ----------------------------------------------------------------------------

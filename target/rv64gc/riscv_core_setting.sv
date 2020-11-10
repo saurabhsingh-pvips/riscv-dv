@@ -140,6 +140,10 @@ const privileged_reg_t implemented_csr[] = {
     FCSR        // Floating point control and status
 };
 
+// Implementation-specific custom CSRs
+bit [11:0] custom_csr[] = {
+};
+
 // ----------------------------------------------------------------------------
 // Supported interrupt/exception setting, used for functional coverage
 // ----------------------------------------------------------------------------

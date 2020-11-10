@@ -77,6 +77,9 @@ parameter int SELEN = 8;
 // Maximum size of a single vector element (encoded in vsew format)
 parameter int VELEN = int'($ln(ELEN)/$ln(2)) - 3;
 
+// Maxium LMUL supported by the core
+parameter int MAX_LMUL = 8;
+
 // ----------------------------------------------------------------------------
 // Multi-harts configuration
 // ----------------------------------------------------------------------------
@@ -109,6 +112,10 @@ const privileged_reg_t implemented_csr[] = {
     MCAUSE,     // Machine trap cause
     MTVAL,      // Machine bad address or instruction
     MIP         // Machine interrupt pending
+};
+
+// Implementation-specific custom CSRs
+bit [11:0] custom_csr[] = {
 };
 
 // ----------------------------------------------------------------------------

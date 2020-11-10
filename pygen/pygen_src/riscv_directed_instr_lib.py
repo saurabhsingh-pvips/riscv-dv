@@ -11,15 +11,19 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 
+import sys
 import random
+import logging
 import vsc
+from importlib import import_module
 from enum import IntEnum, auto
 from pygen_src.riscv_instr_stream import riscv_rand_instr_stream
-from pygen_src.isa.riscv_instr import riscv_instr, riscv_instr_ins
+from pygen_src.isa.riscv_instr import riscv_instr
 from pygen_src.riscv_instr_gen_config import cfg
-from pygen_src.riscv_instr_pkg import riscv_reg_t, riscv_pseudo_instr_name_t, riscv_instr_name_t, mem_region_t, pkg_ins
-from pygen_src.target.rv32i import riscv_core_setting as rcs
+from pygen_src.riscv_instr_pkg import (riscv_reg_t,
+                                       riscv_pseudo_instr_name_t, riscv_instr_name_t, pkg_ins)
 from pygen_src.riscv_pseudo_instr import riscv_pseudo_instr
+rcs = import_module("pygen_src.target." + cfg.argv.target + ".riscv_core_setting")
 
 
 class riscv_directed_instr_stream(riscv_rand_instr_stream):
@@ -109,11 +113,11 @@ class riscv_jal_instr(riscv_rand_instr_stream):
         random.shuffle(order)
         self.setup_allowed_instr(1, 1)
         jal = [riscv_instr_name_t.JAL]
-        if(not cfg.disable_compressed_instr):
+        if not cfg.disable_compressed_instr:
             jal.append(riscv_instr_name_t.C_J)
-            if(rcs.XLEN == 32):
+            if rcs.XLEN == 32:
                 jal.append(riscv_instr_name_t.C_JAL)
-        self.jump_start = riscv_instr_ins.get_instr(riscv_instr_name_t.JAL.name)
+        self.jump_start = riscv_instr.get_instr(riscv_instr_name_t.JAL.name)
         with self.jump_start.randomize_with() as it:
             self.jump_start.rd == RA
         self.jump_start.imm_str = "{}f".format(order[0])
@@ -123,9 +127,9 @@ class riscv_jal_instr(riscv_rand_instr_stream):
         self.jump_end = self.randomize_instr(self.jump_end)
         self.jump_end.label = "{}".format(self.num_of_jump_instr)
         for i in range(self.num_of_jump_instr):
-            self.jump[i] = riscv_instr_ins.get_rand_instr(include_instr = [jal[0].name])
+            self.jump[i] = riscv_instr.get_rand_instr(include_instr = [jal[0].name])
             with self.jump[i].randomize_with() as it:
-                if(self.jump[i].has_rd):
+                if self.jump[i].has_rd:
                     vsc.dist(self.jump[i].rd, [vsc.weight(riscv_reg_t.RA, 5), vsc.weight(
                         vsc.rng(riscv_reg_t.SP, riscv_reg_t.T0), 1),
                         vsc.weight(vsc.rng(riscv_reg_t.T2, riscv_reg_t.T6), 2)])
@@ -133,13 +137,13 @@ class riscv_jal_instr(riscv_rand_instr_stream):
             self.jump[i].label = "{}".format(i)
 
         for i in range(len(order)):
-            if(i == self.num_of_jump_instr - 1):
+            if i == self.num_of_jump_instr - 1:
                 self.jump[order[i]].imm_str = "{}f".format(self.num_of_jump_instr)
             else:
-                if(order[i + 1] > order[i]):
-                    self.jump[order[i]].imm_str = "{}f".format(order[i+1])
+                if order[i + 1] > order[i]:
+                    self.jump[order[i]].imm_str = "{}f".format(order[i + 1])
                 else:
-                    self.jump[order[i]].imm_str = "{}b".format(order[i+1])
+                    self.jump[order[i]].imm_str = "{}b".format(order[i + 1])
         self.instr_list.append(self.jump_start)
         self.instr_list.extend(self.jump)
         self.instr_list.append(self.jump_end)
@@ -159,23 +163,24 @@ class int_numeric_e(IntEnum):
 class riscv_int_numeric_corner_stream(riscv_directed_instr_stream):
     def __init__(self):
         super().__init__()
-        self.num_of_avail_regs = 10
+        self.num_of_avail_regs = vsc.uint32_t(10)
         self.num_of_instr = vsc.rand_uint8_t()
-        self.init_val = vsc.rand_list_t(vsc.rand_bit_t(rcs.XLEN - 1), sz = 10)
-        self.init_val_type = vsc.rand_list_t(vsc.enum_t(int_numeric_e), sz =10)
+        self.init_val = vsc.randsz_list_t(vsc.rand_bit_t(rcs.XLEN - 1))
+        self.init_val_type = vsc.randsz_list_t(vsc.enum_t(int_numeric_e))
         self.init_instr = []
 
     @vsc.constraint
     def init_val_c(self):
-        # TO DO
-        # solve init_val_type before init_val;
-        self.init_val_type.size == self.num_of_avail_regs
-        self.init_val.size == self.num_of_avail_regs
+        # TODO
+        vsc.solve_order(self.init_val_type, self.init_val)
+        self.init_val_type.size == 10  # self.num_of_avail_regs
+        self.init_val.size == 10  # self.num_of_avail_regs
         self.num_of_instr in vsc.rangelist(vsc.rng(15, 30))
 
     @vsc.constraint
     def avail_regs_c(self):
-        self.avail_regs.size == self.num_of_avail_regs
+        # TODO
+        self.avail_regs.size == 10  # self.num_of_avail_regs
         vsc.unique(self.avail_regs)
         with vsc.foreach(self.avail_regs, idx = True) as i:
             self.avail_regs[i].not_inside(cfg.reserved_regs)
@@ -199,9 +204,143 @@ class riscv_int_numeric_corner_stream(riscv_directed_instr_stream):
             self.init_instr[i].imm_str = "0x%0x" % (self.init_val[i])
             self.instr_list.append(self.init_instr[i])
         for i in range(self.num_of_instr):
-            instr = riscv_instr_ins.get_rand_instr(
+            instr = riscv_instr.get_rand_instr(
                 include_category = ['ARITHMETIC'],
                 exclude_group = ['RV32C', 'RV64C', 'RV32F', 'RV64F', 'RV32D', 'RV64D'])
             instr = self.randomize_gpr(instr)
             self.instr_list.append(instr)
         super().post_randomize()
+
+
+# Push Stack Instructions
+class riscv_push_stack_instr(riscv_rand_instr_stream):
+
+    def __init__(self):
+        super().__init__()
+        self.stack_len = 0
+        self.num_of_reg_to_save = 0
+        self.num_of_redundant_instr = 0
+        self.push_stack_instr = []
+        self.saved_regs = []
+        self.branch_instr = vsc.attr(riscv_instr())
+        self.enable_branch = vsc.rand_bit_t(1)
+        self.push_start_label = ''
+
+    def init(self):
+        self.reserved_rd = [cfg.ra]
+        self.saved_regs = [cfg.ra]
+        self.num_of_reg_to_save = len(self.saved_regs)
+        if self.num_of_reg_to_save * (rcs.XLEN / 8) > self.stack_len:
+            logging.error('stack len [%0d] is not enough to store %d regs',
+                          self.stack_len, self.num_of_reg_to_save)
+            sys.exit(1)
+        self.num_of_redundant_instr = random.randrange(3, 10)
+        self.initialize_instr_list(self.num_of_redundant_instr)
+
+    def gen_push_stack_instr(self, stack_len, allow_branch=1):
+        self.stack_len = stack_len
+        self.init()
+        self.push_stack_instr = [0] * (self.num_of_reg_to_save + 1)
+        for i in range(len(self.push_stack_instr)):
+            self.push_stack_instr[i] = riscv_instr()
+        self.push_stack_instr[0] = \
+            riscv_instr.get_instr(riscv_instr_name_t.ADDI.name)
+        with self.push_stack_instr[0].randomize_with() as it:
+            self.push_stack_instr[0].rd == cfg.sp
+            self.push_stack_instr[0].rs1 == cfg.sp
+            self.push_stack_instr[0].imm == (~cfg.stack_len + 1)
+
+        self.push_stack_instr[0].imm_str = '-{}'.format(self.stack_len)
+        for i in range(len(self.saved_regs)):
+            if rcs.XLEN == 32:
+                self.push_stack_instr[i + 1] = riscv_instr.get_instr(riscv_instr_name_t.SW.name)
+                with self.push_stack_instr[i + 1].randomize_with() as it:
+                    self.push_stack_instr[i + 1].rs2 == self.saved_regs[i]
+                    self.push_stack_instr[i + 1].rs1 == cfg.sp
+                    self.push_stack_instr[i + 1].imm == 4 * (i + 1)
+            else:
+                self.push_stack_instr[i + 1] = riscv_instr.get_instr(riscv_instr_name_t.SD.name)
+                with self.push_stack_instr[i + 1].randomize_with() as it:
+                    self.push_stack_instr[i + 1].rs2 == self.saved_regs[i]
+                    self.push_stack_instr[i + 1].rs1 == cfg.sp
+                    self.push_stack_instr[i + 1].imm == 8 * (i + 1)
+
+            self.push_stack_instr[i + 1].process_load_store = 0
+        if allow_branch:
+            # TODO
+            # vsc.randomize(self.enable_branch)
+            pass
+        else:
+            self.enable_branch = 0
+        if self.enable_branch:
+            self.branch_instr = \
+                riscv_instr.get_rand_instr(include_category=[riscv_instr_name_t.BRANCH.name])
+            self.branch_instr.randomize()
+            self.branch_instr.imm_str = self.push_start_label
+            self.branch_instr.brach_assigned = 1
+            self.push_stack_instr[0].label = self.push_start_label
+            self.push_stack_instr[0].has_label = 1
+            self.branch_instr.extend(self.push_stack_instr)
+        self.mix_instr_stream(self.push_stack_instr)
+        for i in range(len(self.instr_list)):
+            self.instr_list[i].atomic = 1
+            if self.instr_list[i].label == '':
+                self.instr_list[i].has_label = 0
+
+
+# Pop stack instruction stream
+class riscv_pop_stack_instr(riscv_rand_instr_stream):
+
+    def __init__(self):
+        super().__init__()
+        self.stack_len = 0
+        self.num_of_reg_to_save = 0
+        self.num_of_redundant_instr = 0
+        self.pop_stack_instr = vsc.list_t(vsc.attr(riscv_instr()))
+        self.saved_regs = []
+
+    def init(self):
+        self.reserved_rd = [cfg.ra]
+        self.num_of_reg_to_save = len(self.saved_regs)
+        if self.num_of_reg_to_save * 4 > self.stack_len:
+            logging.error('stack len [%0d] is not enough to store %d regs',
+                          self.stack_len, self.num_of_reg_to_save)
+            sys.exit(1)
+        self.num_of_redundant_instr = random.randrange(3, 10)
+        self.initialize_instr_list(self.num_of_redundant_instr)
+
+    def gen_pop_stack_instr(self, stack_len, saved_regs):
+        self.stack_len = stack_len
+        self.saved_regs = saved_regs
+        self.init()
+        self.gen_instr(1)
+        self.pop_stack_instr = [None] * (self.num_of_reg_to_save + 1)
+        for i in range(len(self.pop_stack_instr)):
+            self.pop_stack_instr[i] = riscv_instr()
+        for i in range(len(self.saved_regs)):
+            if rcs.XLEN == 32:
+                self.pop_stack_instr[i] = riscv_instr.get_instr(riscv_instr_name_t.LW.name)
+                with self.pop_stack_instr[i].randomize_with() as it:
+                    self.rd == self.saved_regs[i]
+                    self.rs1 == cfg.sp
+                    self.imm == 4 * (i + 1)
+            else:
+                self.pop_stack_instr[i] = riscv_instr.get_instr(riscv_instr_name_t.LD.name)
+                with self.pop_stack_instr[i].randomize_with() as it:
+                    self.rd == self.saved_regs[i]
+                    self.rs1 == cfg.sp
+                    self.imm == 8 * (i + 1)
+            self.pop_stack_instr[i].process_load_store = 0
+        # addi sp,sp,imm
+        with self.pop_stack_instr[self.num_of_reg_to_save].randomize_with() as it:
+            self.rd == cfg.sp
+            self.rs1 == cfg.sp
+            self.imm == self.stack_len
+        self.pop_stack_instr[self.num_of_reg_to_save] = riscv_instr.get_instr(
+            riscv_instr_name_t.ADDI.name)
+        self.pop_stack_instr[self.num_of_reg_to_save].imm_str = pkg_ins.format_string(
+            '{}'.format(self.stack_len))
+        self.mix_instr_stream(self.pop_stack_instr)
+        for i in range(len(self.instr_list)):
+            self.instr_list[i].atomic = 1
+            self.instr_list[i].has_label = 0

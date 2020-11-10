@@ -19,7 +19,7 @@ from pygen_src.riscv_directed_instr_lib import riscv_mem_access_stream
 from pygen_src.riscv_instr_pkg import riscv_reg_t, riscv_instr_name_t, riscv_instr_group_t
 from pygen_src.riscv_instr_gen_config import cfg
 from pygen_src.target.rv32i import riscv_core_setting as rcs
-from pygen_src.isa.riscv_instr import riscv_instr_ins
+from pygen_src.isa.riscv_instr import riscv_instr
 
 
 class locality_e(IntEnum):
@@ -190,7 +190,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
                                 allowed_instr.extend([riscv_instr_name_t.C_LWSP.name, riscv_instr_name_t.C_SWSP.name])
                             else:
                                 allowed_instr.extend([riscv_instr_name_t.C_LD.name, riscv_instr_name_t.C_SD.name])
-            instr = riscv_instr_ins.get_load_store_instr(allowed_instr)
+            instr = riscv_instr.get_load_store_instr(allowed_instr)
             instr.has_rs1 = 0
             instr.has_imm = 0
             self.randomize_gpr(instr)
