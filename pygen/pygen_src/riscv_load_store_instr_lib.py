@@ -32,9 +32,7 @@ class locality_e(IntEnum):
 @vsc.randobj
 class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
     def __init__(self):
-        print("Before Super")
         super().__init__()
-        print("After Super")
         self.num_load_store = vsc.rand_uint32_t()
         self.num_mixed_instr = vsc.rand_uint32_t()
         self.base = vsc.rand_int32_t()
@@ -50,9 +48,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
 
     @vsc.constraint
     def sp_rnd_order_c(self):
-        # solve use_sp_as_rs1 before rs1_reg
-        # TODO
-        pass
+        vsc.solve_order(self.use_sp_as_rs1, self.rs1_reg)
 
     @vsc.constraint
     def sp_c(self):
@@ -67,8 +63,8 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
 
     @vsc.constraint
     def addr_c(self):
-        # solve data_page_id before max_load_store_offset;
-        # solve max_load_store_offset before base;
+        vsc.solve_order(self.data_page_id, self.max_load_store_offset)
+        vsc.solve_order(self.max_load_store_offset, self.base)
         # TODO
         self.data_page_id < self.max_data_page_id
         '''with vsc.foreach(self.data_page, idx=True) as i:
@@ -78,10 +74,11 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
     
     def randomize_offset(self):
         addr_ = vsc.rand_int32_t()
-        offset_ = 0
+        offset_ = vsc.rand_int32_t() 
         self.offset = [0] * self.num_load_store
         self.addr = [0] * self.num_load_store
         for i in range(self.num_load_store):
+            """
             try:
                 # TODO Randomization for addr_
                 # vsc.randomize(addr_)
@@ -106,6 +103,33 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
                 
             except Exception:
                 logging.critical("Cannot randomize load/store offset")
+            """
+            try:
+                # TODO Randomization for addr_
+                # vsc.randomize(addr_)
+                # print("Addr_ ", addr_)
+                with vsc.randomize_with(addr_, offset_):
+                    if self.locality == locality_e.NARROW:
+                        offset_.inside(vsc.rangelist(vsc.rng(-16,16)))
+                    elif self.locality == locality_e.HIGH:
+                        offset_.inside(vsc.rangelist(vsc.rng(-64,64)))
+                    elif self.locality == locality_e.MEDIUM:
+                        offset_.inside(vsc.rangelist(vsc.rng(-256,256)))
+                    elif self.locality == locality_e.SPARSE:
+                        offset_.inside(vsc.rangelist(vsc.rng(-2048,2047)))
+                # print("offset_ ", offset_)
+                # print("Base ", self.base)
+                var1 = self.base + offset_ - 1
+                var2 = self.base + offset_ + 1
+                addr_.inside(vsc.rangelist(vsc.rng(var1, var2)))
+
+                print("Addr_ ", addr_)
+                # addr_ == self.base + offset_
+                # addr_ == 100
+
+            except Exception:
+                logging.critical("Cannot randomize load/store offset")
+
             # print("Addr_ after if ", addr_)
             self.offset[i] = offset_
             self.addr[i] = addr_
@@ -194,7 +218,6 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
             instr.has_rs1 = 0
             instr.has_imm = 0
             self.randomize_gpr(instr)
-            print("Instr", instr)
             instr.rs1 = self.rs1_reg
             instr.imm_str = str(instr.uintToInt(self.offset[i]))
             instr.process_load_store = 0
@@ -218,7 +241,7 @@ class riscv_load_store_stress_instr_stream(riscv_load_store_base_instr_stream):
 
     @vsc.constraint
     def legal_c(self):
-        self.num_load_store.inside(vsc.rangelist(self.min_instr_cnt,self.max_instr_cnt))
+        self.num_load_store.inside(vsc.rangelist(vsc.rng(self.min_instr_cnt,self.max_instr_cnt)))
         self.num_mixed_instr == 0
 
 class riscv_load_store_rand_instr_stream(riscv_load_store_base_instr_stream):
@@ -227,5 +250,5 @@ class riscv_load_store_rand_instr_stream(riscv_load_store_base_instr_stream):
     
     @vsc.constraint
     def legal_c(self):
-        self.num_load_store.inside(vsc.rangelist(10,30))
-        self.num_mixed_instr.inside(vsc.rangelist(10,30))
+        self.num_load_store.inside(vsc.rangelist(vsc.rng(10,30)))
+        self.num_mixed_instr.inside(vsc.rangelist(vsc.rng(10,30)))

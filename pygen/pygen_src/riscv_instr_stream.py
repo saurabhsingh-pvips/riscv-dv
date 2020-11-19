@@ -34,7 +34,7 @@ class riscv_instr_stream:
         self.instr_cnt = 0
         self.label = ""
         # User can specify a small group of available registers to generate various hazard condition
-        self.avail_regs = vsc.randsz_list_t(vsc.enum_t(riscv_reg_t))
+        self.avail_regs = vsc.rand_list_t(vsc.enum_t(riscv_reg_t), sz=10)
         # Some additional reserved registers that should not be used as rd register
         # by this instruction stream
         self.reserved_rd = vsc.list_t(vsc.enum_t(riscv_reg_t))
@@ -182,7 +182,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         self.setup_instruction_dist(no_branch, no_load_store)
 
     def randomize_avail_regs(self):
-        if(self.avail_regs.size > 0):
+        if(len(self.avail_regs) > 0):
             try:
                 with vsc.randomize_with(self.avail_regs):
                     vsc.unique(self.avail_regs)
