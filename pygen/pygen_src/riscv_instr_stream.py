@@ -240,6 +240,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         return instr
 
     def randomize_gpr(self, instr):
+        """
         with instr.randomize_with() as it:
             with vsc.if_then(self.avail_regs.size > 0):
                 with vsc.if_then(instr.has_rs1):
@@ -259,5 +260,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
                     instr.rd != cfg.reserved_regs[i]
                 with vsc.if_then(instr.format == riscv_instr_format_t.CB_FORMAT):
                     instr.rs1 != cfg.reserved_regs[i]
+        """
+        instr.randomize()
         # TODO: Add constraint for CSR, floating point register
         return instr

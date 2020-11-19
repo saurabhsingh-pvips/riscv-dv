@@ -78,7 +78,6 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
         self.offset = [0] * self.num_load_store
         self.addr = [0] * self.num_load_store
         for i in range(self.num_load_store):
-            """
             try:
                 # TODO Randomization for addr_
                 # vsc.randomize(addr_)
@@ -129,7 +128,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
 
             except Exception:
                 logging.critical("Cannot randomize load/store offset")
-
+            """
             # print("Addr_ after if ", addr_)
             self.offset[i] = offset_
             self.addr[i] = addr_

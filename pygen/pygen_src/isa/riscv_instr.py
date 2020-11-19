@@ -113,7 +113,7 @@ class riscv_instr:
     @classmethod
     def register(cls, instr_name, instr_group):
         logging.info("Registering {}".format(instr_name.name))
-        cls.instr_registry[instr_name] = instr_group
+        cls.instr_registry[instr_name.name] = instr_group
         return 1
 
     @classmethod
@@ -154,9 +154,9 @@ class riscv_instr:
     def create_instr(cls, instr_name, instr_group):
         try:
             module_name = import_module("pygen_src.isa." + instr_group.name.lower() + "_instr")
-            instr_inst = eval("module_name.riscv_" + instr_name.name + "_instr()")
+            instr_inst = eval("module_name.riscv_" + instr_name + "_instr()")
         except Exception:
-            logging.critical("Failed to create instr: {}".format(instr_name.name))
+            logging.critical("Failed to create instr: {}".format(instr_name))
             sys.exit(1)
         return instr_inst
 
@@ -504,7 +504,7 @@ class riscv_instr:
         self.imm_str = str(self.uintToInt(self.imm))
 
     def uintToInt(self, x):
-        if x < (2 ** rcs.XLEN) / 2:
+        if x < (2 ** rcs.XLEN) // 2:
             signed_x = x
         else:
             signed_x = x - 2 ** rcs.XLEN
