@@ -239,6 +239,10 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         instr = self.randomize_gpr(instr)
         return instr
 
+    @vsc.constraint
+    def avail_regs_c(self):
+        self.avail_regs.size == 0
+
     def randomize_gpr(self, instr):
         with instr.randomize_with() as it:
             with vsc.if_then(self.avail_regs.size > 0):

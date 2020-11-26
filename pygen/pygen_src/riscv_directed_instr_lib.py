@@ -136,6 +136,7 @@ class riscv_int_numeric_corner_stream(riscv_directed_instr_stream):
     @vsc.constraint
     def avail_regs_c(self):
         # TODO
+        self.avail_regs_c.constraint_mode(False)
         self.avail_regs.size == 10  # self.num_of_avail_regs
         vsc.unique(self.avail_regs)
         with vsc.foreach(self.avail_regs, idx = True) as i:

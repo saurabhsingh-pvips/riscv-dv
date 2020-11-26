@@ -19,13 +19,15 @@ from pygen_src.riscv_instr_gen_config import cfg
 from pygen_src.riscv_directed_instr_lib import (riscv_directed_instr_stream,
                                                 riscv_int_numeric_corner_stream,
                                                 riscv_jal_instr)
+from pygen_src.riscv_loop_instr import riscv_loop_instr
 
 
 def factory(obj_of):
     objs = {
         "riscv_directed_instr_stream": riscv_directed_instr_stream,
         "riscv_int_numeric_corner_stream": riscv_int_numeric_corner_stream,
-        "riscv_jal_instr": riscv_jal_instr
+        "riscv_jal_instr": riscv_jal_instr,
+        "riscv_loop_instr": riscv_loop_instr
     }
 
     try:
