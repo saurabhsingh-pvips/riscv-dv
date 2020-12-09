@@ -18,14 +18,22 @@ from tabulate import tabulate
 from pygen_src.riscv_instr_gen_config import cfg
 from pygen_src.riscv_directed_instr_lib import (riscv_directed_instr_stream,
                                                 riscv_int_numeric_corner_stream,
-                                                riscv_jal_instr)
+                                                riscv_jal_instr,
+                                                riscv_mem_access_stream)
+from pygen_src.riscv_load_store_instr_lib import (riscv_load_store_rand_instr_stream,
+                                                  riscv_multi_page_load_store_instr_stream,
+                                                  riscv_mem_region_stress_test)
 
 
 def factory(obj_of):
     objs = {
         "riscv_directed_instr_stream": riscv_directed_instr_stream,
         "riscv_int_numeric_corner_stream": riscv_int_numeric_corner_stream,
-        "riscv_jal_instr": riscv_jal_instr
+        "riscv_jal_instr": riscv_jal_instr,
+        "riscv_mem_access_stream": riscv_mem_access_stream,
+        "riscv_load_store_rand_instr_stream": riscv_load_store_rand_instr_stream,
+        "riscv_multi_page_load_store_instr_stream": riscv_multi_page_load_store_instr_stream,
+        "riscv_mem_region_stress_test": riscv_mem_region_stress_test
     }
 
     try:
