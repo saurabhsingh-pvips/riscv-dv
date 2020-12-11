@@ -146,6 +146,7 @@ class riscv_instr_gen_config:
         self.force_m_delegation = self.argv.force_m_delegation
         self.force_s_delegation = self.argv.force_s_delegation
         self.support_supervisor_mode = 0
+        self.disable_compressed_instr = vsc.bit_t(1)
         self.disable_compressed_instr = self.argv.disable_compressed_instr
         self.require_signature_addr = self.argv.require_signature_addr
 
