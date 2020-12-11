@@ -20,6 +20,7 @@ from pygen_src.riscv_directed_instr_lib import (riscv_directed_instr_stream,
                                                 riscv_int_numeric_corner_stream,
                                                 riscv_jal_instr, riscv_mem_access_stream)
 from pygen_src.riscv_amo_instr_lib import (riscv_lr_sc_instr_stream, riscv_amo_instr_stream)
+from pygen_src.riscv_loop_instr import riscv_loop_instr
 
 
 def factory(obj_of):
@@ -29,8 +30,8 @@ def factory(obj_of):
         "riscv_jal_instr": riscv_jal_instr,
         "riscv_mem_access_stream": riscv_mem_access_stream,
         "riscv_lr_sc_instr_stream": riscv_lr_sc_instr_stream,
-        "riscv_amo_instr_stream": riscv_amo_instr_stream
-    }
+        "riscv_amo_instr_stream": riscv_amo_instr_stream,
+        "riscv_loop_instr": riscv_loop_instr}
 
     try:
         return objs[obj_of]()
