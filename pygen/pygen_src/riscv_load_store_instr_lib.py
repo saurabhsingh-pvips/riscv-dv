@@ -72,7 +72,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
         self.data_page_id < self.max_data_page_id
         '''with vsc.foreach(self.data_page, idx=True) as i:
             if i == self.data_page_id:
-                self.max_load_store_offset == self.values[2]'''
+                self.max_load_store_offset == self.data_page[i]['size_in_bytes']'''
         self.base in vsc.rangelist(vsc.rng(0, self.max_load_store_offset - 1))
 
     def randomize_offset(self):

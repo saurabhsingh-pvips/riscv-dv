@@ -51,7 +51,9 @@ class riscv_mem_access_stream(riscv_directed_instr_stream):
         super().__init__()
         self.max_data_page_id = vsc.int32_t()
         self.load_store_shared_memory = 0
-        self.data_page = {}
+        # mem_region_t data_page[$];
+        self.data_page = {} # This will contain key as string, int, and a bit as mem_region_t is a struct data type
+                            # or it can be defined as list of dictionary self.data_page = [{}]
 
     def pre_randomize(self):
         if self.load_store_shared_memory:
