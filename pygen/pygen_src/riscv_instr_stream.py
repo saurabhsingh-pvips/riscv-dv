@@ -34,7 +34,7 @@ class riscv_instr_stream:
         self.instr_cnt = 0
         self.label = ""
         # User can specify a small group of available registers to generate various hazard condition
-        self.avail_regs = vsc.rand_list_t(vsc.enum_t(riscv_reg_t), 10)
+        self.avail_regs = vsc.randsz_list_t(vsc.enum_t(riscv_reg_t))
         # Some additional reserved registers that should not be used as rd register
         # by this instruction stream
         self.reserved_rd = vsc.list_t(vsc.enum_t(riscv_reg_t))
@@ -165,11 +165,9 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         self.allowed_instr = []
         self.category_dist = []
 
-    """
     @vsc.constraint
     def avail_reg_c(self):
         self.avail_regs.size == 10
-    """
 
     def create_instr_instance(self):
         for i in range(self.instr_cnt):
@@ -188,7 +186,9 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         self.setup_instruction_dist(no_branch, no_load_store)
 
     def randomize_avail_regs(self):
-        if self.avail_regs.size > 0:
+        pass
+        # TODO
+        '''if self.avail_regs.size > 0:
             try:
                 with vsc.randomize_with(self.avail_regs):
                     vsc.unique(self.avail_regs)
@@ -199,7 +199,7 @@ class riscv_rand_instr_stream(riscv_instr_stream):
                                                       self.reserved_rd))
             except Exception:
                 logging.critical("Cannot randomize avail_regs")
-                sys.exit(1)
+                sys.exit(1)'''
 
     def setup_instruction_dist(self, no_branch = 0, no_load_store = 1):
         if cfg.dist_control_mode:
@@ -247,7 +247,6 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         return instr
 
     def randomize_gpr(self, instr):
-        """
         with instr.randomize_with() as it:
             with vsc.if_then(self.avail_regs.size > 0):
                 with vsc.if_then(instr.has_rs1):
@@ -267,7 +266,5 @@ class riscv_rand_instr_stream(riscv_instr_stream):
                     instr.rd != cfg.reserved_regs[i]
                 with vsc.if_then(instr.format == riscv_instr_format_t.CB_FORMAT):
                     instr.rs1 != cfg.reserved_regs[i]
-        """
-        instr.randomize()
         # TODO: Add constraint for CSR, floating point register
         return instr

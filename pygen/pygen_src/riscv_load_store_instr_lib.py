@@ -54,15 +54,13 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
     @vsc.constraint
     def sp_c(self):
         vsc.dist(self.use_sp_as_rs1, [vsc.weight(1, 1), vsc.weight(0, 2)])
-        if self.use_sp_as_rs1:
+        with vsc.if_then(self.use_sp_as_rs1 == 1):
             self.rs1_reg == riscv_reg_t.SP
 
-    """
     @vsc.constraint
     def rs1_c(self):
         self.rs1_reg.not_inside(vsc.rangelist(cfg.reserved_regs,
-                                              self.reserved_rd, riscv_reg_t.ZERO))
-   """
+                                self.reserved_rd, riscv_reg_t.ZERO))
 
     @vsc.constraint
     def addr_c(self):
@@ -151,7 +149,7 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
         logging.info("max_load_store_offset: %d", self.max_load_store_offset)
         logging.info("Base: %d", self.base)
         self.randomize_offset()
-        if(not(self.rs1_reg in [self.reserved_rd])):
+        if(not(self.rs1_reg in self.reserved_rd)):
             self.reserved_rd.append(self.rs1_reg)
         self.gen_load_store_instr()
         self.add_mixed_instr(self.num_mixed_instr)
