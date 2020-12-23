@@ -20,7 +20,8 @@ from importlib import import_module
 from pygen_src.riscv_instr_pkg import (mtvec_mode_t, f_rounding_mode_t,
                                        riscv_reg_t, privileged_mode_t,
                                        riscv_instr_group_t, data_pattern_t,
-                                       riscv_instr_category_t, satp_mode_t)
+                                       riscv_instr_category_t, satp_mode_t,
+                                       mem_region_t)
 
 
 @vsc.randobj
@@ -81,19 +82,17 @@ class riscv_instr_gen_config:
         # Commenting out for now
         # vector_cfg = riscv_vector_cfg # TODO
         # pmp_cfg = riscv_pmp_cfg  # TODO
-        self.mem_region = {
-            0: {'name': "region_0", 'size_in_bytes': 4096, 'xwr': 8},
-            1: {'name': "region_1", 'size_in_bytes': 4096 * 16, 'xwr': 8}
-        }
-        self.amo_region = {
-            0: {'name': "amo_0", 'size_in_bytes': 64, 'xwr': 8}
-        }
-        self.stack_len = 5000
-        self.s_mem_region = {
-            0: {'name': "s_region_0", 'size_in_bytes': 4096, 'xwr': 8},
-            1: {'name': "s_region_1", 'size_in_bytes': 4096, 'xwr': 8}
-        }
 
+        self.mem_region = vsc.list_t(mem_region_t()) 
+        self.amo_region = vsc.list_t(mem_region_t()) 
+        self.s_mem_region = vsc.list_t(mem_region_t()) 
+        self.mem_region.extend([mem_region_t(name = "region_0", size_in_bytes = 4096, xwr = 8),
+                                mem_region_t(name = "region_1", size_in_bytes = 4096, xwr = 8)])
+        self.amo_region.extend([mem_region_t(name = "amo_0", size_in_bytes = 64, xwr = 8)])
+        self.s_mem_region.extend([mem_region_t(name = "s_region_0", size_in_bytes = 4096, xwr = 8),
+                                mem_region_t(name = "s_region_1", size_in_bytes = 4096, xwr = 8)])
+
+        self.stack_len = 5000
         self.kernel_stack_len = 4000
         self.kernel_program_instr_cnt = 400
         # list of main implemented CSRs

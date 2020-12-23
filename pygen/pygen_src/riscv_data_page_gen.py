@@ -49,30 +49,32 @@ class riscv_data_page_gen:
         else:
             self.mem_region_setting = cfg.mem_region
         for i in range(len(self.mem_region_setting)):
+            logging.info("mem_region_setting {}".format(self.mem_region_setting[i]))
+        for i in range(len(self.mem_region_setting)):
             logging.info("Generate data section: {} size:0x{} xwr:0x{}".format(
-                         self.mem_region_setting[i]["name"],
-                         self.mem_region_setting[i]["size_in_bytes"],
-                         self.mem_region_setting[i]["xwr"]))
+                         self.mem_region_setting[i].name,
+                         self.mem_region_setting[i].size_in_bytes,
+                         self.mem_region_setting[i].xwr))
             if amo:
                 if cfg.use_push_data_section:
                     self.data_page_str.append(".pushsection .{},\"aw\",@progbits;"
-                                              .format(self.mem_region_setting[i]["name"]))
+                                              .format(self.mem_region_setting[i].name))
                 else:
                     self.data_page_str.append(".section .{},\"aw\",@progbits;"
-                                              .format(self.mem_region_setting[i]["name"]))
-                self.data_page_str.append("{}:".format(self.mem_region_setting[i]["name"]))
+                                              .format(self.mem_region_setting[i].name))
+                self.data_page_str.append("{}:".format(self.mem_region_setting[i].name))
             else:
                 if cfg.use_push_data_section:
                     self.data_page_str.append(".pushsection .{},\"aw\",@progbits;"
                                               .format(pkg_ins.hart_prefix(hart_id) +
-                                                      self.mem_region_setting[i]["name"]))
+                                                      self.mem_region_setting[i].name))
                 else:
                     self.data_page_str.append(".section .{},\"aw\",@progbits;"
                                               .format(pkg_ins.hart_prefix(hart_id) +
-                                                      self.mem_region_setting[i]["name"]))
+                                                      self.mem_region_setting[i].name))
                 self.data_page_str.append("{}:".format(pkg_ins.hart_prefix(hart_id) +
-                                                       self.mem_region_setting[i]["name"]))
-            page_size = self.mem_region_setting[i]["size_in_bytes"]
+                                                       self.mem_region_setting[i].name))
+            page_size = self.mem_region_setting[i].size_in_bytes
             for i in range(0, page_size, 32):
                 if page_size - 1 >= 32:
                     temp_data = self.gen_data(idx=i, pattern=pattern,
