@@ -57,20 +57,20 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
         with vsc.if_then(self.use_sp_as_rs1 == 1):
             self.rs1_reg == riscv_reg_t.SP
 
-    @vsc.constraint
+    '''@vsc.constraint
     def rs1_c(self):
         self.rs1_reg.not_inside(vsc.rangelist(cfg.reserved_regs,
-                                self.reserved_rd, riscv_reg_t.ZERO))
+                                self.reserved_rd, riscv_reg_t.ZERO))'''
 
     @vsc.constraint
     def addr_c(self):
-        vsc.solve_order(self.data_page_id, self.max_load_store_offset)
-        vsc.solve_order(self.max_load_store_offset, self.base)
+        #vsc.solve_order(self.data_page_id, self.max_load_store_offset)
+        #vsc.solve_order(self.max_load_store_offset, self.base)
         # TODO
         self.data_page_id < self.max_data_page_id
-        '''with vsc.foreach(self.data_page, idx=True) as i:
-            if i == self.data_page_id:
-                self.max_load_store_offset == self.data_page[i]['size_in_bytes']'''
+        with vsc.foreach(self.data_page, idx = True) as i:
+            with vsc.if_then(i == self.data_page_id):
+                self.max_load_store_offset == self.data_page[i].size_in_bytes
         self.base in vsc.rangelist(vsc.rng(0, self.max_load_store_offset - 1))
 
     def randomize_offset(self):
