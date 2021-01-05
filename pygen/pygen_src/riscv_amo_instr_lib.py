@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 
 import vsc
 import random
+import logging
 from importlib import import_module
 from pygen_src.riscv_directed_instr_lib import riscv_mem_access_stream
 from pygen_src.riscv_instr_pkg import (riscv_reg_t, riscv_pseudo_instr_name_t,
@@ -38,28 +39,30 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
         self.max_offset = vsc.uint32_t()
         self.XLEN = vsc.uint32_t(rcs.XLEN)
         # User can specify a small group of available registers to generate various hazard condition
-        self.avail_regs = vsc.randsz_list_t(vsc.enum_t(riscv_reg_t))
-
+        # self.avail_regs = vsc.randsz_list_t(vsc.enum_t(riscv_reg_t))
+    '''
     @vsc.constraint
     def num_of_rs1_reg_c(self):
-        self.num_of_rs1_reg == 1
+       self.num_of_rs1_reg == 1
+    '''
 
     @vsc.constraint
     def rs1_c(self):
         # TODO constraint size with num_of_rs1_reg
-        vsc.solve_order(self.num_of_rs1_reg, self.rs1_reg)
+        # vsc.solve_order(self.num_of_rs1_reg, self.rs1_reg)
         self.rs1_reg.size == 1  # self.num_of_rs1_reg
         self.offset.size == 1  # self.num_of_rs1_reg
         with vsc.foreach(self.rs1_reg, idx = True) as i:
             self.rs1_reg[i].not_inside(vsc.rangelist(cfg.reserved_regs,
                                                      self.reserved_rd, riscv_reg_t.ZERO))
         vsc.unique(self.rs1_reg)
-
+    '''
     @vsc.constraint
     def addr_range_c(self):
         with vsc.foreach(self.offset, idx = True) as i:
             self.offset[i] in vsc.rangelist(vsc.rng(0, self.max_offset - 1))
-
+    '''
+    '''
     @vsc.constraint
     def aligned_amo_c(self):
 
@@ -68,12 +71,13 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
                 self.offset[i] % 4 == 0
             with vsc.else_then():
                 self.offset[i] % 8 == 0
-
+    '''
     def pre_randomize(self):
         self.data_page = cfg.amo_region
         max_data_page_id = len(self.data_page)
-        self.data_page_id = random.randrange(0, max_data_page_id - 1)
-        self.max_offset = self.data_page[self.data_page_id]['size_in_bytes']
+        self.data_page_id = random.randint(0, max_data_page_id -1)
+        logging.info("self.data_page_id : {}".format(self.data_page_id))
+        self.max_offset = self.data_page[self.data_page_id].size_in_bytes
 
     # Use "la" instruction to initialize the offset regiseter
     def init_offset_reg(self):
@@ -81,7 +85,7 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
             la_instr = riscv_pseudo_instr()
             la_instr.pseudo_instr_name = riscv_pseudo_instr_name_t.LA
             la_instr.rd = self.rs1_reg[i]
-            la_instr.imm_str = "{}+{}".format(cfg.amo_region[self.data_page_id]['name'],
+            la_instr.imm_str = "{}+{}".format(cfg.amo_region[self.data_page_id].name,
                                               self.offset[i])
             self.instr_list.insert(0, la_instr)
 
