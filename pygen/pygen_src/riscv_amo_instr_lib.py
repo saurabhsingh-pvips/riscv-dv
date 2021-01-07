@@ -40,11 +40,10 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
         self.XLEN = vsc.uint32_t(rcs.XLEN)
         # User can specify a small group of available registers to generate various hazard condition
         # self.avail_regs = vsc.randsz_list_t(vsc.enum_t(riscv_reg_t))
-    '''
+    
     @vsc.constraint
     def num_of_rs1_reg_c(self):
        self.num_of_rs1_reg == 1
-    '''
 
     @vsc.constraint
     def rs1_c(self):
@@ -55,14 +54,13 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
         with vsc.foreach(self.rs1_reg, idx = True) as i:
             self.rs1_reg[i].not_inside(vsc.rangelist(cfg.reserved_regs,
                                                      self.reserved_rd, riscv_reg_t.ZERO))
-        vsc.unique(self.rs1_reg)
-    '''
+        # vsc.unique(self.rs1_reg)
+    
     @vsc.constraint
     def addr_range_c(self):
         with vsc.foreach(self.offset, idx = True) as i:
             self.offset[i] in vsc.rangelist(vsc.rng(0, self.max_offset - 1))
-    '''
-    '''
+    
     @vsc.constraint
     def aligned_amo_c(self):
 
@@ -71,7 +69,7 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
                 self.offset[i] % 4 == 0
             with vsc.else_then():
                 self.offset[i] % 8 == 0
-    '''
+
     def pre_randomize(self):
         self.data_page = cfg.amo_region
         max_data_page_id = len(self.data_page)
@@ -91,7 +89,7 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
 
     def post_randomize(self):
         self.gen_amo_instr()
-        self.reserved_rd.append(self.rs1_reg)
+        self.reserved_rd.append(self.rs1_reg[0])
         self.add_mixed_instr(self.num_mixed_instr)
         self.init_offset_reg()
         super().post_randomize()
