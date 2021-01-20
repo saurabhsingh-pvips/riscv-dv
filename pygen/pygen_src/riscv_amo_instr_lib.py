@@ -48,7 +48,7 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
     @vsc.constraint
     def rs1_c(self):
         # TODO constraint size with num_of_rs1_reg
-        # vsc.solve_order(self.num_of_rs1_reg, self.rs1_reg)
+        vsc.solve_order(self.num_of_rs1_reg, self.rs1_reg)
         self.rs1_reg.size == 1  # self.num_of_rs1_reg
         self.offset.size == 1  # self.num_of_rs1_reg
         with vsc.foreach(self.rs1_reg, idx = True) as i:
@@ -71,6 +71,8 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
                 self.offset[i] % 8 == 0
 
     def pre_randomize(self):
+        logging.info("cfg.reserved_regs {}".format(cfg.reserved_regs))
+        logging.info("self.reserved_rd {}".format(self.reserved_rd))
         self.data_page = cfg.amo_region
         max_data_page_id = len(self.data_page)
         self.data_page_id = random.randint(0, max_data_page_id -1)
@@ -86,6 +88,7 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
             la_instr.imm_str = "{}+{}".format(cfg.amo_region[self.data_page_id].name,
                                               self.offset[i])
             self.instr_list.insert(0, la_instr)
+
 
     def post_randomize(self):
         self.gen_amo_instr()
@@ -168,9 +171,6 @@ class riscv_amo_instr_stream (riscv_amo_base_instr_stream):
     def reasonable_c(self):
         vsc.solve_order(self.num_amo, self.num_mixed_instr)
         self.num_amo in vsc.rangelist(vsc.rng(1, 10))
-        self.num_mixed_instr in vsc.rangelist(vsc.rng(0, self.num_amo))
-
-    @vsc.constraint
     def num_of_rs1_reg_c(self):
         vsc.solve_order(self.num_amo, self.num_of_rs1_reg)
         self.num_of_rs1_reg in vsc.rangelist(vsc.rng(1, self.num_amo))
