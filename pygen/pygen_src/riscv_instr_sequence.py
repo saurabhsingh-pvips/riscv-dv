@@ -19,6 +19,7 @@ import vsc
 from importlib import import_module
 from collections import defaultdict
 from pygen_src.riscv_instr_stream import riscv_rand_instr_stream
+from pygen_src.riscv_illegal_instr import riscv_illegal_instr, illegal_instr_type_e
 from pygen_src.riscv_instr_gen_config import cfg
 from pygen_src.riscv_instr_pkg import (pkg_ins, riscv_instr_name_t, riscv_reg_t,
                                        riscv_instr_category_t)
@@ -37,11 +38,12 @@ class riscv_instr_sequence:
         self.instr_string_list = []  # Save the instruction list
         self.program_stack_len = vsc.int32_t(0)  # Stack space allocated for this program
         self.directed_instr = []    # List of all directed instruction stream
-        self.illegal_instr_pct = 0  # Percentage of illegal instructions
+        self.illegal_instr_pct = 0      # Percentage of illegal instructions
         self.hint_instr_pct = 0     # Percentage of hint instructions
         self.branch_idx = [None] * 30
         self.instr_stack_enter = riscv_push_stack_instr()
         self.instr_stack_exit = riscv_pop_stack_instr()
+        self.illegal_instr = riscv_illegal_instr()
 
     def gen_instr(self, is_main_program, no_branch = 1):
         self.is_main_program = is_main_program
@@ -254,4 +256,33 @@ class riscv_instr_sequence:
 
     # TODO
     def insert_illegal_hint_instr(self):
-        pass
+        bin_instr_cnt = 0
+        idx = 0
+        tstr = ""
+        self.illegal_instr.init_eg(cfg)
+        bin_instr_cnt = self.instr_cnt * cfg.illegal_instr_ratio / 1000
+        if bin_instr_cnt >= 0:
+            logging.info(
+                "Injecting {} illegal instructions, ratio {}/100".format(bin_instr_cnt,
+                                                                         cfg.illegal_instr_ratio))
+        '''for i in range(int(bin_instr_cnt)):
+            with vsc.randomize_with(self.illegal_instr):
+                #self.exception != illegal_instr_type_e.kHintInstr
+                tstr += pkg_ins.indent
+                tstr += pkg_ins.format_string(".4byte 0x{} # {}".format(
+                    self.illegal_instr.get_bin_str(), self.illegal_instr.comment))
+                idx = random.randrange(0, len(self.instr_string_list))
+                self.instr_string_list.extend(idx, tstr)
+        bin_instr_cnt = self.instr_cnt * cfg.hint_instr_ratio / 1000
+        if bin_instr_cnt >= 0:
+            logging.info("Injecting {} HINT instructions, ratio {}/100".format(
+                bin_instr_cnt, cfg.illegal_instr_ratio))
+            for i in range(int(bin_instr_cnt)):
+                with vsc.randomize_with(self.illegal_instr):
+                    self.exception == illegal_instr_type_e.kHintInstr
+                tstr += pkg_ins.indent
+                tstr += pkg_ins.format_string(".2byte 0x{} # {}".format(
+                    self.illegal_instr.get_bin_str, self.illegal_instr.comment))
+                idx = random.randrange(0, len(self.instr_string_list))
+                self.instr_string_list[idx] = tstr
+        '''

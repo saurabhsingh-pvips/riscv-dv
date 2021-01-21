@@ -22,7 +22,7 @@ from pygen_src.riscv_instr_sequence import riscv_instr_sequence
 from pygen_src.riscv_instr_pkg import (pkg_ins, privileged_reg_t,
                                        privileged_mode_t, mtvec_mode_t,
                                        misa_ext_t, riscv_instr_group_t,
-                                       satp_mode_t)
+                                       satp_mode_t, exception_cause_t)
 from pygen_src.riscv_instr_gen_config import cfg
 from pygen_src.riscv_data_page_gen import riscv_data_page_gen
 from pygen_src.riscv_privileged_common_seq import riscv_privileged_common_seq
@@ -96,7 +96,7 @@ class riscv_asm_program_gen:
             self.generate_directed_instr_stream(hart=hart,
                                                 label=self.main_program[hart].label_name,
                                                 original_instr_cnt=
-                                                    self.main_program[hart].instr_cnt,
+                                                self.main_program[hart].instr_cnt,
                                                 min_insert_cnt=1,
                                                 instr_stream=self.main_program[hart].directed_instr)
             self.main_program[hart].gen_instr(is_main_program=1, no_branch=cfg.no_branch_jump)
@@ -126,7 +126,7 @@ class riscv_asm_program_gen:
                 if not cfg.no_data_page:
                     self.gen_data_page(hart)
                     if(hart == 0 and riscv_instr_group_t.RV32A
-                                         in rcs.supported_isa):
+                       in rcs.supported_isa):
                         self.gen_data_page(hart, amo = 1)
 
             self.gen_stack_section(hart)
@@ -519,6 +519,7 @@ class riscv_asm_program_gen:
             self.gen_instr_fault_handler(hart)
             self.gen_load_fault_handler(hart)
             self.gen_store_fault_handler(hart)
+            self.gen_illegal_instr_handler(hart)
 
     def gen_trap_handlers(self, hart):
         self.gen_trap_handler_section(hart, "m", privileged_reg_t.MCAUSE,
@@ -529,7 +530,6 @@ class riscv_asm_program_gen:
 
     def gen_trap_handler_section(self, hart, mode, cause, tvec,
                                  tval, epc, scratch, status, ie, ip):
-        is_interrupt = 1
         tvec_name = ""
         instr = []
         if cfg.mtvec_mode == mtvec_mode_t.VECTORED:
@@ -554,9 +554,9 @@ class riscv_asm_program_gen:
                                                                         cfg.gpr[0].value,
                                                                         pkg_ins.hart_prefix(hart),
                                                                         mode))
+            
         # The trap handler will occupy one 4KB page, it will be allocated one entry in
         # the page table with a specific privileged mode.
-
         if rcs.SATP_MODE != satp_mode_t.BARE:
             self.instr_stream.append(".align 12")
         else:
@@ -568,8 +568,62 @@ class riscv_asm_program_gen:
         # TODO Exception handler
         instr = []
         if cfg.mtvec_mode == mtvec_mode_t.VECTORED:
+            self.gen_interrupt_vector_table(hart, mode, status, cause, ie, ip, scratch, instr)
+            # Push user mode GPR to kernel stack before executing exception handling, this
+            # is to avoid exception handling routine modify user program state unexpectedly
+        else:
             pkg_ins.push_gpr_to_kernel_stack(
                 status, scratch, cfg.mstatus_mprv, cfg.sp, cfg.tp, instr)
+            # Checking xStatus can be optional if ISS (like spike) has different implementation of
+            # certain fields compared with the RTL processor.
+        if cfg.check_xstatus:
+            instr.append(pkg_ins.format_string(
+                "csrr x{}, 0x{} # {}".format(cfg.gpr[0], status, status.name)))
+            # Use scratch CSR to save a GPR value
+            # Check if the exception is caused by an interrupt, if yes, jump to interrupt
+            # handler Interrupt is indicated by xCause[XLEN-1]
+            instr.append(pkg_ins.format_string(
+                "csrr x{}, 0x{} # {}".format(cfg.gpr[0], cause, cause.name)))
+            instr.append(pkg_ins.format_string(
+                "srli x{}, x{}, {}".format(cfg.gpr[0], cfg.gpr[0], rcs.XLEN - 1)))
+            instr.append(pkg_ins.format_string("bne x{}, x0, {}{}mode_instr_handler".format(
+                cfg.gpr[0], pkg_ins.hart_prefix(hart), mode)))
+
+        # The trap handler will occupy one 4KB page, it will be allocated one entry in the
+        #  page table with a specific privileged mode.
+        if rcs.SATP_MODE != satp_mode_t.BARE:
+            self.instr_stream.append(".align 12")
+        else:
+            self.instr_stream.append(pkg_ins.format_string(".align {}".format(cfg.tvec_alignment)))
+        tvec_name = tvec.name
+        self.gen_section(pkg_ins.get_label(pkg_ins.format_string(
+            "{}_handler".format(tvec_name)), hart), instr)
+        # Exception handler
+        instr = []
+        if cfg.mtvec_mode == mtvec_mode_t.VECTORED:
+            pkg_ins.push_gpr_to_kernel_stack(
+                status, scratch, cfg.mstatus_mprv, cfg.sp, cfg.tp, instr)
+        # self.gen_signature_handshake(instr, CORE_STATUS, HANDLING_EXCEPTION)
+        # The trap is caused by an exception, read back xCAUSE, xEPC to see if these
+        # CSR values are set properly. The checking is done by comparing against the log
+        # generated by ISA simulator (spike).
+        instr.append(pkg_ins.format_string("csrr x{}, 0x{} # {}".format(cfg.gpr[0], epc, epc.name)))
+
+        instr.append(pkg_ins.format_string(
+            "csrr x{}, 0x{} # {}".format(cfg.gpr[0], cause, cause.name)))
+        # Illegal instruction exception
+        instr.append(pkg_ins.format_string("li x{}, 0x{} # ILLEGAL_INSTRUCTION".format(
+            cfg.gpr[1], exception_cause_t.ILLEGAL_INSTRUCTION)))
+        instr.append(pkg_ins.format_string("beq x{}, x{}, {}illegal_instr_handler".format(
+            cfg.gpr[0], cfg.gpr[1], pkg_ins.hart_prefix(hart))))
+        # Skip checking tval for illegal instruction as it's implementation specific
+        instr.append(pkg_ins.format_string(
+            "csrr x{}, 0x{} # {}".format(cfg.gpr[1], tval, tval.name)))
+        # use JALR to jump to test_done.
+        instr.append(pkg_ins.format_string("1: la x{}, test_done".format(cfg.scratch_reg)))
+        instr.append(pkg_ins.format_string("jalr x1, x{}, 0".format(cfg.scratch_reg)))
+        self.gen_section(pkg_ins.get_label(pkg_ins.format_string(
+            "{}mode_exception_handler".format(mode)), hart), instr)
 
     def gen_interrupt_vector_table(self, hart, mode, status, cause, ie,
                                    ip, scratch, instr):
@@ -590,7 +644,15 @@ class riscv_asm_program_gen:
         pass
 
     def gen_illegal_instr_handler(self, hart):
-        pass
+        instr = []
+        self.gen_signature_handshake(instr, "CORE_STATUS", "ILLEGAL_INSTR_EXCEPTION")
+        self.gen_signature_handshake(instr, "WRITE_CSR", "MCAUSE")
+        instr.append("csrr  x{}, {}".format(cfg.gpr[0].value, hex(privileged_reg_t.MEPC)))
+        instr.append("addi  x{}, x{}, 4".format(cfg.gpr[0].value, cfg.gpr[0].value))
+        instr.append("csrw  {}, x{}".format(hex(privileged_reg_t.MEPC), cfg.gpr[0].value))
+        pkg_ins.pop_gpr_from_kernel_stack(privileged_reg_t.MSTATUS, privileged_reg_t.MSCRATCH, cfg.mstatus_mprv, cfg.sp, cfg.tp, instr)
+        instr.append("mret")
+        self.gen_section(pkg_ins.get_label("illegal_instr_handler", hart), instr)
 
     def gen_instr_fault_handler(self, hart):
         pass
