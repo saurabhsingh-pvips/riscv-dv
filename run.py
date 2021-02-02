@@ -797,7 +797,7 @@ def parse_args(cwd):
                         help="RISC-V ISA subset")
     parser.add_argument("-m", "--mabi", type=str, default="",
                         help="mabi used for compilation", dest="mabi")
-    parser.add_argument("--gen_timeout", type=int, default=360,
+    parser.add_argument("--gen_timeout", type=int, default=36000,
                         help="Generator timeout limit in seconds")
     parser.add_argument("--end_signature_addr", type=str, default="0",
                         help="Address that privileged CSR test writes to at EOT")

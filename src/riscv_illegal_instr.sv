@@ -385,10 +385,13 @@ class riscv_illegal_instr extends uvm_object;
 
   function void post_randomize();
     comment = exception.name();
+    $display("DBG | comment = %0s",comment);
     if (exception == kReservedCompressedInstr) begin
       comment = {comment, " ", reserved_c.name()};
+	$display("DBG | IF comment = %0s",comment);
     end else if (exception == kIllegalOpcode) begin
       comment = {comment, " ", $sformatf("%7b", opcode)};
+	$display("DBG | ELSE comment = %0s",comment);
     end
   endfunction
 

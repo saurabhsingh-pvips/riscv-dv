@@ -322,22 +322,27 @@ class riscv_instr_sequence extends uvm_sequence;
     string str;
     illegal_instr.init(cfg);
     bin_instr_cnt = instr_cnt * cfg.illegal_instr_ratio / 1000;
+    $display("DBG | bin_instr_cnt = %0d, instr_cnt = %0d, cfg.illegal_instr_ratio = %0d",bin_instr_cnt,instr_cnt, cfg.illegal_instr_ratio);
     if (bin_instr_cnt >= 0) begin
       `uvm_info(`gfn, $sformatf("Injecting %0d illegal instructions, ratio %0d/100",
-                      bin_instr_cnt, cfg.illegal_instr_ratio), UVM_LOW)
+                      bin_instr_cnt, cfg.illegal_instr_ratio), UVM_HIGH)
       repeat (bin_instr_cnt) begin
         `DV_CHECK_RANDOMIZE_WITH_FATAL(illegal_instr,
                                        exception != kHintInstr;)
         str = {indent, $sformatf(".4byte 0x%s # %0s",
                        illegal_instr.get_bin_str(), illegal_instr.comment)};
+	$display("DBG | instr_string_list.size() = %0d",instr_string_list.size());
+	foreach(instr_string_list[i])
+		$display("DBG | instr_string_list[i] = %0s",instr_string_list[i]);
                idx = $urandom_range(0, instr_string_list.size());
+	$display("DBG | str = %0s",str);
         instr_string_list.insert(idx, str);
       end
     end
     bin_instr_cnt = instr_cnt * cfg.hint_instr_ratio / 1000;
     if (bin_instr_cnt >= 0) begin
       `uvm_info(`gfn, $sformatf("Injecting %0d HINT instructions, ratio %0d/100",
-                      bin_instr_cnt, cfg.illegal_instr_ratio), UVM_LOW)
+                      bin_instr_cnt, cfg.illegal_instr_ratio), UVM_HIGH)
       repeat (bin_instr_cnt) begin
         `DV_CHECK_RANDOMIZE_WITH_FATAL(illegal_instr,
                                        exception == kHintInstr;)

@@ -371,7 +371,10 @@ class riscv_illegal_instr:
 
     def post_randomize(self):
         self.comment = self.exception.name
+        logging.info("DBG | comment = {}".format(self.comment))
         with vsc.if_then(self.exception == illegal_instr_type_e.kReservedCompressedInstr):
             self.comment.append(" ", self.reserved_c.name)
+            logging.info("DBG | IF comment = {}".format(self.comment))
         with vsc.else_if(self.exception == illegal_instr_type_e.kIllegalOpcode):
             self.comment.append(" ", pkg_ins.format_string("{}", self.opcode))
+            logging.info("DBG | ELSE comment = {}".format(self.comment))

@@ -260,19 +260,23 @@ class riscv_instr_sequence:
         idx = 0
         tstr = ""
         self.illegal_instr.init_eg(cfg)
-        bin_instr_cnt = self.instr_cnt * cfg.illegal_instr_ratio / 1000
+        logging.info("DBG | self.instr_cnt = {} cfg.illegal_instr_ratio = {}".format(self.instr_cnt, cfg.illegal_instr_ratio))
+        bin_instr_cnt = int(self.instr_cnt * cfg.illegal_instr_ratio / 1000)
+        logging.info("DBG | insert_illegal_hint_instr. bin_instr_cnt {}".format(bin_instr_cnt))
         if bin_instr_cnt >= 0:
             logging.info(
                 "Injecting {} illegal instructions, ratio {}/100".format(bin_instr_cnt,
                                                                          cfg.illegal_instr_ratio))
-        '''for i in range(int(bin_instr_cnt)):
-            with vsc.randomize_with(self.illegal_instr):
-                #self.exception != illegal_instr_type_e.kHintInstr
-                tstr += pkg_ins.indent
-                tstr += pkg_ins.format_string(".4byte 0x{} # {}".format(
-                    self.illegal_instr.get_bin_str(), self.illegal_instr.comment))
-                idx = random.randrange(0, len(self.instr_string_list))
-                self.instr_string_list.extend(idx, tstr)
+            for i in range(int(bin_instr_cnt)):
+                with vsc.randomize_with(self.illegal_instr):
+                    #self.exception != illegal_instr_type_e.kHintInstr
+                    tstr += pkg_ins.indent
+                    tstr += pkg_ins.format_string(".4byte 0x{} # {}".format(
+                        self.illegal_instr.get_bin_str(), self.illegal_instr.comment))
+                    logging.info("DBGW | instr_string_list {} size {}".format(self.instr_string_list,len(self.instr_string_list)))
+                    idx = random.randrange(0, len(self.instr_string_list))
+                    logging.info("DBGW | idx = {} tstr = {}".format(idx,tstr))
+                    self.instr_string_list.insert(idx, tstr)
         bin_instr_cnt = self.instr_cnt * cfg.hint_instr_ratio / 1000
         if bin_instr_cnt >= 0:
             logging.info("Injecting {} HINT instructions, ratio {}/100".format(
@@ -285,4 +289,4 @@ class riscv_instr_sequence:
                     self.illegal_instr.get_bin_str, self.illegal_instr.comment))
                 idx = random.randrange(0, len(self.instr_string_list))
                 self.instr_string_list[idx] = tstr
-        '''
+
