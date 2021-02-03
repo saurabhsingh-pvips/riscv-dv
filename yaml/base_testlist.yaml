@@ -35,7 +35,7 @@
   description: >
     Arithmetic instruction test, no load/store/branch instructions
   gen_opts: >
-    +instr_cnt=10000
+    +instr_cnt=100
     +num_of_sub_program=0
     +directed_instr_0=riscv_int_numeric_corner_stream,4
     +no_fence=1
@@ -131,7 +131,7 @@
   iterations: 2
   gen_test: riscv_rand_instr_test
   gen_opts: >
-    +illegal_instr_ratio=90
+    +illegal_instr_ratio=50
   rtl_test: core_base_test
 
 - test: riscv_ebreak_test

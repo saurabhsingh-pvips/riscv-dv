@@ -216,12 +216,12 @@ class riscv_instr_sequence:
                     prefix = pkg_ins.format_string(string = " ", length = pkg_ins.LABEL_STR_LEN)
             string = prefix + self.instr_stream.instr_list[i].convert2asm()
             self.instr_string_list.append(string)
-            if(rcs.support_pmp and not re.search("main", self.label_name)):
-                self.instr_string_list.insert(0, ".align 2")
-            self.insert_illegal_hint_instr()
-            prefix = pkg_ins.format_string(str(i), pkg_ins.LABEL_STR_LEN)
-            if not self.is_main_program:
-                self.generate_return_routine(prefix)
+        if(rcs.support_pmp and not re.search("main", self.label_name)):
+            self.instr_string_list.insert(0, ".align 2")
+        self.insert_illegal_hint_instr()
+        prefix = pkg_ins.format_string(str(i), pkg_ins.LABEL_STR_LEN)
+        if not self.is_main_program:
+            self.generate_return_routine(prefix)
 
     def generate_return_routine(self, prefix):
         string = ''
@@ -267,17 +267,21 @@ class riscv_instr_sequence:
             logging.info(
                 "Injecting {} illegal instructions, ratio {}/100".format(bin_instr_cnt,
                                                                          cfg.illegal_instr_ratio))
-            for i in range(int(bin_instr_cnt)):
+            for i in range(bin_instr_cnt):
                 with vsc.randomize_with(self.illegal_instr):
-                    #self.exception != illegal_instr_type_e.kHintInstr
-                    tstr += pkg_ins.indent
-                    tstr += pkg_ins.format_string(".4byte 0x{} # {}".format(
-                        self.illegal_instr.get_bin_str(), self.illegal_instr.comment))
-                    logging.info("DBGW | instr_string_list {} size {}".format(self.instr_string_list,len(self.instr_string_list)))
-                    idx = random.randrange(0, len(self.instr_string_list))
-                    logging.info("DBGW | idx = {} tstr = {}".format(idx,tstr))
-                    self.instr_string_list.insert(idx, tstr)
-        bin_instr_cnt = self.instr_cnt * cfg.hint_instr_ratio / 1000
+                    self.illegal_instr.exception != illegal_instr_type_e.kHintInstr
+                logging.info("DBGW | Randomize illegal_instr")
+                tstr = ""
+                tstr += pkg_ins.indent
+                tstr += ".4byte 0x{} # {}".format(
+                    self.illegal_instr.get_bin_str(), self.illegal_instr.comment)
+                #logging.info("DBGW | instr_string_list {} size {}".format(self.instr_string_list,len(self.instr_string_list)))
+                idx = random.randrange(0, len(self.instr_string_list))
+                logging.info("DBGW | idx = {} tstr = {}".format(idx,tstr))
+                self.instr_string_list[idx] = tstr
+                logging.info("DBGW | Added in list")
+                    #self.instr_string_list.insert(idx, tstr)
+        '''bin_instr_cnt = self.instr_cnt * cfg.hint_instr_ratio / 1000
         if bin_instr_cnt >= 0:
             logging.info("Injecting {} HINT instructions, ratio {}/100".format(
                 bin_instr_cnt, cfg.illegal_instr_ratio))
@@ -288,5 +292,5 @@ class riscv_instr_sequence:
                 tstr += pkg_ins.format_string(".2byte 0x{} # {}".format(
                     self.illegal_instr.get_bin_str, self.illegal_instr.comment))
                 idx = random.randrange(0, len(self.instr_string_list))
-                self.instr_string_list[idx] = tstr
+                self.instr_string_list[idx] = tstr'''
 
