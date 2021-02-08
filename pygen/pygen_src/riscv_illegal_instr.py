@@ -81,6 +81,7 @@ class riscv_illegal_instr:
         self.legal_c10_opcode = [0, 2, 4, 6]
         self.xlen = vsc.uint8_t(0)
         self.xlen = rcs.XLEN
+        self.temp_1 = vsc.bit_t(6)
  
     @vsc.constraint
     def exception_dist_c(self):
@@ -90,12 +91,12 @@ class riscv_illegal_instr:
                   vsc.weight(illegal_instr_type_e.kIllegalFunc3, 1),
                   vsc.weight(illegal_instr_type_e.kIllegalFunc7, 1),
                   vsc.weight(illegal_instr_type_e.kReservedCompressedInstr, 1),
-                  #vsc.weight(illegal_instr_type_e.kHintInstr, 3),
+                  vsc.weight(illegal_instr_type_e.kHintInstr, 3),
                   vsc.weight(illegal_instr_type_e.kIllegalSystemInstr, 3)
                   ])
 
     # Invalid SYSTEM instructions
-    vsc.constraint
+    @vsc.constraint
     def system_instr_c(self):
         with vsc.if_then(self.exception == illegal_instr_type_e.kIllegalSystemInstr):
             self.opcode == 115
@@ -112,7 +113,7 @@ class riscv_illegal_instr:
                 self.instr_bin[31:20].not_inside(vsc.rangelist(self.csrs))
                 # self.instr_bin[20:31].not_inside(vsc.rangelist(self.custom_csr))
 
-    vsc.constraint
+    @vsc.constraint
     def legal_rv32_c_slli(self):
         with vsc.if_then((self.c_msb == 0) and (self.c_op == 2) and (self.xlen == 32)):
             with vsc.if_then(self.exception == illegal_instr_type_e.kReservedCompressedInstr):
@@ -124,8 +125,8 @@ class riscv_illegal_instr:
     def exception_type_c(self):
         with vsc.if_then(self.compressed == 1):
             self.exception.inside(vsc.rangelist(illegal_instr_type_e.kReservedCompressedInstr,
-                                                illegal_instr_type_e.kIllegalCompressedOpcode))
-                                                #illegal_instr_type_e.kHintInstr))
+                                                illegal_instr_type_e.kIllegalCompressedOpcode,
+                                                illegal_instr_type_e.kHintInstr))
         with vsc.else_then():
             self.exception.inside(vsc.rangelist(illegal_instr_type_e.kIllegalOpcode,
                                                 illegal_instr_type_e.kIllegalFunc3,
@@ -142,7 +143,7 @@ class riscv_illegal_instr:
 
     # Avoid generating illegal func3/func7 errors for self.opcode used by B-extension for now
     # TODO: add support for generating illegal B-extension instructions
-    vsc.constraint
+    @vsc.constraint
     def b_extension_c(self):
         if riscv_instr_group_t.RV32B in rcs.supported_isa:
             with vsc.if_then(self.exception in [illegal_instr_type_e.kIllegalFunc3,
@@ -205,31 +206,26 @@ class riscv_illegal_instr:
                  (self.instr_bin[11:7] == 0))
             with vsc.if_then(self.reserved_c == reserved_c_instr_e.kReservedLdsp):
                 ((self.c_msb == 3) and (self.c_op == 2) and (self.instr_bin[11:7] == 0))
-    '''
+
     @vsc.constraint
     def hint_instr_c(self):
         with vsc.if_then(self.exception == illegal_instr_type_e.kHintInstr):
             # C.ADDI
-            ((self.c_msb == 0) and (self.c_op == 1) and
-             (self.instr_bin[12] == 0 and self.instr_bin[6:2] == 0)) or
-            ((self.c_msb == 2) and (self.c_op == 1) and (self.instr_bin[11:7] == 0)) or
-            ((self.c_msb == 4) and (self.c_op == 1) and (self.instr_bin[12:11] == 0) and
-             (self.instr_bin[6:2] == 0)) or
-            ((self.c_msb == 4) and (self.c_op == 2) and (self.instr_bin[11:7] == 0) and
-             (self.instr_bin[6:2] != 0)) or
-            # C.LUI
-            ((self.c_msb == 3) and (self.c_op == 1) and (self.instr_bin[11:7] == 0) and
-             (self.instr_bin[12] != 0 and self.instr_bin[6:2] != 0)) or
-            # C.SLLI
-            ((self.c_msb == 0) and (self.c_op == 2) and (self.instr_bin[11:7] == 0)) or
-            # C.SLLI64
-            ((self.c_msb == 0) and (self.c_op == 2) and (self.instr_bin[11:7] != 0) and
-             (not self.instr_bin[12]) and (self.instr_bin[6:2] == 0)) or
-            # C.ADD
-            ((self.c_msb == 4) and (self.c_op == 2) and (self.instr_bin[11:7] == 0) and
-             self.instr_bin[12] and (self.instr_bin[6:2] != 0))'''
-
-    vsc.constraint
+            ((self.c_msb == 0) and (self.c_op == 1) and (self.instr_bin[12] + self.instr_bin[6:2] == 0)) or \
+            ((self.c_msb == 2) and (self.c_op == 1) and (self.instr_bin[11:7] == 0)) or \
+            ((self.c_msb == 4) and (self.c_op == 1) and (self.instr_bin[12:11] == 0) and \
+            (self.instr_bin[6:2] == 0)) or \
+            ((self.c_msb == 4) and (self.c_op == 2) and (self.instr_bin[11:7] == 0) and \
+                                               (self.instr_bin[6:2] != 0)) or \
+            ((self.c_msb == 3) and (self.c_op == 1) and (self.instr_bin[11:7] == 0) and \
+                                               (self.instr_bin[12] + self.instr_bin[6:2])
+                                                != 0) or \
+            ((self.c_msb == 0) and (self.c_op == 2) and (self.instr_bin[11:7] == 0)) or \
+            ((self.c_msb == 0) and (self.c_op == 2) and (self.instr_bin[11:7] != 0) and not(self.instr_bin[12]) and \
+                                               (self.instr_bin[6:2] == 0)) or \
+            ((self.c_msb == 4) and (self.c_op == 2) and (self.instr_bin[11:7] == 0) and self.instr_bin[12] and
+                                               (self.instr_bin[6:2] != 0))
+    @vsc.constraint
     def illegal_opcode_c(self):
         vsc.solve_order(self.opcode, self.instr_bin)
         with vsc.if_then(self.exception == illegal_instr_type_e.kIllegalOpcode):
@@ -325,11 +321,11 @@ class riscv_illegal_instr:
 
     @vsc.constraint
     def instr_bit_assignment_c(self):
-        '''vsc.solve_order(self.opcode, self.instr_bin)
+        vsc.solve_order(self.opcode, self.instr_bin)
         vsc.solve_order(self.func3, self.instr_bin)
         vsc.solve_order(self.func7, self.instr_bin)
         vsc.solve_order(self.c_msb, self.instr_bin)
-        vsc.solve_order(self.c_op, self.instr_bin)'''
+        #vsc.solve_order(self.c_op, self.instr_bin)
 
         with vsc.if_then(self.compressed == 1):
             self.instr_bin[1:0] == self.c_op
@@ -368,13 +364,11 @@ class riscv_illegal_instr:
             #return pkg_ins.format_string("{}".format(self.instr_bin[15:0]))
             #return pkg_ins.format_string("{}".format(local_instr_bin))
             #return ("{}".format(self.instr_bin[15:0].get_val()))
-            logging.info("DBGIB | local_instr_bin = {} self.instr_bin = {}".format(local_instr_bin,self.instr_bin))
             return ("{}".format(local_instr_bin))
         #with vsc.else_then():
         else:
             #return pkg_ins.format_string("{}".format(self.instr_bin[31:0]))
             local_instr_bin = self.instr_bin & 0xffffffff
-            logging.info("DBGIB | local_instr_bin = {} self.instr_bin = {}".format(local_instr_bin,self.instr_bin))
             return ("{}".format(local_instr_bin))
         logging.info("Illegal instruction type: {}, illegal instruction: 0x{}".format(
             self.exception.name, self.instr_bin))
@@ -390,7 +384,5 @@ class riscv_illegal_instr:
         #with vsc.else_if(self.exception == illegal_instr_type_e.kIllegalOpcode):
         elif(self.exception == illegal_instr_type_e.kIllegalOpcode):
             logging.info("DBGI | opcode = {} type = {}".format(self.opcode, type(self.opcode)))
-            #self.comment += ("{}", str(self.opcode))
-            sub_comment = str(self.opcode)
             self.comment += " {}".format(str(self.opcode))
             logging.info("DBG | ELSE comment = {}".format(self.comment))

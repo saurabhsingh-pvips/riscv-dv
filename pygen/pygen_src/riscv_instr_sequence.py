@@ -235,24 +235,23 @@ class riscv_instr_sequence:
         except Exception:
             logging.critical("Cannot randomize ra")
             sys.exit(1)
-        string = (prefix + pkg_ins.format_string("{}addi x{} x{} {}".format(ra.name,
-                                                                            cfg.ra.name, rand_lsb)))
+        string = (prefix + "{}addi x{} x{} {}".format(ra.name,cfg.ra.name, rand_lsb))
         self.instr_string_list.append(string)
         if(not cfg.disable_compressed_instr):
             jump_instr.append(riscv_instr_name_t.C_JR)
             if(not (riscv_reg_t.RA in {cfg.reserved_regs})):
                 jump_instr.append(riscv_instr_name_t.C_JALR)
         i = random.randrange(0, len(jump_instr) - 1)
-        if (jump_instr[i] == riscv_instr_name_t.C_JAL):
-            string = prefix + pkg_ins.format_string("{}c.jalr x{}".format(ra.name))
+        if (jump_instr[i] == riscv_instr_name_t.C_JALR):
+            string = prefix + "{}c.jalr x{}".format(ra.name)
         elif(jump_instr[i] == riscv_instr_name_t.C_JR):
-            string = prefix + pkg_ins.format_string("{}c.jr x{}".format(ra.name))
+            string = prefix + "{}c.jr x{}".format(ra.name)
         elif(jump_instr[i] == riscv_instr_name_t.JALR):
-            string = prefix + pkg_ins.format_string("{}c.jalr x{} x{} 0".format(ra.name, ra.name))
+            string = prefix + "{}c.jalr x{} x{} 0".format(ra.name, ra.name)
         else:
             logging.critical("Unsupported jump_instr: %0s" % (jump_instr[i]))
             sys.exit(1)
-            self.instr_string_list.append(string)
+        self.instr_string_list.append(string)
 
     # TODO
     def insert_illegal_hint_instr(self):
@@ -260,9 +259,7 @@ class riscv_instr_sequence:
         idx = 0
         tstr = ""
         self.illegal_instr.init_eg(cfg)
-        logging.info("DBG | self.instr_cnt = {} cfg.illegal_instr_ratio = {}".format(self.instr_cnt, cfg.illegal_instr_ratio))
         bin_instr_cnt = int(self.instr_cnt * cfg.illegal_instr_ratio / 1000)
-        logging.info("DBG | insert_illegal_hint_instr. bin_instr_cnt {}".format(bin_instr_cnt))
         if bin_instr_cnt >= 0:
             logging.info(
                 "Injecting {} illegal instructions, ratio {}/100".format(bin_instr_cnt,
@@ -270,27 +267,23 @@ class riscv_instr_sequence:
             for i in range(bin_instr_cnt):
                 with vsc.randomize_with(self.illegal_instr):
                     self.illegal_instr.exception != illegal_instr_type_e.kHintInstr
-                logging.info("DBGW | Randomize illegal_instr")
                 tstr = ""
                 tstr += pkg_ins.indent
                 tstr += ".4byte 0x{} # {}".format(
                     self.illegal_instr.get_bin_str(), self.illegal_instr.comment)
-                #logging.info("DBGW | instr_string_list {} size {}".format(self.instr_string_list,len(self.instr_string_list)))
                 idx = random.randrange(0, len(self.instr_string_list))
-                logging.info("DBGW | idx = {} tstr = {}".format(idx,tstr))
-                self.instr_string_list[idx] = tstr
-                logging.info("DBGW | Added in list")
-                    #self.instr_string_list.insert(idx, tstr)
-        '''bin_instr_cnt = self.instr_cnt * cfg.hint_instr_ratio / 1000
+                self.instr_string_list.insert(idx, tstr)
+        bin_instr_cnt = int(self.instr_cnt * cfg.hint_instr_ratio / 1000)
         if bin_instr_cnt >= 0:
             logging.info("Injecting {} HINT instructions, ratio {}/100".format(
-                bin_instr_cnt, cfg.illegal_instr_ratio))
+                bin_instr_cnt, cfg.hint_instr_ratio))
             for i in range(int(bin_instr_cnt)):
                 with vsc.randomize_with(self.illegal_instr):
-                    self.exception == illegal_instr_type_e.kHintInstr
+                    self.illegal_instr.exception == illegal_instr_type_e.kHintInstr
+                tstr = ""
                 tstr += pkg_ins.indent
-                tstr += pkg_ins.format_string(".2byte 0x{} # {}".format(
-                    self.illegal_instr.get_bin_str, self.illegal_instr.comment))
+                tstr += ".2byte 0x{} # {}".format(
+                    self.illegal_instr.get_bin_str(), self.illegal_instr.comment)
                 idx = random.randrange(0, len(self.instr_string_list))
-                self.instr_string_list[idx] = tstr'''
+                self.instr_string_list.insert(idx, tstr)
 
