@@ -17,7 +17,6 @@ import random
 import copy
 import sys
 import vsc
-import pdb
 from importlib import import_module
 from pygen_src.riscv_instr_sequence import riscv_instr_sequence
 from pygen_src.riscv_instr_pkg import (pkg_ins, privileged_reg_t,
@@ -58,11 +57,8 @@ class riscv_asm_program_gen:
         self.instr_stream.clear()
         self.gen_program_header()
         for hart in range(cfg.num_of_harts):
-            logging.info("harts in cfg are in asm_program gen {}".format(cfg.num_of_harts))
-            logging.info("hart is asm program :{}".format(hart))
             # Commenting out for now
             # sub_program_name = []
-           # pdb.set_trace()
             self.instr_stream.append(f"h{int(hart)}_start:")
             if not cfg.bare_program_mode:
                 self.setup_misa()
@@ -87,7 +83,8 @@ class riscv_asm_program_gen:
                 self.gen_load_fault_handler(hart)
                 # Store fault handler
                 self.gen_store_fault_handler(hart)
-                self.gen_test_done()
+                if hart == 0:
+                    self.gen_test_done()
 
             # Generate main program
             gt_lbl_str = pkg_ins.get_label("main", hart)
@@ -125,17 +122,26 @@ class riscv_asm_program_gen:
             logging.info("Main/sub program generation...done")
             # program end
             self.gen_program_end(hart)
-            for hart in range(cfg.num_of_harts):
-                self.gen_data_page_begin(hart)
-                if not cfg.no_data_page:
-                    self.gen_data_page(hart)
-                    if(hart == 0 and riscv_instr_group_t.RV32A
-                                         in rcs.supported_isa):
-                        self.gen_data_page(hart, amo = 1)
-
+            '''if not cfg.bare_program_mode:
+                # Generate debug rom section
+                if rcs.support_debug_mode:
+                    self.gen_debug_rom(hart)
+                self.gen_section(pkg_ins.hart_prefix(hart) + "instr_end", "nop")'''
+        for hart in range(cfg.num_of_harts):
+            # Starting point of data section
+            self.gen_data_page_begin(hart)
+            if not cfg.no_data_page:
+                # User data section
+                self.gen_data_page(hart)
+                # AMO memory region
+                if(hart == 0 and riscv_instr_group_t.RV32A in rcs.supported_isa):
+                    self.gen_data_page(hart, amo = 1)
             self.gen_stack_section(hart)
             if not cfg.bare_program_mode:
+                # Generate kernel program/data/stack section
                 self.gen_kernel_sections(hart)
+                # Page table
+                self.gen_page_table_section(hart);
 
     def gen_kernel_sections(self, hart):
         if rcs.SATP_MODE != satp_mode_t.BARE:
@@ -245,7 +251,7 @@ class riscv_asm_program_gen:
             self.instr_stream.push_back(".popsection;")
 
     def gen_init_section(self, hart):
-        string = pkg_ins.format_string("init:", pkg_ins.LABEL_STR_LEN)
+        string = pkg_ins.format_string(pkg_ins.get_label("init:", hart), pkg_ins.LABEL_STR_LEN)
         self.instr_stream.append(string)
         if cfg.enable_floating_point:
             self.init_floating_point_gpr()
