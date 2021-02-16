@@ -23,7 +23,6 @@ from pygen_src.riscv_instr_pkg import (mtvec_mode_t, f_rounding_mode_t,
                                        riscv_instr_category_t, satp_mode_t)
 
 
-
 @vsc.randobj
 class riscv_instr_gen_config:
     def __init__(self):
@@ -405,7 +404,7 @@ class riscv_instr_gen_config:
                            help = 'illegal_instr_ratio', type = int, default = 0)
         parse.add_argument('--hint_instr_ratio', help = 'hint_instr_ratio', type = int, default = 0)
         parse.add_argument('--num_of_harts', help = 'num_of_harts',
-                           type = int, default = 1)
+                           type = int)
         parse.add_argument('--enable_unaligned_load_store',
                            help = 'enable_unaligned_load_store', choices = [0, 1],
                            type = int, default = 0)
