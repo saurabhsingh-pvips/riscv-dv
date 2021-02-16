@@ -41,9 +41,11 @@ class riscv_instr_base_test:
         if cfg.asm_test_suffix != "":
             self.asm_file_name = "{}.{}".format(self.asm_file_name,
                                                 cfg.asm_test_suffix)
+        self.asm.get_directed_instr_stream()
         test_name = "{}_{}.S".format(self.asm_file_name,
                                      num + self.start_idx)
-        self.asm.get_directed_instr_stream()
+        self.apply_directed_instr()
+        logging.info("All directed instruction is applied")
         self.asm.gen_program()
         self.asm.gen_test_file(test_name)
 
@@ -51,6 +53,9 @@ class riscv_instr_base_test:
         cfg.randomize()
         logging.info("riscv_instr_gen_config is randomized")
         gen_config_table()
+
+    def apply_directed_instr(self):
+        pass
 
 
 start_time = time.time()
