@@ -62,7 +62,6 @@ class riscv_amo_base_instr_stream(riscv_mem_access_stream):
 
     @vsc.constraint
     def aligned_amo_c(self):
-
         with vsc.foreach(self.offset, idx = True) as i:
             with vsc.if_then(self.XLEN == 32):
                 self.offset[i] % 4 == 0

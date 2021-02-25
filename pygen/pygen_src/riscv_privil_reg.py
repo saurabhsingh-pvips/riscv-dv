@@ -30,7 +30,7 @@ class riscv_privil_reg(riscv_reg):
         super().init_reg(reg_name)
         # ---------------Machine mode register ----------------
         # Machine status Register
-        if(reg_name == privileged_reg_t.MSTATUS):
+        if reg_name == privileged_reg_t.MSTATUS:
             self.privil_level = privileged_level_t.M_LEVEL
             self.add_field("UIE", 1, reg_field_access_t.WARL)
             self.add_field("SIE", 1, reg_field_access_t.WARL)
@@ -51,7 +51,7 @@ class riscv_privil_reg(riscv_reg):
             self.add_field("TVM", 1, reg_field_access_t.WARL)
             self.add_field("TW", 1, reg_field_access_t.WARL)
             self.add_field("TSR", 1, reg_field_access_t.WARL)
-            if(rcs.XLEN == 32):
+            if rcs.XLEN == 32:
                 self.add_field("WPRI3", 8, reg_field_access_t.WPRI)
             else:
                 self.add_field("WPRI3", 9, reg_field_access_t.WPRI)
@@ -60,7 +60,7 @@ class riscv_privil_reg(riscv_reg):
                 self.add_field("WPRI4", rcs.XLEN - 37, reg_field_access_t.WPRI)
             self.add_field("SD", 1, reg_field_access_t.WARL)
         # Machine interrupt-enable register
-        elif(reg_name == privileged_reg_t.MIE):
+        elif reg_name == privileged_reg_t.MIE:
             self.privil_level = privileged_level_t.M_LEVEL
             self.add_field("USIE", 1, reg_field_access_t.WARL)
             self.add_field("SSIE", 1, reg_field_access_t.WARL)
@@ -75,5 +75,6 @@ class riscv_privil_reg(riscv_reg):
             self.add_field("WPEI2", 1, reg_field_access_t.WPRI)
             self.add_field("MEIE", 1, reg_field_access_t.WARL)
             self.add_field("WPRI3", rcs.XLEN - 12, reg_field_access_t.WPRI)
+        # TODO add condition for rest of the modes
         else:
             logging.error("reg %0s is not supported yet", reg_name.name)

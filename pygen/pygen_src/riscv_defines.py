@@ -23,7 +23,6 @@ from pygen_src.isa.riscv_amo_instr import riscv_amo_instr
 def DEFINE_INSTR(instr_n, instr_format, instr_category,
                  instr_group, imm_tp = imm_t.IMM, g = globals()):
     class_name = "riscv_{}_instr".format(instr_n.name)
-
     def __init__(self):
         riscv_instr.__init__(self)
         self.instr_name = instr_n
@@ -45,7 +44,6 @@ def DEFINE_INSTR(instr_n, instr_format, instr_category,
 def DEFINE_C_INSTR(instr_n, instr_format, instr_category,
                    instr_group, imm_tp = imm_t.IMM, g = globals()):
     class_name = "riscv_{}_instr".format(instr_n.name)
-
     def __init__(self):
         riscv_compressed_instr.__init__(self)
         self.instr_name = instr_n
@@ -66,7 +64,6 @@ def DEFINE_C_INSTR(instr_n, instr_format, instr_category,
 def DEFINE_FP_INSTR(instr_n, instr_format, instr_category,
                     instr_group, imm_tp = imm_t.IMM, g = globals()):
     class_name = "riscv_{}_instr".format(instr_n.name)
-
     def __init__(self):
         riscv_floating_point_instr.__init__(self)
         self.instr_name = instr_n
@@ -87,7 +84,6 @@ def DEFINE_FP_INSTR(instr_n, instr_format, instr_category,
 def DEFINE_FC_INSTR(instr_n, instr_format, instr_category,
                     instr_group, imm_tp = imm_t.IMM, g = globals()):
     class_name = "riscv_{}_instr".format(instr_n.name)
-
     def __init__(self):
         riscv_compressed_instr.__init__(self)
         self.instr_name = instr_n
@@ -108,7 +104,6 @@ def DEFINE_FC_INSTR(instr_n, instr_format, instr_category,
 def DEFINE_B_INSTR(instr_n, instr_format, instr_category,
                    instr_group, imm_tp = imm_t.IMM, g = globals()):
     class_name = "riscv_{}_instr".format(instr_n.name)
-
     def __init__(self):
         riscv_b_instr.__init__(self)
         self.instr_name = instr_n
@@ -129,7 +124,6 @@ def DEFINE_B_INSTR(instr_n, instr_format, instr_category,
 def DEFINE_AMO_INSTR(instr_n, instr_format, instr_category,
                      instr_group, imm_tp = imm_t.IMM, g = globals()):
     class_name = "riscv_{}_instr".format(instr_n.name)
-
     def __init__(self):
         riscv_amo_instr.__init__(self)
         self.instr_name = instr_n
