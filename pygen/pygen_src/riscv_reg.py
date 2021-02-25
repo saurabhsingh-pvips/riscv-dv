@@ -21,7 +21,10 @@ from pygen_src.riscv_instr_pkg import (
 rcs = import_module("pygen_src.target." + cfg.argv.target + ".riscv_core_setting")
 
 
+# -----------------------------------------------
 # Light weight RISC-V register class library
+# -----------------------------------------------
+
 # Base class for RISC-V register field
 @vsc.randobj
 class riscv_reg_field:

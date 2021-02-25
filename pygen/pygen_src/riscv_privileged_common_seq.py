@@ -22,6 +22,7 @@ from pygen_src.riscv_privil_reg import riscv_privil_reg
 rcs = import_module("pygen_src.target." + cfg.argv.target + ".riscv_core_setting")
 
 
+# This class provides some common routines for privileged mode operations
 @vsc.randobj
 class riscv_privileged_common_seq():
     def __init___(self):
@@ -79,8 +80,8 @@ class riscv_privileged_common_seq():
 
     def gen_csr_instr(self, regs, instrs):
         for i in range(len(regs)):
-            instrs.append("li x{}, {}".format(cfg.gpr[0].value, hex(regs[i].get_val())))
-            instrs.append("csrw {}, x{} # {}".format(hex(regs[i].reg_name.value),
+            instrs.append("li x{}, {}".format(cfg.gpr[0], hex(regs[i].get_val())))
+            instrs.append("csrw {}, x{} # {}".format(hex(regs[i].reg_name),
                                                      cfg.gpr[0], regs[i].reg_name.name))
 
     def setup_satp(self, instrs):

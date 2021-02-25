@@ -22,6 +22,10 @@ from pygen_src.riscv_directed_instr_lib import (riscv_directed_instr_stream,
 from pygen_src.riscv_amo_instr_lib import (riscv_lr_sc_instr_stream, riscv_amo_instr_stream)
 
 
+# ----------------------------------------------------------
+# pyflow commmon utility functions/helpers
+# ----------------------------------------------------------
+
 def factory(obj_of):
     objs = {
         "riscv_directed_instr_stream": riscv_directed_instr_stream,

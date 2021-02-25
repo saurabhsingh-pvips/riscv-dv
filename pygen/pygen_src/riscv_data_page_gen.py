@@ -18,11 +18,19 @@ from pygen_src.riscv_instr_pkg import pkg_ins, data_pattern_t
 from pygen_src.riscv_instr_gen_config import cfg
 
 
+# -----------------------------------------------------------------------------------------
+# RISC-V assmebly program data section generator
+# There can be user mode and supervisor(kernel) mode data pages
+# -----------------------------------------------------------------------------------------
+
 @vsc.randobj
 class riscv_data_page_gen:
     def __init__(self):
         self.data_page_str = []
         self.mem_region_setting = defaultdict(list)
+
+    # The data section can be initialized with different data pattern:
+    # - Random value, incremental value, all zeros
     @staticmethod
     def gen_data(idx, pattern, num_of_bytes, data):
         temp_data = 0
@@ -35,12 +43,9 @@ class riscv_data_page_gen:
                 data[i] = (idx + i) % 256
         return data
 
+    # Generate data pages for all memory regions
     def gen_data_page(self, hart_id, pattern, is_kernel=0, amo=0):
-        tmp_str = ""
         temp_data = []
-        tmp_data = []
-        page_cnt = 0
-        page_size = 0
         self.data_page_str.clear()
         if is_kernel:
             self.mem_region_setting = cfg.s_mem_region
