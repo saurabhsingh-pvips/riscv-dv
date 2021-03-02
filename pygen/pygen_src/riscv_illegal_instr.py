@@ -358,31 +358,18 @@ class riscv_illegal_instr:
         #csr = csr[0]
 
     def get_bin_str(self):
-        #with vsc.if_then(self.compressed == 1):
-        if(self.compressed == 1):
+        if self.compressed == 1:
             local_instr_bin = self.instr_bin & 0xffff
-            #return pkg_ins.format_string("{}".format(self.instr_bin[15:0]))
-            #return pkg_ins.format_string("{}".format(local_instr_bin))
-            #return ("{}".format(self.instr_bin[15:0].get_val()))
-            return ("{}".format(local_instr_bin))
-        #with vsc.else_then():
         else:
-            #return pkg_ins.format_string("{}".format(self.instr_bin[31:0]))
-            local_instr_bin = self.instr_bin & 0xffffffff
-            return ("{}".format(local_instr_bin))
-        logging.info("Illegal instruction type: {}, illegal instruction: 0x{}".format(
-            self.exception.name, self.instr_bin))
+            local_instr_bin = hex(self.instr_bin)
+        logging.info("Illegal instruction type: {}, illegal instruction: {}".format(
+                      self.exception.name, local_instr_bin))
+        return ("{}".format(local_instr_bin))
+
 
     def post_randomize(self):
         self.comment = str(self.exception.name)
-        logging.info("DBGCM | comment = {}".format(self.comment))
-        #with vsc.if_then(self.exception == illegal_instr_type_e.kReservedCompressedInstr):
-        if(self.exception == illegal_instr_type_e.kReservedCompressedInstr):
+        if self.exception == illegal_instr_type_e.kReservedCompressedInstr:
             self.comment += " {}".format(str(self.reserved_c.name))
-            #self.comment += (" {}", str(self.reserved_c.name))
-            logging.info("DBG | IF comment = {}".format(self.comment))
-        #with vsc.else_if(self.exception == illegal_instr_type_e.kIllegalOpcode):
-        elif(self.exception == illegal_instr_type_e.kIllegalOpcode):
-            logging.info("DBGI | opcode = {} type = {}".format(self.opcode, type(self.opcode)))
+        elif self.exception == illegal_instr_type_e.kIllegalOpcode:
             self.comment += " {}".format(str(self.opcode))
-            logging.info("DBG | ELSE comment = {}".format(self.comment))

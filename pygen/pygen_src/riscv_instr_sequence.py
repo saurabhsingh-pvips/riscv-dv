@@ -269,7 +269,7 @@ class riscv_instr_sequence:
                     self.illegal_instr.exception != illegal_instr_type_e.kHintInstr
                 tstr = ""
                 tstr += pkg_ins.indent
-                tstr += ".4byte 0x{} # {}".format(
+                tstr += ".4byte {} # {}".format(
                     self.illegal_instr.get_bin_str(), self.illegal_instr.comment)
                 idx = random.randrange(0, len(self.instr_string_list))
                 self.instr_string_list.insert(idx, tstr)
@@ -282,7 +282,7 @@ class riscv_instr_sequence:
                     self.illegal_instr.exception == illegal_instr_type_e.kHintInstr
                 tstr = ""
                 tstr += pkg_ins.indent
-                tstr += ".2byte 0x{} # {}".format(
+                tstr += ".2byte {} # {}".format(
                     self.illegal_instr.get_bin_str(), self.illegal_instr.comment)
                 idx = random.randrange(0, len(self.instr_string_list))
                 self.instr_string_list.insert(idx, tstr)
