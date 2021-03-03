@@ -26,6 +26,7 @@ from pygen_src.riscv_pseudo_instr import riscv_pseudo_instr
 rcs = import_module("pygen_src.target." + cfg.argv.target + ".riscv_core_setting")
 
 
+# Base class for directed instruction stream
 class riscv_directed_instr_stream(riscv_rand_instr_stream):
 
     label = ""
@@ -45,6 +46,7 @@ class riscv_directed_instr_stream(riscv_rand_instr_stream):
             self.instr_list[0].has_label = 1
 
 
+# Base class for memory access stream
 @vsc.randobj
 class riscv_mem_access_stream(riscv_directed_instr_stream):
     def __init__(self):
@@ -62,6 +64,7 @@ class riscv_mem_access_stream(riscv_directed_instr_stream):
             self.data_page = cfg.mem_region
         self.max_data_page_id = len(self.data_page)
 
+    # Use "la" instruction to initialize the base regiseter
     def add_rs1_init_la_instr(self, gpr, idx, base = 0):
         la_instr = riscv_pseudo_instr()
         la_instr.pseudo_instr_name = riscv_pseudo_instr_name_t.LA
@@ -76,6 +79,7 @@ class riscv_mem_access_stream(riscv_directed_instr_stream):
                                                 cfg.mem_region[idx]['name'], base)
         self.instr_list.insert(0, la_instr)
 
+    # Insert some other instructions to mix with mem_access instruction
     def add_mixed_instr(self, instr_cnt):
         self.setup_allowed_instr(1, 1)
         for i in range(instr_cnt):
@@ -84,6 +88,7 @@ class riscv_mem_access_stream(riscv_directed_instr_stream):
             self.insert_instr(instr)
 
 
+# Stress back to back jump instruction
 @vsc.randobj
 class riscv_jal_instr(riscv_rand_instr_stream):
     def __init__(self):
@@ -93,6 +98,7 @@ class riscv_jal_instr(riscv_rand_instr_stream):
         self.jump_start = riscv_instr()
         self.jump_end = riscv_instr()
         self.num_of_jump_instr = vsc.rand_int_t()
+        self.jal = []
 
     @vsc.constraint
     def instr_c(self):
@@ -112,6 +118,8 @@ class riscv_jal_instr(riscv_rand_instr_stream):
             jal.append(riscv_instr_name_t.C_J)
             if rcs.XLEN == 32:
                 jal.append(riscv_instr_name_t.C_JAL)
+
+        # First instruction
         self.jump_start = riscv_instr.get_instr(riscv_instr_name_t.JAL)
         with self.jump_start.randomize_with() as it:
             self.jump_start.rd == RA
@@ -139,9 +147,7 @@ class riscv_jal_instr(riscv_rand_instr_stream):
                     self.jump[order[i]].imm_str = "{}f".format(order[i + 1])
                 else:
                     self.jump[order[i]].imm_str = "{}b".format(order[i + 1])
-        self.instr_list.append(self.jump_start)
-        self.instr_list.extend(self.jump)
-        self.instr_list.append(self.jump_end)
+        self.instr_list.extend(self.jump_start, self.jump, self.jump_end)
         for i in range(len(self.instr_list)):
             self.instr_list[i].has_label = 1
             self.instr_list[i].atomic = 1
@@ -154,6 +160,7 @@ class int_numeric_e(IntEnum):
     NegativeMax = auto()
 
 
+# Strees the numeric corner cases of integer arithmetic operations
 @vsc.randobj
 class riscv_int_numeric_corner_stream(riscv_directed_instr_stream):
     def __init__(self):
@@ -182,6 +189,7 @@ class riscv_int_numeric_corner_stream(riscv_directed_instr_stream):
             self.avail_regs[i] != riscv_reg_t.ZERO
 
     def pre_randomize(self):
+        # TODO
         pass
 
     def post_randomize(self):
@@ -209,7 +217,6 @@ class riscv_int_numeric_corner_stream(riscv_directed_instr_stream):
 
 # Push Stack Instructions
 class riscv_push_stack_instr(riscv_rand_instr_stream):
-
     def __init__(self):
         super().__init__()
         self.stack_len = 0
@@ -222,12 +229,13 @@ class riscv_push_stack_instr(riscv_rand_instr_stream):
         self.push_start_label = ''
 
     def init(self):
+        # Save RA, T0
         self.reserved_rd = [cfg.ra]
         self.saved_regs = [cfg.ra]
         self.num_of_reg_to_save = len(self.saved_regs)
         if self.num_of_reg_to_save * (rcs.XLEN / 8) > self.stack_len:
-            logging.error('stack len [%0d] is not enough to store %d regs',
-                          self.stack_len, self.num_of_reg_to_save)
+            logging.error('stack len [{}] is not enough to store {} regs'
+                          .format(self.stack_len, self.num_of_reg_to_save))
             sys.exit(1)
         self.num_of_redundant_instr = random.randrange(3, 10)
         self.initialize_instr_list(self.num_of_redundant_instr)
@@ -285,7 +293,6 @@ class riscv_push_stack_instr(riscv_rand_instr_stream):
 
 # Pop stack instruction stream
 class riscv_pop_stack_instr(riscv_rand_instr_stream):
-
     def __init__(self):
         super().__init__()
         self.stack_len = 0
@@ -298,8 +305,8 @@ class riscv_pop_stack_instr(riscv_rand_instr_stream):
         self.reserved_rd = [cfg.ra]
         self.num_of_reg_to_save = len(self.saved_regs)
         if self.num_of_reg_to_save * 4 > self.stack_len:
-            logging.error('stack len [%0d] is not enough to store %d regs',
-                          self.stack_len, self.num_of_reg_to_save)
+            logging.error('stack len [{}] is not enough to store {} regs'
+                          .format(self.stack_len, self.num_of_reg_to_save))
             sys.exit(1)
         self.num_of_redundant_instr = random.randrange(3, 10)
         self.initialize_instr_list(self.num_of_redundant_instr)

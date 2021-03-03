@@ -70,7 +70,7 @@ class riscv_instr_gen_config:
         global rcs
         rcs = import_module("pygen_src.target." + self.argv.target + ".riscv_core_setting")
 
-        # Associate array for delegation configuration for each exception and interrupt
+        # List for delegation configuration for each exception and interrupt
         # When the bit is 1, the corresponding delegation is enabled.
         # TODO
         self.m_mode_exception_delegation = {}
@@ -218,7 +218,7 @@ class riscv_instr_gen_config:
         # self.isa = self.argv.isa
 
         if self.boot_mode_opts:
-            logging.info("Got boot mode option - %0s", self.boot_mode_opts)
+            logging.info("Got boot mode option - {}".format(self.boot_mode_opts))
             if self.boot_mode_opts == "m":
                 self.init_privileged_mode = privileged_mode_t.MACHINE_MODE
             elif self.boot_mode_opts == "s":
@@ -226,7 +226,7 @@ class riscv_instr_gen_config:
             elif self.boot_mode_opts == "u":
                 self.init_privileged_mode = privileged_mode_t.USER_MODE
             else:
-                logging.error("Illegal boot mode option - %0s", self.boot_mode_opts)
+                logging.error("Illegal boot mode option - {}".format(self.boot_mode_opts))
 
         self.enable_page_table_exception = self.argv.enable_page_table_exception
         self.no_directed_instr = self.argv.no_directed_instr
@@ -353,13 +353,13 @@ class riscv_instr_gen_config:
 
     @vsc.constraint
     def debug_mode_c(self):
-        # TO DO
+        # TODO
         pass
 
     # Keep the number of single step iterations relatively small
     @vsc.constraint
     def debug_single_step_c(self):
-        # TO DO
+        # TODO
         pass
 
     # Boot privileged mode distribution
@@ -393,7 +393,7 @@ class riscv_instr_gen_config:
     # Exception delegation setting
     @vsc.constraint
     def exception_delegation_c(self):
-        # Do not delegate instructino page fault to supervisor/user mode because this may introduce
+        # Do not delegate instruction page fault to supervisor/user mode because this may introduce
         # dead loop. All the subsequent instruction fetches may fail and program cannot recover.
         # TODO
         pass
