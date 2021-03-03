@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 """
 
 import logging
+import vsc
 from enum import Enum, IntEnum, auto
 from bitstring import BitArray
 from importlib import import_module
@@ -23,6 +24,14 @@ class vreg_init_method_t(IntEnum):
     SAME_VALUES_ALL_ELEMS = 0
     RANDOM_VALUES_VMV = auto()
     RANDOM_VALUES_LOAD = auto()
+
+
+@vsc.randobj
+class mem_region_t:
+    def __init__(self, name = "", size_in_bytes=0, xwr=0):
+        self.name = name
+        self.size_in_bytes = vsc.uint32_t(i=size_in_bytes)
+        self.xwr = vsc.uint8_t(i=xwr)
 
 
 class satp_mode_t(IntEnum):
