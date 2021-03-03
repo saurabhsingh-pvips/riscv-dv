@@ -218,10 +218,10 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         is_SP_in_avail_regs = riscv_reg_t.SP in self.avail_regs
         if ((is_SP_in_reserved_rd or is_SP_in_reserved_regs) or
                 (len(self.avail_regs) > 0 and not is_SP_in_avail_regs)):
-            exclude_instr.extend(riscv_instr_name_t.C_ADDI4SPN.name,
+            exclude_instr.extend((riscv_instr_name_t.C_ADDI4SPN.name,
                                  riscv_instr_name_t.C_ADDI16SP.name,
                                  riscv_instr_name_t.C_LWSP.name,
-                                 riscv_instr_name_t.C_LDSP.name)
+                                 riscv_instr_name_t.C_LDSP.name))
         # Post-process the allowed_instr and exclude_instr lists to handle
         # adding ebreak instructions into the debug ROM.
         if is_in_debug:
