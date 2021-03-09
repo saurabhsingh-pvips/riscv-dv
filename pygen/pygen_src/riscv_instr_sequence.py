@@ -206,7 +206,6 @@ class riscv_instr_sequence:
                 else:
                     prefix = pkg_ins.format_string(string = '{}:'.format(
                         self.label_name), length = pkg_ins.LABEL_STR_LEN)
-
                 self.instr_stream.instr_list[i].has_label = 1
             else:
                 if(self.instr_stream.instr_list[i].has_label):
@@ -216,12 +215,12 @@ class riscv_instr_sequence:
                     prefix = pkg_ins.format_string(string = " ", length = pkg_ins.LABEL_STR_LEN)
             string = prefix + self.instr_stream.instr_list[i].convert2asm()
             self.instr_string_list.append(string)
-            if(rcs.support_pmp and not re.search("main", self.label_name)):
-                self.instr_string_list.insert(0, ".align 2")
-            self.insert_illegal_hint_instr()
-            prefix = pkg_ins.format_string(str(i), pkg_ins.LABEL_STR_LEN)
-            if not self.is_main_program:
-                self.generate_return_routine(prefix)
+        if(rcs.support_pmp and not re.search("main", self.label_name)):
+            self.instr_string_list.insert(0, ".align 2")
+        self.insert_illegal_hint_instr()
+        prefix = pkg_ins.format_string(str(i), pkg_ins.LABEL_STR_LEN)
+        if not self.is_main_program:
+            self.generate_return_routine(prefix)
 
     def generate_return_routine(self, prefix):
         routine_str = ''
