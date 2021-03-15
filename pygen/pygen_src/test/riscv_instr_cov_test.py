@@ -145,7 +145,7 @@ class riscv_instr_cov_test:
             # cov_instr is created, time to manually assign attributes
             # TODO: This will get fixed later when we get an inst from template
             instruction.assign_attributes()
-            if instruction.group.name in ["RV32I", "RV32M", "RV32C", "RV64I",
+            if instruction.group in ["RV32I", "RV32M", "RV32C", "RV64I",
                                           "RV64M", "RV64C", "RV32F", "RV64F",
                                           "RV32D", "RV64D", "RV32B", "RV64B"]:
                 self.assign_trace_info_to_instr(instruction)

@@ -136,9 +136,9 @@ class riscv_cov_instr:
         self.set_mode()
 
     def set_imm_len(self):
-        if self.format.name in ["U_FORMAT", "J_FORMAT"]:
+        if self.format in ["U_FORMAT", "J_FORMAT"]:
             self.imm_len = 20
-        elif self.format.name in ["I_FORMAT", "S_FORMAT", "B_FORMAT"]:
+        elif self.format in ["I_FORMAT", "S_FORMAT", "B_FORMAT"]:
             if self.imm_type.name == "UIMM":
                 self.imm_len = 5
             else:
@@ -146,20 +146,20 @@ class riscv_cov_instr:
 
     def set_mode(self):
         # mode setting for Instruction Format
-        if self.format.name == "R_FORMAT":
+        if self.format == "R_FORMAT":
             self.has_imm = 0
-        if self.format.name == "I_FORMAT":
+        if self.format == "I_FORMAT":
             self.has_rs2 = 0
-        if self.format.name in ["S_FORMAT", "B_FORMAT"]:
+        if self.format in ["S_FORMAT", "B_FORMAT"]:
             self.has_rd = 0
-        if self.format.name in ["U_FORMAT", "J_FORMAT"]:
+        if self.format in ["U_FORMAT", "J_FORMAT"]:
             self.has_rs1 = 0
             self.has_rs2 = 0
 
         # mode setting for Instruction Category
-        if self.category.name == "CSR":
+        if self.category == "CSR":
             self.has_rs2 = 0
-            if self.format.name == "I_FORMAT":
+            if self.format == "I_FORMAT":
                 self.has_rs1 = 0
 
     def pre_sample(self):
