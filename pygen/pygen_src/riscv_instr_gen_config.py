@@ -23,6 +23,7 @@ from pygen_src.riscv_instr_pkg import (mtvec_mode_t, f_rounding_mode_t,
                                        riscv_instr_category_t, satp_mode_t)
 
 
+
 @vsc.randobj
 class riscv_instr_gen_config:
     def __init__(self):
