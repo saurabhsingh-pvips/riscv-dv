@@ -74,3 +74,7 @@ implemented_exception = [exception_cause_t.INSTRUCTION_ACCESS_FAULT,
                          exception_cause_t.BREAKPOINT, exception_cause_t.LOAD_ADDRESS_MISALIGNED,
                          exception_cause_t.LOAD_ACCESS_FAULT,
                          exception_cause_t.ECALL_MMODE]
+
+support_debug_mode = 0
+
+max_interrupt_vector_num = 0

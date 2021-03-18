@@ -136,9 +136,9 @@ class riscv_cov_instr:
         self.set_mode()
 
     def set_imm_len(self):
-        if self.format.name in ["U_FORMAT", "J_FORMAT"]:
+        if self.format in ["U_FORMAT", "J_FORMAT"]:
             self.imm_len = 20
-        elif self.format.name in ["I_FORMAT", "S_FORMAT", "B_FORMAT"]:
+        elif self.format in ["I_FORMAT", "S_FORMAT", "B_FORMAT"]:
             if self.imm_type.name == "UIMM":
                 self.imm_len = 5
             else:
@@ -146,20 +146,20 @@ class riscv_cov_instr:
 
     def set_mode(self):
         # mode setting for Instruction Format
-        if self.format.name == "R_FORMAT":
+        if self.format == "R_FORMAT":
             self.has_imm = 0
-        if self.format.name == "I_FORMAT":
+        if self.format == "I_FORMAT":
             self.has_rs2 = 0
-        if self.format.name in ["S_FORMAT", "B_FORMAT"]:
+        if self.format in ["S_FORMAT", "B_FORMAT"]:
             self.has_rd = 0
-        if self.format.name in ["U_FORMAT", "J_FORMAT"]:
+        if self.format in ["U_FORMAT", "J_FORMAT"]:
             self.has_rs1 = 0
             self.has_rs2 = 0
 
         # mode setting for Instruction Category
-        if self.category.name == "CSR":
+        if self.category == "CSR":
             self.has_rs2 = 0
-            if self.format.name == "I_FORMAT":
+            if self.format == "I_FORMAT":
                 self.has_rs1 = 0
 
     def pre_sample(self):
@@ -177,20 +177,20 @@ class riscv_cov_instr:
         self.rd_special_value = self.get_operand_special_value(self.rd_value)
         self.rs2_special_value = self.get_operand_special_value(self.rs2_value)
         self.rs3_special_value = self.get_operand_special_value(self.rs3_value)
-        if self.format.name not in ["R_FORMAT", "CR_FORMAT"]:
+        if self.format not in ["R_FORMAT", "CR_FORMAT"]:
             self.imm_special_value = self.get_imm_special_val(self.imm)
-        if self.category.name in ["COMPARE", "BRANCH"]:
+        if self.category in ["COMPARE", "BRANCH"]:
             self.compare_result = self.get_compare_result()
-        if self.category.name in ["LOAD", "STORE"]:
+        if self.category in ["LOAD", "STORE"]:
             self.mem_addr.set_val(self.rs1_value.get_val() +
                                   self.imm.get_val())
             self.unaligned_mem_access = self.is_unaligned_mem_access()
             if self.unaligned_mem_access:
                 logging.info("Unaligned: {}, mem_addr: {}".format(
                     self.instr.name, self.mem_addr.get_val()))
-        if self.category.name == "LOGICAL":
+        if self.category == "LOGICAL":
             self.logical_similarity = self.get_logical_similarity()
-        if self.category.name == "BRANCH":
+        if self.category == "BRANCH":
             self.branch_hit = self.is_branch_hit()
         if self.instr.name in ["DIV", "DIVU", "REM", "REMU", "DIVW", "DIVUW",
                                "REMW", "REMUW"]:
@@ -208,7 +208,7 @@ class riscv_cov_instr:
             return operand_sign_e["NEGATIVE"]
 
     def is_unaligned_mem_access(self):
-        if (self.instr.name in ["LWU", "LD", "SD", "C_LD", "C_SD"] and
+        if (self.instr in ["LWU", "LD", "SD", "C_LD", "C_SD"] and
                 self.mem_addr.get_val() % 8 != 0):
             return 1
         elif (self.instr.name in ["LW", "SW", "C_LW", "C_SW"] and
