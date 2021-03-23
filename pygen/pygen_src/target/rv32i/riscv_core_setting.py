@@ -36,6 +36,10 @@ unsupported_instr = []
 
 support_umode_trap = 0
 
+support_debug_mode = 0
+
+max_interrupt_vector_num = 0
+
 # GPR Setting
 NUM_FLOAT_GPR = 32
 NUM_GPR = 32

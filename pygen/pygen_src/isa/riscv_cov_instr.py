@@ -126,7 +126,10 @@ class riscv_cov_instr:
 
     def assign_attributes(self):
         attr_list = get_attr_list(self.instr)
+        print("AA | instr.name = {}".format(self.instr.name))
         self.format = attr_list[0]
+        print("AA | attr_list[0] = {}".format(attr_list[0]))
+        print("AA | format.name = {}".format(self.format.name))
         self.category = attr_list[1]
         self.group = attr_list[2]
         self.imm_type = imm_t.IMM
@@ -136,6 +139,8 @@ class riscv_cov_instr:
         self.set_mode()
 
     def set_imm_len(self):
+        print("format.name = {}".format(self.format.name))
+        print("format= {}".format(self.format))
         if self.format.name in ["U_FORMAT", "J_FORMAT"]:
             self.imm_len = 20
         elif self.format.name in ["I_FORMAT", "S_FORMAT", "B_FORMAT"]:

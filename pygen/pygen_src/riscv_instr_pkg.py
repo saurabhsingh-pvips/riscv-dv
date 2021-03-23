@@ -1419,6 +1419,10 @@ def get_attr_list(instr_name):
         riscv_instr_name_t.CSRRCI: [riscv_instr_format_t.I_FORMAT,
                                     riscv_instr_category_t.CSR,
                                     riscv_instr_group_t.RV32I, imm_t.UIMM],
+        #RV32M
+        riscv_instr_name_t.DIV: [riscv_instr_format_t.R_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32M],
     }
     # if instruction is not present in the dictionary,second argument well
     # be assigned as default value of passed argument
