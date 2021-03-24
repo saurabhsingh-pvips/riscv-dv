@@ -34,6 +34,9 @@ class div_result_e(IntEnum):
     DIV_BY_ZERO = auto()
     DIV_OVERFLOW = auto()
 
+class div_result_ex_overflow_e(IntEnum):
+    DIV_NORMAL = 0
+    DIV_BY_ZERO = auto()
 
 class compare_result_e(IntEnum):
     EQUAL = 0
