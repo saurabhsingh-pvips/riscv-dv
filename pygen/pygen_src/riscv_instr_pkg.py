@@ -1096,6 +1096,39 @@ class jalr_riscv_reg_t(IntEnum):
     T1 = auto()
 
 
+# Ignore ZERO and SP
+class riscv_reg_ex_zero_sp_t(IntEnum):
+    RA = 0
+    GP = auto()
+    TP = auto()
+    T0 = auto()
+    T1 = auto()
+    T2 = auto()
+    S0 = auto()
+    S1 = auto()
+    A0 = auto()
+    A1 = auto()
+    A2 = auto()
+    A3 = auto()
+    A4 = auto()
+    A5 = auto()
+    A6 = auto()
+    A7 = auto()
+    S2 = auto()
+    S3 = auto()
+    S4 = auto()
+    S5 = auto()
+    S6 = auto()
+    S7 = auto()
+    S8 = auto()
+    S9 = auto()
+    S10 = auto()
+    S11 = auto()
+    T3 = auto()
+    T4 = auto()
+    T5 = auto()
+    T6 = auto()
+
 # Ignore ZERO as src1 of load instructions
 class riscv_reg_ex_zero_t(IntEnum):
     RA = 0
@@ -1444,9 +1477,89 @@ def get_attr_list(instr_name):
         riscv_instr_name_t.REMU: [riscv_instr_format_t.R_FORMAT,
                                  riscv_instr_category_t.ARITHMETIC,
                                  riscv_instr_group_t.RV32M],
+        #RV32C
+        riscv_instr_name_t.C_LW: [riscv_instr_format_t.CL_FORMAT,
+                                 riscv_instr_category_t.LOAD,
+                                 riscv_instr_group_t.RV32C, imm_t.UIMM],
+        riscv_instr_name_t.C_SW: [riscv_instr_format_t.CS_FORMAT,
+                                 riscv_instr_category_t.STORE,
+                                 riscv_instr_group_t.RV32C, imm_t.UIMM],
+        riscv_instr_name_t.C_LWSP: [riscv_instr_format_t.CI_FORMAT,
+                                 riscv_instr_category_t.LOAD,
+                                 riscv_instr_group_t.RV32C, imm_t.UIMM],
+        riscv_instr_name_t.C_SWSP: [riscv_instr_format_t.CSS_FORMAT,
+                                 riscv_instr_category_t.STORE,
+                                 riscv_instr_group_t.RV32C, imm_t.UIMM],
+        riscv_instr_name_t.C_ADDI4SPN: [riscv_instr_format_t.CIW_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32C, imm_t.NZUIMM],
+        riscv_instr_name_t.C_ADDI: [riscv_instr_format_t.CI_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32C, imm_t.NZIMM],
+        riscv_instr_name_t.C_ADDI16SP: [riscv_instr_format_t.CI_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32C, imm_t.NZIMM],
+        riscv_instr_name_t.C_LI: [riscv_instr_format_t.CI_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_LUI: [riscv_instr_format_t.CI_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32C, imm_t.NZIMM],
+        riscv_instr_name_t.C_SUB: [riscv_instr_format_t.CA_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_ADD: [riscv_instr_format_t.CR_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_NOP: [riscv_instr_format_t.CI_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_MV: [riscv_instr_format_t.CR_FORMAT,
+                                 riscv_instr_category_t.ARITHMETIC,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_ANDI: [riscv_instr_format_t.CB_FORMAT,
+                                 riscv_instr_category_t.LOGICAL,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_XOR: [riscv_instr_format_t.CA_FORMAT,
+                                 riscv_instr_category_t.LOGICAL,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_OR: [riscv_instr_format_t.CA_FORMAT,
+                                 riscv_instr_category_t.LOGICAL,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_AND: [riscv_instr_format_t.CA_FORMAT,
+                                 riscv_instr_category_t.LOGICAL,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_BEQZ: [riscv_instr_format_t.CB_FORMAT,
+                                 riscv_instr_category_t.BRANCH,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_BNEZ: [riscv_instr_format_t.CB_FORMAT,
+                                 riscv_instr_category_t.BRANCH,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_SRLI: [riscv_instr_format_t.CB_FORMAT,
+                                 riscv_instr_category_t.SHIFT,
+                                 riscv_instr_group_t.RV32C, imm_t.NZUIMM],
+        riscv_instr_name_t.C_SRAI: [riscv_instr_format_t.CB_FORMAT,
+                                 riscv_instr_category_t.SHIFT,
+                                 riscv_instr_group_t.RV32C, imm_t.NZUIMM],
+        riscv_instr_name_t.C_SLLI: [riscv_instr_format_t.CI_FORMAT,
+                                 riscv_instr_category_t.SHIFT,
+                                 riscv_instr_group_t.RV32C, imm_t.NZUIMM],
+        riscv_instr_name_t.C_J: [riscv_instr_format_t.CJ_FORMAT,
+                                 riscv_instr_category_t.JUMP,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_JAL: [riscv_instr_format_t.CJ_FORMAT,
+                                 riscv_instr_category_t.JUMP,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_JR: [riscv_instr_format_t.CR_FORMAT,
+                                 riscv_instr_category_t.JUMP,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_JALR: [riscv_instr_format_t.CR_FORMAT,
+                                 riscv_instr_category_t.JUMP,
+                                 riscv_instr_group_t.RV32C],
+        riscv_instr_name_t.C_EBREAK: [riscv_instr_format_t.CI_FORMAT,
+                                 riscv_instr_category_t.SYSTEM,
+                                 riscv_instr_group_t.RV32C],
 
-
- 
     }
     # if instruction is not present in the dictionary,second argument well
     # be assigned as default value of passed argument

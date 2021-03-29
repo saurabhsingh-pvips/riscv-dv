@@ -1469,6 +1469,7 @@ class riscv_instr_cover_group:
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sign_cross = vsc.cross([self.cp_rs1_sign, self.cp_rs2_sign,
                                             self.cp_rd_sign])
+    ''' DIV instructions '''
     @vsc.covergroup
     class div_cg(object):
         def __init__(self):
@@ -1569,6 +1570,306 @@ class riscv_instr_cover_group:
             self.cp_div_result = vsc.coverpoint(lambda: self.instr.div_result,
                                                 cp_t=vsc.enum_t(div_result_ex_overflow_e))
 
+    '''Compressed instructions'''
+
+    @vsc.covergroup
+    class c_lw_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_lsu_hazard = vsc.coverpoint(lambda: self.instr.lsu_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    branch_hazard_e))
+    @vsc.covergroup
+    class c_lwsp_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(compressed_gpr))
+    @vsc.covergroup
+    class c_sw_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_rs2 = vsc.coverpoint(lambda: self.instr.rs2,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    branch_hazard_e))
+            self.cp_lsu_hazard = vsc.coverpoint(lambda: self.instr.lsu_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    store_lsu_hazard_e))
+    @vsc.covergroup
+    class c_swsp_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs2 = vsc.coverpoint(lambda: self.instr.rs2,
+                                        cp_t=vsc.enum_t(compressed_gpr))
+
+    @vsc.covergroup
+    class c_addi4spn_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    store_lsu_hazard_e))
+    @vsc.covergroup
+    class c_addi_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    store_lsu_hazard_e))
+    @vsc.covergroup
+    class c_addi16sp_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    store_lsu_hazard_e))
+    @vsc.covergroup
+    class c_li_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(                                                                           store_lsu_hazard_e))
+    @vsc.covergroup
+    class c_lui_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_sp_t))
+    @vsc.covergroup
+    class c_sub_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_rs2 = vsc.coverpoint(lambda: self.instr.rs2,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+    @vsc.covergroup
+    class c_add_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs2 = vsc.coverpoint(lambda: self.instr.rs2,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_rs2_sign = vsc.coverpoint(lambda: self.instr.rs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+    @vsc.covergroup
+    class c_mv_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs2 = vsc.coverpoint(lambda: self.instr.rs2,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_rs2_sign = vsc.coverpoint(lambda: self.instr.rs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+    @vsc.covergroup
+    class c_andi_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                        cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(branch_hazard_e))
+    @vsc.covergroup
+    class c_xor_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_rs2 = vsc.coverpoint(lambda: self.instr.rs2,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+    @vsc.covergroup
+    class c_or_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_rs2 = vsc.coverpoint(lambda: self.instr.rs2,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+    @vsc.covergroup
+    class c_and_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_rs2 = vsc.coverpoint(lambda: self.instr.rs2,
+                                         cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+    @vsc.covergroup
+    class c_beqz_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                        cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(branch_hazard_e))
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+    @vsc.covergroup
+    class c_bnez_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                        cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(branch_hazard_e))
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+    @vsc.covergroup
+    class c_srli_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                        cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(branch_hazard_e))
+    @vsc.covergroup
+    class c_srai_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                        cp_t=vsc.enum_t(compressed_gpr))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(branch_hazard_e))
+    @vsc.covergroup
+    class c_slli_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(branch_hazard_e))
+    @vsc.covergroup
+    class c_j_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+    @vsc.covergroup
+    class c_jal_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+    @vsc.covergroup
+    class c_jr_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_rs1_align = vsc.coverpoint(lambda: self.instr.rs1_value[1:0],
+                                               bins={
+                                                   "Zero" : vsc.bin(0),
+                                                   "One"  : vsc.bin(1),
+                                                   "Two"  : vsc.bin(2),
+                                                   "Three": vsc.bin(3)
+                                               }
+                                               )
+    @vsc.covergroup
+    class c_jalr_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                        cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_rs1_align = vsc.coverpoint(lambda: self.instr.rs1_value[1:0],
+                                               bins={
+                                                   "Zero" : vsc.bin(0),
+                                                   "One"  : vsc.bin(1),
+                                                   "Two"  : vsc.bin(2),
+                                                   "Three": vsc.bin(3)
+                                               }
+                                               )
+            self.cp_rd_align = vsc.coverpoint(lambda: self.instr.rd_value[1],
+                                              bins={
+                                                  "Aligned"    : vsc.bin(1),
+                                                  "Not-aligned": vsc.bin(0)
+                                              }
+                                              )
+
     '''CSR instructions'''
 
     @vsc.covergroup
@@ -1654,6 +1955,31 @@ class riscv_instr_cover_group:
         self.divu_cg_i = self.divu_cg()
         self.rem_cg_i = self.rem_cg()
         self.remu_cg_i = self.remu_cg()
+        self.c_lw_cg_i = self.c_lw_cg()
+        self.c_lwsp_cg_i = self.c_lwsp_cg()
+        self.c_sw_cg_i = self.c_sw_cg()
+        self.c_swsp_cg_i = self.c_swsp_cg()
+        self.c_addi4spn_cg_i = self.c_addi4spn_cg()
+        self.c_addi_cg_i = self.c_addi_cg()
+        self.c_addi16sp_cg_i = self.c_addi16sp_cg()
+        self.c_li_cg_i = self.c_li_cg()
+        self.c_lui_cg_i = self.c_lui_cg()
+        self.c_sub_cg_i = self.c_sub_cg()
+        self.c_add_cg_i = self.c_add_cg()
+        self.c_mv_cg_i = self.c_mv_cg()
+        self.c_andi_cg_i = self.c_andi_cg()
+        self.c_xor_cg_i = self.c_xor_cg()
+        self.c_or_cg_i = self.c_or_cg()
+        self.c_and_cg_i = self.c_and_cg()
+        self.c_beqz_cg_i = self.c_beqz_cg()
+        self.c_bnez_cg_i = self.c_bnez_cg()
+        self.c_srli_cg_i = self.c_srli_cg()
+        self.c_srai_cg_i = self.c_srai_cg()
+        self.c_slli_cg_i = self.c_slli_cg()
+        self.c_j_cg_i = self.c_j_cg()
+        self.c_jal_cg_i = self.c_jal_cg()
+        self.c_jr_cg_i = self.c_jr_cg()
+        self.c_jalr_cg_i = self.c_jalr_cg()
 
     def sample(self, instr):
         self.instr_cnt += 1
