@@ -17,11 +17,14 @@ import random
 import logging
 import vsc
 from enum import IntEnum, auto
+from copy import deepcopy
 from importlib import import_module
 from pygen_src.riscv_instr_gen_config import cfg
 from pygen_src.isa.riscv_instr import riscv_instr
+from pygen_src.riscv_pseudo_instr import riscv_pseudo_instr
 from pygen_src.riscv_directed_instr_lib import riscv_mem_access_stream
-from pygen_src.riscv_instr_pkg import riscv_reg_t, riscv_instr_name_t, riscv_instr_group_t
+from pygen_src.riscv_instr_pkg import (riscv_reg_t, riscv_instr_name_t,
+                                       riscv_instr_group_t, riscv_instr_category_t)
 rcs = import_module("pygen_src.target." + cfg.argv.target + ".riscv_core_setting")
 
 
@@ -208,7 +211,10 @@ class riscv_load_store_base_instr_stream(riscv_mem_access_stream):
             instr.has_imm = 0
             self.randomize_gpr(instr)
             instr.rs1 = self.rs1_reg
+            logging.info("Instr_name {}".format(instr.instr_name.name))
+            logging.info("OFFSET {}".format(self.offset[i]))
             instr.imm_str = str(instr.uintToInt(self.offset[i]))
+            logging.info("instr.IMM_STR {}".format(instr.imm_str))
             instr.process_load_store = 0
             self.instr_list.append(instr)
             self.load_store_instr.append(instr)
@@ -308,3 +314,186 @@ class riscv_load_store_hazard_instr_stream(riscv_load_store_base_instr_stream):
                     sys.exit(1)
                 self.offset[i] = offset_
                 self.addr[i] = addr_
+
+
+# Back to back access to multiple data pages
+# This is useful to test data TLB switch and replacement
+@vsc.randobj
+class riscv_multi_page_load_store_instr_stream(riscv_mem_access_stream):
+
+    def __init__(self):
+        super().__init__()
+        self.load_store_instr_stream = vsc.list_t(vsc.attr(riscv_load_store_stress_instr_stream()))
+        self.num_of_instr_stream = vsc.rand_uint32_t()
+        self.data_page_id = vsc.rand_list_t(vsc.uint32_t())
+        self.rs1_reg = vsc.rand_list_t(vsc.enum_t(riscv_reg_t))
+
+    @vsc.constraint
+    def default_c(self):
+        with vsc.foreach(self.data_page_id, idx=True) as i:
+            self.data_page_id[i] < self.max_data_page_id
+        self.data_page_id.size == self.num_of_instr_stream
+        self.rs1_reg.size == self.num_of_instr_stream
+        vsc.unique(self.rs1_reg)
+        with vsc.foreach(self.rs1_reg, idx=True) as i:
+            self.rs1_reg[i].not_inside(vsc.rangelist(cfg.reserved_regs, riscv_reg_t.ZERO))
+
+    @vsc.constraint
+    def page_c(self):
+        # vsc.solve_order(self.num_of_instr_stream, self.data_page_id)
+        self.num_of_instr_stream.inside(vsc.rangelist(vsc.rng(1, self.max_data_page_id)))
+        vsc.unique(self.data_page_id)
+
+    # Avoid accessing a large number of pages because we may run out of registers for rs1
+    # Each page access needs a reserved register as the base address of load/store instruction
+    @vsc.constraint
+    def reasonable_c(self):
+        self.num_of_instr_stream.inside(vsc.rangelist(vsc.rng(2, 8)))
+
+    def post_randomize(self):
+        self.load_store_instr_stream = [0] * self.num_of_instr_stream
+        for i in range(len(self.load_store_instr_stream)):
+            self.load_store_instr_stream[i] = riscv_load_store_stress_instr_stream()
+            self.load_store_instr_stream[i].min_instr_cnt = 5
+            self.load_store_instr_stream[i].max_instr_cnt = 10
+            self.load_store_instr_stream[i].hart = self.hart
+            self.load_store_instr_stream[i].sp_c.constraint_mode(False)
+            # Make sure each load/store sequence doesn't override the rs1 of other sequences.
+            for j in range(len(self.rs1_reg)):
+                if i != j:
+                    self.load_store_instr_stream[i].reserved_rd = self.rs1_reg[i]
+            try:
+                with vsc.randomize_with(self.load_store_instr_stream[i]):
+                    self.rs1_reg == self.rs1_reg[i]
+                    self.data_page_id == self.data_page_id[i]
+            except Exception:
+                loagging.critical("Cannot randomize load/store instruction")
+                sys.exit(1)
+            # Mix the instruction stream of different page access, this could trigger the scenario of
+            # frequent data TLB switch
+            if i == 0:
+                 self.instr_list = self.load_store_instr_stream[i].instr_list
+            else:
+                self.mix_instr_stream(self.load_store_instr_stream[i].instr_list)
+
+
+# Access the different locations of the same memory regions
+@vsc.randobj
+class riscv_mem_region_stress_test(riscv_multi_page_load_store_instr_stream):
+
+    def __init__(self):
+        super().__init__()
+
+    @vsc.constraint
+    def page_c(self):
+        self.num_of_instr_stream.inside(vsc.rangelist(vsc.rng(2, 5)))
+        with vsc.foreach(self.data_page_id, idx=True) as i:
+            with vsc.if_then(i > 0):
+                self.data_page_id[i] == self.data_page_id[i-1]
+
+
+# Random load/store sequence to full address range
+# The address range is not preloaded with data pages, use store instruction to initialize first
+@vsc.randobj
+class riscv_load_store_rand_addr_instr_stream(riscv_load_store_base_instr_stream):
+
+    def __init__(self):
+        super().__init__()
+        self.addr_offset = vsc.rand_bit_t(rcs.XLEN)
+
+    # Find an unused 4K page from address 1M onward
+    @vsc.constraint
+    def addr_offset_c(self):
+        self.addr_offset[rcs.XLEN - 1:20] == 1  # TODO
+        self.addr_offset[rcs.XLEN-1:31] == 0
+        self.addr_offset[11:0] == 0
+
+    @vsc.constraint
+    def legal_c(self):
+        self.num_load_store.inside(vsc.rangelist(vsc.rng(5,10)))
+        self.num_mixed_instr.inside(vsc.rangelist(vsc.rng(5,10)))
+
+    def randomize_offset(self):
+        addr_ = vsc.rand_int32_t()
+        offset_ = vsc.rand_int32_t()
+        self.offset = [0] * self.num_load_store
+        self.addr = [0] * self.num_load_store
+        for i in range(self.num_load_store):
+            try:
+                offset_ = random.randrange(-2048, 2047)
+            except Exception:
+                logging.critical("Cannot randomize load/store offset")
+                sys.exit(1)
+            self.offset[i] = offset_
+            self.addr[i] = self.addr_offset + offset_
+
+    def add_rs1_init_la_instr(gpr, id, base=0):
+        li_instr = vsc.attr(riscv_pseudo_instr())
+        store_instr = vsc.attr(riscv_instr())
+        add_instr = vsc.attr(riscv_instr())
+        min_offset = []
+        max_offset = []
+        min_offset = min([item for item in self.offset])
+        max_offset = max([item for item in self.offset])
+        # Use LI to initialize the address offset
+        li_instr = riscv_pseudo_instr()
+        with vsc.randomize_with(li_instr):
+            li_instr.pseudo_instr_name == riscv_instr_name_t.LI
+            li_instr.rd.inside(vsc.rangelist(cfg.gpr))
+            li_instr.rd != gpr
+        li_instr.imm_str = "{}".format(hex(self.addr_offset))
+        # Add offset to the base address
+        add_instr = riscv_instr.get_instr(riscv_instr_name_t.ADD)
+        with vsc.randomize_with(add_instr):
+            add_instr.rs1 == gpr
+            add_instr.rs2 == li_instr.rd
+            add_instr.rd == gpr
+        instr.extend((li_instr, add_instr))
+        # Create SW instruction template
+        store_instr = riscv_instr.get_instr(riscv_instr_name_t.SB)
+        with vsc.randomize_with(store_instr):
+            store_instr.instr_name == riscv_instr_name_t.SB
+            store_instr.rs1 == gpr
+        # Initialize the location which used by load instruction later
+        for i in range(len(self.load_store_instr)):
+            if self.load_store_instr[i].category == riscv_instr_category_t.LOAD:
+                store = riscv_instr()
+                store.deepcopy(store_instr)
+                val = i % 32
+                store.rs2 = riscv_reg_t.val
+                store.imm_str = self.load_store_instr[i].imm_str
+                # TODO: C_FLDSP is in both rv32 and rv64 ISA
+                if self.load_store_instr[i].instr_name in [riscv_instr_name_t.LB,
+                                                           riscv_instr_name_t.LBU]:
+                    store.instr_name = riscv_instr_name_t.SB
+                elif self.load_store_instr[i].instr_name in [riscv_instr_name_t.LH,
+                                                             riscv_instr_name_t.LHU]:
+                    store.instr_name = riscv_instr_name_t.SH
+                elif self.load_store_instr[i].instr_name in [riscv_instr_name_t.LW,
+                                                             riscv_instr_name_t.C_LW,
+                                                             riscv_instr_name_t.C_LWSP,
+                                                             riscv_instr_name_t.FLW,
+                                                             riscv_instr_name_t.C_FLW,
+                                                             riscv_instr_name_t.C_FLWSP]:
+                    store.instr_name = riscv_instr_name_t.SW
+                elif self.load_store_instr[i].instr_name in [riscv_instr_name_t.LD,
+                                                             riscv_instr_name_t.C_LD,
+                                                             riscv_instr_name_t.C_LDSP,
+                                                             riscv_instr_name_t.FLD,
+                                                             riscv_instr_name_t.C_FLD,
+                                                             riscv_instr_name_t.LWU]:
+                    store.instr_name = riscv_instr_name_t.SD
+                else:
+                    logging.critical("Unexpected op: {}".format(self.load_store_instr[i].convert2asm()))
+                    sys.exit(1)
+                instr.append(store)
+        self.instr_list.extend(instr, self.instr_list)
+        super().add_rs1_init_la_instr(gpr, id, 0)
+
+
+class riscv_vector_load_store_instr_stream(riscv_mem_access_stream):
+    # TODO
+    pass
+
+
+

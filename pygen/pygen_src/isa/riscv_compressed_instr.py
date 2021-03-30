@@ -66,8 +66,8 @@ class riscv_compressed_instr(riscv_instr):
                                                                   riscv_instr_name_t.C_SRLI,
                                                                   riscv_instr_name_t.C_SLLI))):
                 self.imm[31:5] == 0
-            with vsc.if_then(self.instr_name == riscv_instr_name_t.C_ADDI4SPN):
-                self.imm[1:0] == 0
+        with vsc.if_then(self.instr_name == riscv_instr_name_t.C_ADDI4SPN):
+            self.imm[1:0] == 0
 
     # C_JAL is RV32C only instruction
     @vsc.constraint

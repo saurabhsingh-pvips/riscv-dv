@@ -1,0 +1,1016 @@
+Command: /DATA/anil/GitHub/RISC-V/riscv-dv/out_2021-03-31/vcs_simv +vcs+lic+wait +ntb_random_seed=1295879306 +UVM_TESTNAME=riscv_instr_base_test +num_of_tests=2 +start_idx=0 +asm_file_name=out_2021-03-31/asm_test/riscv_mmu_stress_test -l out_2021-03-31/sim_riscv_mmu_stress_test_0.log +instr_cnt=5000 +num_of_sub_program=5 +directed_instr_0=riscv_load_store_rand_instr_stream,40 +directed_instr_1=riscv_load_store_hazard_instr_stream,40
+Chronologic VCS simulator copyright 1991-2019
+Contains Synopsys proprietary information.
+Compiler version P-2019.06-SP2-3_Full64; Runtime version P-2019.06-SP2-3_Full64;  Mar 31 00:24 2021
+UVM_INFO /DATA/installation/synopsys/vcs_P-2019.06-SP2-3/vcs/P-2019.06-SP2-3/etc/uvm-1.2/base/uvm_root.svh(412) @ 0: reporter [UVM/RELNOTES] 
+----------------------------------------------------------------
+UVM-1.2.Synopsys
+(C) 2007-2014 Mentor Graphics Corporation
+(C) 2007-2014 Cadence Design Systems, Inc.
+(C) 2006-2014 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+(C) 2013-2014 NVIDIA Corporation
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_DO_NOT_NEED_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LR_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SC_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOSWAP_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOADD_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOAND_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOOR_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOXOR_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOMIN_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOMAX_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOMINU_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOMAXU_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_LW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_LWSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SWSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_ADDI4SPN
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_ADDI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_ADDI16SP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_LI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_LUI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_ADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_NOP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_MV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_ANDI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_XOR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_OR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_AND
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_BEQZ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_BNEZ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SRLI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SRAI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SLLI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_J
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_JAL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_JR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_JALR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_EBREAK
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_FLD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_FSD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_FLDSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_FSDSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FLD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMADD_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMSUB_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FNMSUB_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FNMADD_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FADD_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSUB_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMUL_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FDIV_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSQRT_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSGNJ_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSGNJN_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSGNJX_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMIN_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMAX_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_S_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_D_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FEQ_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FLT_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FLE_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCLASS_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_W_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_WU_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_D_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_D_WU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_FLW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_FSW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_FLWSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_FSWSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FLW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMADD_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMSUB_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FNMSUB_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FNMADD_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FADD_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSUB_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMUL_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FDIV_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSQRT_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSGNJ_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSGNJN_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSGNJX_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMIN_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMAX_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_W_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_WU_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMV_X_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FEQ_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FLT_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FLE_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCLASS_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_S_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_S_WU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMV_W_X
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LH
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LBU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LHU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SH
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLLI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRLI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRA
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRAI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ADDI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering NOP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LUI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AUIPC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering XOR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering XORI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering OR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ORI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AND
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ANDI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLT
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLTI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLTU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLTIU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BEQ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BNE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BLT
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BGE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BLTU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BGEU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering JAL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering JALR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FENCE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FENCE_I
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SFENCE_VMA
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ECALL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering EBREAK
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering URET
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRET
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MRET
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering DRET
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering WFI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CSRRW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CSRRS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CSRRC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CSRRWI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CSRRSI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CSRRCI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SEXT_B
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SEXT_H
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ANDN
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ORN
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering XNOR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering GORC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering GORCI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CMIX
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CMOV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering PACK
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering PACKU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering PACKH
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLO
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRO
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ROL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ROR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBCLR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBSET
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBINV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBEXT
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering GREV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering GREVI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLOI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SROI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering RORI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBCLRI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBSETI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBINVI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBEXTI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSRI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CLZ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CTZ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering PCNT
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CRC32_B
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CRC32_H
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CRC32_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CRC32C_B
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CRC32C_H
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CRC32C_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CLMUL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CLMULR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CLMULH
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MIN
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MAX
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MINU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MAXU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SHFL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering UNSHFL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BDEP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BEXT
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BFP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SHFLI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering UNSHFLI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MUL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MULH
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MULHSU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MULHU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering DIV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering DIVU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering REM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering REMU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LR_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SC_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOSWAP_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOADD_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOAND_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOOR_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOXOR_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOMIN_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOMAX_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOMINU_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering AMOMAXU_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BMATOR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BMATXOR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BMATFLIP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CRC32_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CRC32C_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ADDIWU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ADDWU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SUBWU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ADDU_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SUBU_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CLZW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CTZW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering PCNTW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CLMULW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CLMULRW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CLMULHW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SHFLW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering UNSHFLW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BDEPW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BEXTW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering BFPW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLLIU_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLOW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SROW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ROLW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering RORW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBCLRW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBSETW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBINVW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBEXTW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering GREVW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLOIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SROIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering RORIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBCLRIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBSETIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SBINVIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering GREVIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSLW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSRW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FSRIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering GORCW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering GORCIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering PACKW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering PACKUW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_ADDIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SUBW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_ADDW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_LD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_LDSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SDSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMV_X_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FMV_D_X
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_L_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_LU_D
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_D_L
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_D_LU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_L_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_LU_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_S_L
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering FCVT_S_LU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LWU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering LD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLLW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SLLIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRLW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRLIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRAW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SRAIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ADDW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering ADDIW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering SUBW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering MULW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering DIVW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering DIVUW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering REMW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering REMUW
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SRLI64
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SRAI64
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SLLI64
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_LQ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SQ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_LQSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering C_SQSP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSETVLI
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSETVL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VRSUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWADDU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWSUBU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWSUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VADC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMADC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSBC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSBC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAND
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VOR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VXOR
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSLL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSRL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSRA
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VNSRL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VNSRA
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSEQ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSNE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSLTU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSLT
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSLEU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSLE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSGTU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSGT
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMINU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMIN
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMAXU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMAX
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMUL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMULH
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMULHU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMULHSU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VDIVU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VDIV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREMU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWMUL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWMULU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWMULSU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMACC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VNMSAC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VNMSUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWMACCU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWMACC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWMACCSU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWMACCUS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMERGE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSADDU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSSUBU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSSUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAADDU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VASUBU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VASUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSSRL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSSRA
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VNCLIPU
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VNCLIP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFSUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFRSUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMUL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFDIV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFRDIV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWMUL
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMACC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNMACC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMSAC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNMSAC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNMADD
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMSUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNMSUB
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWMACC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWNMACC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWMSAC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWNMSAC
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFSQRT_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMIN
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMAX
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFSGNJ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFSGNJN
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFSGNJX
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMFEQ
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMFNE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMFLT
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMFLE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMFGT
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMFGE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFCLASS_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMERGE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMV
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFCVT_XU_F_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFCVT_X_F_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFCVT_F_XU_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFCVT_F_X_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWCVT_XU_F_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWCVT_X_F_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWCVT_F_XU_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWCVT_F_X_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWCVT_F_F_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNCVT_XU_F_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNCVT_X_F_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNCVT_F_XU_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNCVT_F_X_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNCVT_F_F_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFNCVT_ROD_F_F_W
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREDSUM_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREDMAXU_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREDMAX_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREDMINU_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREDMIN_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREDAND_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREDOR_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VREDXOR_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWREDSUMU_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VWREDSUM_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFREDOSUM_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFREDSUM_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFREDMAX_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWREDOSUM_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFWREDSUM_VS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMAND_MM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMNAND_MM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMANDNOT_MM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMXOR_MM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMOR_MM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMNOR_MM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMORNOT_MM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMXNOR_MM
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VPOPC_M
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFIRST_M
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSBF_M
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSIF_M
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMSOF_M
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VIOTA_M
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VID_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMV_X_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMV_S_X
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMV_F_S
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VFMV_S_F
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSLIDEUP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSLIDEDOWN
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSLIDE1UP
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSLIDE1DOWN
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VRGATHER
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VCOMPRESS
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMV1R_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMV2R_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMV4R_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VMV8R_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VLE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VLSE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSSE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VLXEI_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSXEI_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSUXEI_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VLEFF_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VLSEGE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSSEGE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VLSEGEFF_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VLSSEGE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSSSEGE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VLXSEGEI_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSXSEGEI_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VSUXSEGEI_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAMOSWAPE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAMOADDE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAMOXORE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAMOANDE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAMOORE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAMOMINE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAMOMAXE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAMOMINUE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering VAMOMAXUE_V
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/isa/riscv_instr.sv(101) @ 0: reporter [riscv_instr] Registering CUSTOM_1
+UVM_INFO @ 0: reporter [RNTST] Running test riscv_instr_base_test...
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/test/riscv_instr_base_test.sv(42) @ 0: uvm_test_top [uvm_test_top] Create configuration instance
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_gen_config.sv(593) @ 0: reporter [cfg] riscv_instr_pkg::supported_privileged_mode = 1
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_pmp_cfg.sv(136) @ 0: reporter [pmp_cfg] pmp max offset: 0xffffffff
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_pmp_cfg.sv(157) @ 0: reporter [pmp_cfg] MAX OFFSET: 0xffffffff
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/test/riscv_instr_base_test.sv(44) @ 0: uvm_test_top [uvm_test_top] Create configuration instance...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 0.12
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 0.25
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 0.50
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 1.00
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 2.00
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 4.00
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 8.00
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/test/riscv_instr_base_test.sv(100) @ 0: uvm_test_top [uvm_test_top] riscv_instr_gen_config is randomized:
+-----------------------------------------------------------------------------
+Name                               Type                    Size  Value       
+-----------------------------------------------------------------------------
+cfg                                riscv_instr_gen_config  -     @1345       
+  main_program_instr_cnt           integral                32    'h12        
+  sub_program_instr_cnt            sa(integral)            5     -           
+    [0]                            integral                32    'hb         
+    [1]                            integral                32    'h16        
+    [2]                            integral                32    'hf05       
+    [3]                            integral                32    'h42f       
+    [4]                            integral                32    'h21        
+  debug_program_instr_cnt          integral                32    'h659fcfea  
+  data_page_pattern                data_pattern_t          2     RAND_DATA   
+  init_privileged_mode             privileged_mode_t       2     MACHINE_MODE
+  reserved_regs                    array(riscv_reg_t)      3     -           
+    [0]                            riscv_reg_t             5     T1          
+    [1]                            riscv_reg_t             5     A6          
+    [2]                            riscv_reg_t             5     T5          
+  ra                               riscv_reg_t             5     S9          
+  sp                               riscv_reg_t             5     A6          
+  tp                               riscv_reg_t             5     T1          
+  tvec_alignment                   integral                32    'h4         
+  no_data_page                     integral                1     'h0         
+  no_branch_jump                   integral                1     'h0         
+  no_load_store                    integral                1     'h0         
+  no_csr_instr                     integral                1     'h0         
+  no_ebreak                        integral                1     'h1         
+  no_dret                          integral                1     'h1         
+  no_fence                         integral                1     'h0         
+  no_wfi                           integral                1     'h1         
+  fix_sp                           integral                1     'h0         
+  enable_unaligned_load_store      integral                1     'h0         
+  illegal_instr_ratio              integral                32    'h0         
+  hint_instr_ratio                 integral                32    'h0         
+  boot_mode_opts                   string                  0     ""          
+  enable_page_table_exception      integral                32    'h0         
+  no_directed_instr                integral                1     'h0         
+  enable_interrupt                 integral                1     'h0         
+  enable_timer_irq                 integral                1     'h0         
+  bare_program_mode                integral                1     'h0         
+  enable_illegal_csr_instruction   integral                1     'h0         
+  enable_access_invalid_csr_level  integral                1     'h0         
+  enable_misaligned_instr          integral                1     'h0         
+  enable_dummy_csr_write           integral                1     'h0         
+  randomize_csr                    integral                1     'h0         
+  allow_sfence_exception           integral                1     'h0         
+  no_delegation                    integral                1     'h1         
+  force_m_delegation               integral                1     'h0         
+  force_s_delegation               integral                1     'h0         
+  support_supervisor_mode          integral                1     'h0         
+  disable_compressed_instr         integral                1     'h0         
+  signature_addr                   integral                32    'hdeadbeef  
+  num_of_harts                     integral                32    'h1         
+  require_signature_addr           integral                1     'h0         
+  gen_debug_section                integral                1     'h0         
+  enable_ebreak_in_debug_rom       integral                1     'h0         
+  set_dcsr_ebreak                  integral                1     'h0         
+  num_debug_sub_program            integral                32    'h0         
+  enable_debug_single_step         integral                1     'h0         
+  single_step_iterations           integral                32    'h97938a81  
+  set_mstatus_tw                   integral                1     'h0         
+  set_mstatus_mprv                 integral                1     'h0         
+  max_branch_step                  integral                32    'h14        
+  max_directed_instr_stream_seq    integral                32    'h14        
+  enable_floating_point            integral                1     'h0         
+  enable_vector_extension          integral                1     'h0         
+  vector_instr_only                integral                1     'h0         
+  enable_b_extension               integral                1     'h0         
+  enable_bitmanip_groups           array(b_ext_group_t)    10    -           
+    [0]                            b_ext_group_t           32    ZBB         
+    [1]                            b_ext_group_t           32    ZBS         
+    [2]                            b_ext_group_t           32    ZBP         
+    [3]                            b_ext_group_t           32    ZBE         
+    [4]                            b_ext_group_t           32    ZBF         
+    [5]                            b_ext_group_t           32    ZBC         
+    [6]                            b_ext_group_t           32    ZBR         
+    [7]                            b_ext_group_t           32    ZBM         
+    [8]                            b_ext_group_t           32    ZBT         
+    [9]                            b_ext_group_t           32    ZB_TMP      
+  use_push_data_section            integral                1     'h0         
+-----------------------------------------------------------------------------
+
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1510) @ 0: reporter [asm_gen] Adding directed instruction stream:riscv_load_store_rand_instr_stream ratio:40/1000
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1510) @ 0: reporter [asm_gen] Adding directed instruction stream:riscv_load_store_hazard_instr_stream ratio:40/1000
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/test/riscv_instr_base_test.sv(92) @ 0: uvm_test_top [uvm_test_top] All directed instruction is applied
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(767) @ 0: reporter [asm_gen] Generating privileged mode routing for MACHINE_MODE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_privileged_common_seq.sv(97) @ 0: reporter@@privil_seq [privil_seq] mstatus_val: 0x1800
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_1
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 0/11 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 0/11 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_1 [sub_1] Start generating 11 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_1 [sub_1] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_2
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 0/22 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 0/22 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_2 [sub_2] Start generating 22 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_2 [sub_2] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_3
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 153/3845 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_60] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_60] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_68] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_68] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_68] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_102] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_137] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 153/3845 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_16] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_16] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_16] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_32] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_32] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_58] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_58] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_58] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_58] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_60] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_71] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_71] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_71] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_71] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_71] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_71] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_71] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_88] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_101] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_101] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_101] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_105] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_105] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_108] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_148] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_148] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_148] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_148] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_148] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_148] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_3 [sub_3] Start generating 3845 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_3 [sub_3] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_4
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 42/1071 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 42/1071 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_1] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_1] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_18] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_28] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_28] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_4 [sub_4] Start generating 1071 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_4 [sub_4] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_5
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 1/33 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 1/33 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_5 [sub_5] Start generating 33 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_5 [sub_5] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 1/18 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 1/18 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@main [main] Start generating 18 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@main [main] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(279) @ 0: reporter [asm_gen] Randomizing call stack
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(170) @ 0: reporter [callstack_gen] 1 programs @Lv0-> 2 programs at next level
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 2 sub programs are assigned to program[0]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(170) @ 0: reporter [callstack_gen] 2 programs @Lv1-> 2 programs at next level
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 2 sub programs are assigned to program[1]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 0 sub programs are assigned to program[2]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(170) @ 0: reporter [callstack_gen] 1 programs @Lv2-> 1 programs at next level
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 1 sub programs are assigned to program[3]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(170) @ 0: reporter [callstack_gen] 1 programs @Lv3-> 1 programs at next level
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 1 sub programs are assigned to program[4]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 0 -> sub[0] 2
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@main [main] JALR -> sub_2...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 0 -> sub[1] 1
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@main [main] JALR -> sub_1...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 1 -> sub[0] 3
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_1 [sub_1] JALR -> sub_3...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 1 -> sub[1] 3
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_1 [sub_1] JALR -> sub_3...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 3 -> sub[0] 4
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_3 [sub_3] JAL -> sub_4...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 4 -> sub[0] 5
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_4 [sub_4] JALR -> sub_5...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(300) @ 0: reporter [asm_gen] Randomizing call stack..done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(114) @ 0: reporter [asm_gen] Generating callstack...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(116) @ 0: reporter [asm_gen] Post-processing main program...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@main [main] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@main [main] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(118) @ 0: reporter [asm_gen] Generating main program instruction stream...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_4 [sub_4] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_4 [sub_4] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_2 [sub_2] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_2 [sub_2] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_1 [sub_1] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_1 [sub_1] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_5 [sub_5] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_5 [sub_5] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_3 [sub_3] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_3 [sub_3] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(133) @ 0: reporter [asm_gen] Inserting sub-programs...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(134) @ 0: reporter [asm_gen] Main/sub program generation...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_data_page_gen.sv(70) @ 0: reporter [data_page_gen] Generate data section: region_0 size:0x1000  xwr:0x7]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_data_page_gen.sv(70) @ 0: reporter [data_page_gen] Generate data section: region_1 size:0x10000  xwr:0x7]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1427) @ 0: reporter [asm_gen] out_2021-03-31/asm_test/riscv_mmu_stress_test_0.S is generated
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 0.12
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 0.25
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 0.50
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 1.00
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 2.00
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 4.00
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_vector_cfg.sv(152) @ 0: reporter [vector_cfg] Checking emul: 8.00
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/test/riscv_instr_base_test.sv(100) @ 0: uvm_test_top [uvm_test_top] riscv_instr_gen_config is randomized:
+-----------------------------------------------------------------------------
+Name                               Type                    Size  Value       
+-----------------------------------------------------------------------------
+cfg                                riscv_instr_gen_config  -     @1345       
+  main_program_instr_cnt           integral                32    'h389       
+  sub_program_instr_cnt            sa(integral)            5     -           
+    [0]                            integral                32    'h3ca       
+    [1]                            integral                32    'h28        
+    [2]                            integral                32    'h525       
+    [3]                            integral                32    'hc         
+    [4]                            integral                32    'h6dc       
+  debug_program_instr_cnt          integral                32    'h10d066b9  
+  data_page_pattern                data_pattern_t          2     RAND_DATA   
+  init_privileged_mode             privileged_mode_t       2     MACHINE_MODE
+  reserved_regs                    array(riscv_reg_t)      3     -           
+    [0]                            riscv_reg_t             5     S0          
+    [1]                            riscv_reg_t             5     A7          
+    [2]                            riscv_reg_t             5     A4          
+  ra                               riscv_reg_t             5     T1          
+  sp                               riscv_reg_t             5     A7          
+  tp                               riscv_reg_t             5     S0          
+  tvec_alignment                   integral                32    'h2         
+  no_data_page                     integral                1     'h0         
+  no_branch_jump                   integral                1     'h0         
+  no_load_store                    integral                1     'h0         
+  no_csr_instr                     integral                1     'h0         
+  no_ebreak                        integral                1     'h1         
+  no_dret                          integral                1     'h1         
+  no_fence                         integral                1     'h0         
+  no_wfi                           integral                1     'h1         
+  fix_sp                           integral                1     'h0         
+  enable_unaligned_load_store      integral                1     'h0         
+  illegal_instr_ratio              integral                32    'h0         
+  hint_instr_ratio                 integral                32    'h0         
+  boot_mode_opts                   string                  0     ""          
+  enable_page_table_exception      integral                32    'h0         
+  no_directed_instr                integral                1     'h0         
+  enable_interrupt                 integral                1     'h0         
+  enable_timer_irq                 integral                1     'h0         
+  bare_program_mode                integral                1     'h0         
+  enable_illegal_csr_instruction   integral                1     'h0         
+  enable_access_invalid_csr_level  integral                1     'h0         
+  enable_misaligned_instr          integral                1     'h0         
+  enable_dummy_csr_write           integral                1     'h0         
+  randomize_csr                    integral                1     'h0         
+  allow_sfence_exception           integral                1     'h0         
+  no_delegation                    integral                1     'h1         
+  force_m_delegation               integral                1     'h0         
+  force_s_delegation               integral                1     'h0         
+  support_supervisor_mode          integral                1     'h0         
+  disable_compressed_instr         integral                1     'h0         
+  signature_addr                   integral                32    'hdeadbeef  
+  num_of_harts                     integral                32    'h1         
+  require_signature_addr           integral                1     'h0         
+  gen_debug_section                integral                1     'h0         
+  enable_ebreak_in_debug_rom       integral                1     'h0         
+  set_dcsr_ebreak                  integral                1     'h0         
+  num_debug_sub_program            integral                32    'h0         
+  enable_debug_single_step         integral                1     'h0         
+  single_step_iterations           integral                32    'h422b1f0b  
+  set_mstatus_tw                   integral                1     'h0         
+  set_mstatus_mprv                 integral                1     'h0         
+  max_branch_step                  integral                32    'h14        
+  max_directed_instr_stream_seq    integral                32    'h14        
+  enable_floating_point            integral                1     'h0         
+  enable_vector_extension          integral                1     'h0         
+  vector_instr_only                integral                1     'h0         
+  enable_b_extension               integral                1     'h0         
+  enable_bitmanip_groups           array(b_ext_group_t)    10    -           
+    [0]                            b_ext_group_t           32    ZBB         
+    [1]                            b_ext_group_t           32    ZBS         
+    [2]                            b_ext_group_t           32    ZBP         
+    [3]                            b_ext_group_t           32    ZBE         
+    [4]                            b_ext_group_t           32    ZBF         
+    [5]                            b_ext_group_t           32    ZBC         
+    [6]                            b_ext_group_t           32    ZBR         
+    [7]                            b_ext_group_t           32    ZBM         
+    [8]                            b_ext_group_t           32    ZBT         
+    [9]                            b_ext_group_t           32    ZB_TMP      
+  use_push_data_section            integral                1     'h0         
+-----------------------------------------------------------------------------
+
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1510) @ 0: reporter [asm_gen] Adding directed instruction stream:riscv_load_store_rand_instr_stream ratio:40/1000
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1510) @ 0: reporter [asm_gen] Adding directed instruction stream:riscv_load_store_hazard_instr_stream ratio:40/1000
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/test/riscv_instr_base_test.sv(92) @ 0: uvm_test_top [uvm_test_top] All directed instruction is applied
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(767) @ 0: reporter [asm_gen] Generating privileged mode routing for MACHINE_MODE
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_privileged_common_seq.sv(97) @ 0: reporter@@privil_seq [privil_seq] mstatus_val: 0x1800
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_1
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 38/970 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_15] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_15] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_15] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 38/970 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_19] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_20] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_29] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_1 [sub_1] Start generating 970 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_1 [sub_1] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_2
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 1/40 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_0] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_0] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_0] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_0] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 1/40 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_2 [sub_2] Start generating 40 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_2 [sub_2] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_3
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 52/1317 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_47] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 52/1317 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_12] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_12] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_25] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_25] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_25] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_25] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_25] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_25] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_33] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_33] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_33] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_33] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_33] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_34] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_34] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_46] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_46] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_3 [sub_3] Start generating 1317 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_3 [sub_3] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_4
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 0/12 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 0/12 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_4 [sub_4] Start generating 12 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_4 [sub_4] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(251) @ 0: reporter [asm_gen] sub program name: sub_5
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 70/1756 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_7] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_23] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 70/1756 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_15] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_46] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_46] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_46] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@sub_5 [sub_5] Start generating 1756 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@sub_5 [sub_5] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_hazard_instr_stream 36/905 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_0] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_hazard_instr_stream_0] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1566) @ 0: reporter [asm_gen] Insert directed instr stream riscv_load_store_rand_instr_stream 36/905 times
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_14] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_18] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_18] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_load_store_instr_lib.sv(145) @ 0: reporter [riscv_load_store_rand_instr_stream_18] Add LWSP/SWSP to allowed instr
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(77) @ 0: reporter@@main [main] Start generating 905 instruction
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(87) @ 0: reporter@@main [main] Finishing instruction generation
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(279) @ 0: reporter [asm_gen] Randomizing call stack
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(170) @ 0: reporter [callstack_gen] 1 programs @Lv0-> 1 programs at next level
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 1 sub programs are assigned to program[0]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(170) @ 0: reporter [callstack_gen] 1 programs @Lv1-> 2 programs at next level
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 2 sub programs are assigned to program[1]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(170) @ 0: reporter [callstack_gen] 1 programs @Lv2-> 2 programs at next level
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 2 sub programs are assigned to program[2]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(170) @ 0: reporter [callstack_gen] 1 programs @Lv3-> 1 programs at next level
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 1 sub programs are assigned to program[3]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(170) @ 0: reporter [callstack_gen] 1 programs @Lv4-> 1 programs at next level
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_callstack_gen.sv(181) @ 0: reporter [callstack_gen] 1 sub programs are assigned to program[4]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 0 -> sub[0] 1
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@main [main] JALR -> sub_1...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 1 -> sub[0] 2
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_1 [sub_1] JAL -> sub_2...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 1 -> sub[1] 2
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_1 [sub_1] JALR -> sub_2...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 2 -> sub[0] 3
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_2 [sub_2] JAL -> sub_3...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 2 -> sub[1] 3
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_2 [sub_2] JALR -> sub_3...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 3 -> sub[0] 4
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_3 [sub_3] JALR -> sub_4...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(288) @ 0: reporter [asm_gen] Gen jump instr 4 -> sub[0] 5
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(248) @ 0: reporter@@sub_4 [sub_4] JAL -> sub_5...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(300) @ 0: reporter [asm_gen] Randomizing call stack..done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(114) @ 0: reporter [asm_gen] Generating callstack...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(116) @ 0: reporter [asm_gen] Post-processing main program...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@main [main] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@main [main] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(118) @ 0: reporter [asm_gen] Generating main program instruction stream...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_1 [sub_1] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_1 [sub_1] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_3 [sub_3] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_3 [sub_3] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_5 [sub_5] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_5 [sub_5] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_2 [sub_2] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_2 [sub_2] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(326) @ 0: reporter@@sub_4 [sub_4] Injecting 0 illegal instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_instr_sequence.sv(339) @ 0: reporter@@sub_4 [sub_4] Injecting 0 HINT instructions, ratio 0/100
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(133) @ 0: reporter [asm_gen] Inserting sub-programs...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(134) @ 0: reporter [asm_gen] Main/sub program generation...done
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_data_page_gen.sv(70) @ 0: reporter [data_page_gen] Generate data section: region_0 size:0x1000  xwr:0x7]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_data_page_gen.sv(70) @ 0: reporter [data_page_gen] Generate data section: region_1 size:0x10000  xwr:0x7]
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/src/riscv_asm_program_gen.sv(1427) @ 0: reporter [asm_gen] out_2021-03-31/asm_test/riscv_mmu_stress_test_1.S is generated
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/test/riscv_instr_base_test.sv(70) @ 0: uvm_test_top [] TEST PASSED
+UVM_INFO /DATA/anil/GitHub/RISC-V/riscv-dv/test/riscv_instr_base_test.sv(74) @ 0: uvm_test_top [] TEST GENERATION DONE
+UVM_INFO /DATA/installation/synopsys/vcs_P-2019.06-SP2-3/vcs/P-2019.06-SP2-3/etc/uvm-1.2/base/uvm_report_server.svh(894) @ 0: reporter [UVM/REPORT/SERVER] 
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :  761
+UVM_WARNING :    0
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[]     2
+[RNTST]     1
+[UVM/RELNOTES]     1
+[asm_gen]    69
+[callstack_gen]    19
+[cfg]     1
+[data_page_gen]     4
+[main]    11
+[pmp_cfg]     2
+[privil_seq]     2
+[riscv_instr]   497
+[riscv_load_store_hazard_instr_stream_0]     6
+[riscv_load_store_hazard_instr_stream_102]     1
+[riscv_load_store_hazard_instr_stream_137]     1
+[riscv_load_store_hazard_instr_stream_15]     3
+[riscv_load_store_hazard_instr_stream_23]     1
+[riscv_load_store_hazard_instr_stream_47]     1
+[riscv_load_store_hazard_instr_stream_60]     2
+[riscv_load_store_hazard_instr_stream_68]     3
+[riscv_load_store_hazard_instr_stream_7]     1
+[riscv_load_store_rand_instr_stream_1]     2
+[riscv_load_store_rand_instr_stream_101]     3
+[riscv_load_store_rand_instr_stream_105]     2
+[riscv_load_store_rand_instr_stream_108]     1
+[riscv_load_store_rand_instr_stream_12]     2
+[riscv_load_store_rand_instr_stream_14]     1
+[riscv_load_store_rand_instr_stream_148]     6
+[riscv_load_store_rand_instr_stream_15]     1
+[riscv_load_store_rand_instr_stream_16]     3
+[riscv_load_store_rand_instr_stream_18]     4
+[riscv_load_store_rand_instr_stream_19]     1
+[riscv_load_store_rand_instr_stream_20]     1
+[riscv_load_store_rand_instr_stream_25]     6
+[riscv_load_store_rand_instr_stream_28]     2
+[riscv_load_store_rand_instr_stream_29]     1
+[riscv_load_store_rand_instr_stream_32]     2
+[riscv_load_store_rand_instr_stream_33]     5
+[riscv_load_store_rand_instr_stream_34]     2
+[riscv_load_store_rand_instr_stream_46]     5
+[riscv_load_store_rand_instr_stream_58]     4
+[riscv_load_store_rand_instr_stream_60]     1
+[riscv_load_store_rand_instr_stream_71]     7
+[riscv_load_store_rand_instr_stream_88]     1
+[sub_1]    12
+[sub_2]    10
+[sub_3]    10
+[sub_4]    10
+[sub_5]     8
+[uvm_test_top]     6
+[vector_cfg]    14
+
+$finish called from file "/DATA/installation/synopsys/vcs_P-2019.06-SP2-3/vcs/P-2019.06-SP2-3/etc/uvm-1.2/base/uvm_root.svh", line 613.
+$finish at simulation time                    0
+           V C S   S i m u l a t i o n   R e p o r t 
+Time: 00 ps
+CPU Time:     16.230 seconds;       Data structure size:   0.6Mb
+Wed Mar 31 00:24:56 2021
