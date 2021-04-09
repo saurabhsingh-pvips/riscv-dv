@@ -1380,6 +1380,7 @@ class riscv_instr_cover_group:
                                                )
             self.cp_align = vsc.cross([self.cp_imm_align, self.cp_rs1_align])
             self.cp_ras = vsc.cross([self.cp_rs1_link, self.cp_rd_link])
+
     '''MUL instructions'''
     @vsc.covergroup
     class mul_cg(object):
@@ -1869,6 +1870,1369 @@ class riscv_instr_cover_group:
                                                   "Not-aligned": vsc.bin(0)
                                               }
                                               )
+    '''Floating instructions'''
+
+    @vsc.covergroup
+    class flw_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_lsu_hazard = vsc.coverpoint(lambda: self.instr.lsu_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    branch_hazard_e))
+            self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda: self.instr.fd_value[31:0],\
+                                                                            bins={ 
+                                                                                  "infinity": vsc.bin_array([], 2139095040, 4286578688), \
+                                                                                   "largest": vsc.bin_array([], 2139095039, 4286578687),\
+                                                                                   "zeros": vsc.bin_array([], 0, 2147483648), \
+                                                                                   "NaN": vsc.bin_array([], 2139095041, 2143289344)})
+            self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(lambda:self.instr.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                                                                cp_t =vsc.int32_t())
+            self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(lambda: self.instr.fd_value,\
+                                                                            bins={ "infinity": vsc.bin_array([], 9218868437227405312,0,10 ), #todo\
+                                                                                   "largest": vsc.bin_array([],0,10), #todo\
+                                                                                   "zeros": vsc.bin_array([], 0,10 ), #todo\
+                                                                                   "NaN": vsc.bin_array([],0,10)})#todo
+            self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(lambda:self.instr.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS-1] == 0,
+                                                                cp_t=vsc.int64_t())
+ 
+    @vsc.covergroup
+    class fld_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_lsu_hazard = vsc.coverpoint(lambda: self.instr.lsu_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    branch_hazard_e))
+            #self.cp_sfp_special_values_on_
+            
+    @vsc.covergroup
+    class fsw_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_lsu_hazard = vsc.coverpoint(lambda: self.instr.lsu_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    store_lsu_hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsd_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_imm_sign = vsc.coverpoint(lambda: self.instr.imm_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_lsu_hazard = vsc.coverpoint(lambda: self.instr.lsu_hazard,
+                                                cp_t=vsc.enum_t(
+                                                    store_lsu_hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fadd_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fadd_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsub_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsub_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmul_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmul_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fdiv_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fdiv_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign])
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fsqrt_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsqrt_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmin_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmin_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmax_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmax_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmadd_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs3 = vsc.coverpoint(lambda: self.instr.fs3,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs3_sign = vsc.coverpoint(lambda: self.instr.fs3_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fs3_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmadd_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs3 = vsc.coverpoint(lambda: self.instr.fs3,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs3_sign = vsc.coverpoint(lambda: self.instr.fs3_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fs3_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fnmadd_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs3 = vsc.coverpoint(lambda: self.instr.fs3,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs3_sign = vsc.coverpoint(lambda: self.instr.fs3_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fs3_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fnmadd_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs3 = vsc.coverpoint(lambda: self.instr.fs3,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs3_sign = vsc.coverpoint(lambda: self.instr.fs3_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fs3_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fmsub_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs3 = vsc.coverpoint(lambda: self.instr.fs3,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs3_sign = vsc.coverpoint(lambda: self.instr.fs3_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fs3_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmsub_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs3 = vsc.coverpoint(lambda: self.instr.fs3,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs3_sign = vsc.coverpoint(lambda: self.instr.fs3_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fs3_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fnmsub_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs3 = vsc.coverpoint(lambda: self.instr.fs3,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs3_sign = vsc.coverpoint(lambda: self.instr.fs3_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fs3_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fnmsub_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs3 = vsc.coverpoint(lambda: self.instr.fs3,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs3_sign = vsc.coverpoint(lambda: self.instr.fs3_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fs3_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fcvt_s_d_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fcvt_d_s_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fcvt_w_s_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    
+    @vsc.covergroup
+    class fcvt_wu_s_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fcvt_l_s_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    
+    @vsc.covergroup
+    class fcvt_lu_s_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fcvt_l_d_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fcvt_lu_d_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fcvt_w_d_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fcvt_wu_d_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fcvt_s_w_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fcvt_s_wu_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fcvt_s_l_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fcvt_d_l_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fcvt_s_lu_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class fcvt_d_w_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fcvt_d_lu_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fcvt_d_wu_cg(object):
+        def __init__(self,precision,sign_typ):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsgnj_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsgnj_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsgnjn_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsgnjn_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsgnjx_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fsgnjx_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
+                                            self.cp_fs2_sign,
+                                            self.cp_fd_sign])
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmv_x_w_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmv_x_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_sign = vsc.coverpoint(lambda: self.instr.rd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmv_w_x_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fmv_d_x_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_rs1 = vsc.coverpoint(lambda: self.instr.rs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fd = vsc.coverpoint(lambda: self.instr.fd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rs1_sign = vsc.coverpoint(lambda: self.instr.rs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fd_sign = vsc.coverpoint(lambda: self.instr.fd_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class feq_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+    
+    @vsc.covergroup
+    class feq_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class flt_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class flt_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fle_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fle_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs2 = vsc.coverpoint(lambda: self.instr.fs2,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_fs2_sign = vsc.coverpoint(lambda: self.instr.fs2_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fclass_s_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_value = vsc.coverpoint(lambda: self.instr.rd_value,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
+
+    @vsc.covergroup
+    class fclass_d_cg(object):
+        def __init__(self,precision):
+            super().__init__()
+
+            self.instr = None
+            self.cp_fs1 = vsc.coverpoint(lambda: self.instr.fs1,
+                                         cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
+                                        cp_t=vsc.enum_t(riscv_reg_t))
+            self.cp_fs1_sign = vsc.coverpoint(lambda: self.instr.fs1_sign,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_rd_value = vsc.coverpoint(lambda: self.instr.rd_value,
+                                              cp_t=vsc.enum_t(operand_sign_e))
+            self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
+                                                cp_t=vsc.enum_t(hazard_e))
+            #self.cp_sfp_special_values_on_
 
     '''CSR instructions'''
 
@@ -1980,6 +3344,68 @@ class riscv_instr_cover_group:
         self.c_jal_cg_i = self.c_jal_cg()
         self.c_jr_cg_i = self.c_jr_cg()
         self.c_jalr_cg_i = self.c_jalr_cg()
+        self.flw_cg_i = self.flw_cg('s')
+        self.fld_cg_i = self.fld_cg('d')
+        self.fsw_cg_i = self.fsw_cg('s')
+        self.fsw_cg_i = self.fsw_cg('d')
+        self.fadd_s_cg_i = self.fadd_s_cg('s')
+        self.fadd_d_cg_i = self.fadd_d_cg('d')
+        self.fsub_s_cg_i = self.fsub_s_cg('s')
+        self.fsub_d_cg_i = self.fsub_d_cg('d')
+        self.fmul_s_cg_i = self.fmul_s_cg('s')
+        self.fmul_d_cg_i = self.fmul_d_cg('d')
+        self.fdiv_s_cg_i = self.fdiv_s_cg('s')
+        self.fdiv_d_cg_i = self.fdiv_d_cg('d')
+        self.fsqrt_s_cg_i = self.fsqrt_s_cg('s')
+        self.fsqrt_d_cg_i = self.fsqrt_d_cg('d')
+        self.fmin_s_cg_i = self.fmin_s_cg('s')
+        self.fmin_d_cg_i = self.fmin_d_cg('d')
+        self.fmax_s_cg_i = self.fmax_s_cg('s')
+        self.fmax_d_cg_i = self.fmax_s_cg('d')
+        self.fmadd_s_cg_i = self.fmadd_s_cg('s')
+        self.fmadd_d_cg_i = self.fmadd_d_cg('d')
+        self.fnmadd_s_cg_i = self.fnmadd_s_cg('s')
+        self.fnmadd_d_cg_i = self.fnmadd_d_cg('d')
+        self.fmsub_s_cg_i = self.fmsub_s_cg('s')
+        self.fmsub_d_cg_i = self.fmsub_d_cg('d')
+        self.fnmsub_s_cg_i = self.fnmsub_s_cg('s')
+        self.fnmsub_d_cg_i = self.fnmsub_d_cg('d')
+        self.fcvt_s_d_cg_i = self.fcvt_s_d_cg()
+        self.fcvt_d_s_cg_i = self.fcvt_d_s_cg()
+        self.fcvt_w_s_cg_i = self.fcvt_w_s_cg('s','sign')
+        self.fcvt_wu_s_cg_i = self.fcvt_wu_s_cg('s','unsign')
+        self.fcvt_l_s_cg_i = self.fcvt_l_s_cg('s','sign')
+        self.fcvt_lu_s_cg_i = self.fcvt_lu_s_cg('s','unsign')
+        self.fcvt_l_d_cg_i = self.fcvt_l_d_cg('d','sign')
+        self.fcvt_lu_d_cg_i = self.fcvt_lu_d_cg('d','unsign')
+        self.fcvt_w_d_cg_i = self.fcvt_w_d_cg('d','sign')
+        self.fcvt_wu_d_cg_i = self.fcvt_wu_d_cg('d','unsign')
+        self.fcvt_s_w_cg_i = self.fcvt_s_w_cg('s','sign')
+        self.fcvt_s_wu_cg_i = self.fcvt_s_wu_cg('s','unsign')
+        self.fcvt_s_l_cg_i = self.fcvt_s_l_cg('s','sign')
+        self.fcvt_d_l_cg_i = self.fcvt_d_l_cg('d','sign')
+        self.fcvt_s_lu_cg_i = self.fcvt_s_lu_cg('s','unsign')
+        self.fcvt_d_w_cg_i = self.fcvt_d_w_cg('d','sign')
+        self.fcvt_d_lu_cg_i = self.fcvt_d_lu_cg('d','unsign')
+        self.fcvt_d_wu_cg_i = self.fcvt_d_wu_cg('d','unsign')
+        self.fsgnj_s_cg_i = self.fsgnj_s_cg('s')
+        self.fsgnj_d_cg_i = self.fsgnj_d_cg('d')
+        self.fsgnjn_s_cg_i = self.fsgnjn_s_cg('s')
+        self.fsgnjn_d_cg_i = self.fsgnjn_d_cg('d')
+        self.fsgnjx_s_cg_i = self.fsgnjx_s_cg('s')
+        self.fsgnjx_d_cg_i = self.fsgnjx_d_cg('d')
+        self.fmv_x_w_cg_i = self.fmv_x_w_cg('s')
+        self.fmv_x_d_cg_i = self.fmv_x_d_cg('d')
+        self.fmv_w_x_cg_i = self.fmv_w_x_cg('s')
+        self.fmv_d_x_cg_i = self.fmv_d_x_cg('d')
+        self.feq_s_cg_i = self.feq_s_cg('s')
+        self.feq_d_cg_i = self.feq_d_cg('d')
+        self.flt_s_cg_i = self.flt_s_cg('s')
+        self.flt_d_cg_i = self.flt_d_cg('d')
+        self.fle_s_cg_i = self.fle_s_cg('s')
+        self.fle_d_cg_i = self.fle_d_cg('d')
+        self.fclass_s_cg_i = self.fclass_s_cg('s')
+        self.fclass_d_cg_i = self.fclass_d_cg('d')
 
     def sample(self, instr):
         self.instr_cnt += 1
