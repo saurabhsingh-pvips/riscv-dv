@@ -338,7 +338,7 @@ class riscv_illegal_instr:
     def initialize(self):
         if (riscv_instr_group_t.RV32F in rcs.supported_isa) or \
                 (riscv_instr_group_t.RV32D in rcs.supported_isa):
-            self.legal_opcode.extend(7, 39, 67, 71, 75, 79, 83)
+            self.legal_opcode.extend((7, 39, 67, 71, 75, 79, 83))
         if riscv_instr_group_t.RV64I in rcs.supported_isa:
             self.legal_opcode.append(27)
         if riscv_instr_group_t.RV32A in rcs.supported_isa:
