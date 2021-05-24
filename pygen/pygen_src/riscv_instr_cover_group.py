@@ -1699,7 +1699,7 @@ class riscv_instr_cover_group:
             self.cp_rd = vsc.coverpoint(lambda: self.instr.rd,
                                         cp_t=vsc.enum_t(riscv_reg_ex_zero_t))
             self.cp_rs2_sign = vsc.coverpoint(lambda: self.instr.rs2_sign,
-                                              cp_t=vsc.enum_t(operand_sign_e))
+                                                cp_t=vsc.enum_t(operand_sign_e))
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
     @vsc.covergroup
@@ -5106,6 +5106,17 @@ class riscv_instr_cover_group:
                                                 "a": vsc.bin_array([], [0, 31])
                                             }
                                             )
+    @vsc.covergroup
+    class compressed_opcode_cg(object):
+        def __init__(self):
+            super().__init__()
+
+            self.instr = None
+            self.cp_opcode = vsc.coverpoint(lambda: self.instr.binary[15:0],
+                                            bins={
+                                                "a": vsc.bin_array([], [0, 31])
+                                            }
+                                            )
 
     @vsc.covergroup
     class rv32i_misc_cg(object):
@@ -5131,6 +5142,7 @@ class riscv_instr_cover_group:
 
     def cg_instantiation(self):
         self.opcode_cg_i = self.opcode_cg()
+        self.compressed_opcode_cg_i = self.compressed_opcode_cg()
         self.csrrw_cg_i = self.csrrw_cg()
         self.rv32i_misc_cg_i = self.rv32i_misc_cg()
         self.mepc_alignment_cg_i = self.mepc_alignment_cg()
@@ -5258,6 +5270,9 @@ class riscv_instr_cover_group:
         if self.instr_cnt > 1:
             instr.check_hazard_condition(self.pre_instr)
         # TODO: sampling for hint, compressed, and illegal_compressed insts
+        if ((instr.binary[2:0] != 3) and (riscv_instr_group_t.RV32C in rcs.supported_isa)):
+            self.compressed_opcode_cg_i.instr = instr
+            self.compressed_opcode_cg_i.sample()
         if instr.binary[2:0] == 3:
             self.opcode_cg_i.instr = instr
             self.opcode_cg_i.sample()
