@@ -5099,7 +5099,6 @@ class riscv_instr_cover_group:
     class opcode_cg(object):
         def __init__(self):
             super().__init__()
-
             self.instr = None
             self.cp_opcode = vsc.coverpoint(lambda: self.instr.binary[7:2],
                                             bins={
@@ -5110,9 +5109,8 @@ class riscv_instr_cover_group:
     class compressed_opcode_cg(object):
         def __init__(self):
             super().__init__()
-
             self.instr = None
-            self.cp_opcode = vsc.coverpoint(lambda: self.instr.binary[15:0],
+            self.cp_opcode = vsc.coverpoint(lambda: self.instr.binary, # TODO Can't use part select as binary[15:0] in covergroups
                                             bins={
                                                 "a": vsc.bin_array([], [0, 31])
                                             }
@@ -5131,7 +5129,6 @@ class riscv_instr_cover_group:
     class mepc_alignment_cg(object):
         def __init__(self):
             super().__init__()
-
             self.instr = None
             self.cp_align = vsc.coverpoint(lambda: self.instr.rd_value[2:0],
                                            bins={
@@ -5269,11 +5266,12 @@ class riscv_instr_cover_group:
         self.instr_cnt += 1
         if self.instr_cnt > 1:
             instr.check_hazard_condition(self.pre_instr)
+        binary = bin(instr.binary)
         # TODO: sampling for hint, compressed, and illegal_compressed insts
-        if ((instr.binary[2:0] != 3) and (riscv_instr_group_t.RV32C in rcs.supported_isa)):
+        if ((binary[1:0] != 3) and (riscv_instr_group_t.RV32C in rcs.supported_isa)):
             self.compressed_opcode_cg_i.instr = instr
             self.compressed_opcode_cg_i.sample()
-        if instr.binary[2:0] == 3:
+        if binary[1:0] == 3:
             self.opcode_cg_i.instr = instr
             self.opcode_cg_i.sample()
         try:
@@ -5297,3 +5295,4 @@ class riscv_instr_cover_group:
         self.instr_cnt = 0
         self.branch_instr_cnt = 0
         self.branch_hit_history.set_val(0)
+
