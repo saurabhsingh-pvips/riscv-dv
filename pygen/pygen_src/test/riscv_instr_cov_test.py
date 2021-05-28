@@ -17,10 +17,16 @@ import sys
 import vsc
 import csv
 from tabulate import *
+from imp import reload
 sys.path.append("pygen/")
 from pygen_src.riscv_instr_pkg import *
 from pygen_src.isa.riscv_cov_instr import riscv_cov_instr
 from pygen_src.riscv_instr_cover_group import *
+reload(logging)
+logging.basicConfig(filename='{}'.format(cfg.argv.log_file_name),
+                    filemode='w',
+                    format="%(asctime)s %(filename)s %(lineno)s %(levelname)s %(message)s",
+                    level=logging.DEBUG)
 
 
 class riscv_instr_cov_test:
@@ -32,10 +38,6 @@ class riscv_instr_cov_test:
         self.csv_trace = []
         self.entry_cnt, self.total_entry_cnt, self.skipped_cnt, \
         self.unexpected_illegal_instr_cnt = 0, 0, 0, 0
-        logging.basicConfig(filename='{}'.format(cfg.argv.log_file_name),
-                            filemode='w',
-                            format="%(filename)s %(lineno)s %(levelname)s %(message)s",
-                            level=logging.DEBUG)
 
     def run_phase(self):
         self.csv_trace = cfg.argv.trace_csv.split(",")
@@ -43,6 +45,7 @@ class riscv_instr_cov_test:
             sys.exit("No CSV file found!")
         logging.info("{} CSV trace files to be "
                      "processed...\n".format(len(self.csv_trace)))
+
         expect_illegal_instr = False
         for csv_file in self.csv_trace:
             with open("{}".format(csv_file)) as trace_file:
@@ -125,18 +128,6 @@ class riscv_instr_cov_test:
         pass
 
     def sample(self):
-        binary = vsc.int_t(rcs.XLEN)
-        binary.set_val(get_val(self.trace["binary"], hexa=1))
-        # TODO: Currently handled using string formatting as part select
-        #  isn't yet supported for global vsc variables
-        # width is rcs.XLEN+2 because of 0b in the beginning of binary_bin
-        binary_bin = format(binary.get_val(), '#0{}b'.format(rcs.XLEN + 2))
-        if binary_bin[-2:] != "11":  # TODO: and RV32C in supported_isa
-            # TODO: sample compressed instruction
-            pass
-        if binary_bin[-2:] == "11":
-            # TODO: sampling
-            pass
         processed_instr_name = self.process_instr_name(self.trace["instr"])
         if processed_instr_name in riscv_instr_name_t.__members__:
             instr_name = riscv_instr_name_t[processed_instr_name]
@@ -145,9 +136,10 @@ class riscv_instr_cov_test:
             # cov_instr is created, time to manually assign attributes
             # TODO: This will get fixed later when we get an inst from template
             instruction.assign_attributes()
-            if instruction.group.name in ["RV32I", "RV32M", "RV32C", "RV64I",
+            if (instruction.group.name in ["RV32I", "RV32M", "RV32C", "RV64I",
                                           "RV64M", "RV64C", "RV32F", "RV64F",
-                                          "RV32D", "RV64D", "RV32B", "RV64B"]:
+                                          "RV32D", "RV64D", "RV32B", "RV64B"]) \
+                                      and (instruction.group in rcs.supported_isa):
                 self.assign_trace_info_to_instr(instruction)
                 instruction.pre_sample()
                 self.instr_cg.sample(instruction)
@@ -157,8 +149,7 @@ class riscv_instr_cov_test:
 
     def assign_trace_info_to_instr(self, instruction):
         instruction.pc.set_val(get_val(self.trace["pc"], hexa=1))
-        instruction.binary.set_val(get_val(self.trace["binary"], hexa=1))
-        instruction.trace = self.trace["instr_str"]
+        instruction.binary = get_val(self.trace["binary"], hexa=1)
         if instruction.instr.name in ["NOP", "WFI", "FENCE", "FENCE_I",
                                       "EBREAK", "C_EBREAK", "SFENCE_VMA",
                                       "ECALL", "C_NOP", "MRET", "SRET",
@@ -178,7 +169,7 @@ class riscv_instr_cov_test:
 
     def process_instr_name(self, instruction):
         instruction = instruction.upper()
-        instruction.replace(".", "_")
+        instruction = instruction.replace(".", "_")
         instruction = self.update_instr_name(instruction)
         return instruction
 
