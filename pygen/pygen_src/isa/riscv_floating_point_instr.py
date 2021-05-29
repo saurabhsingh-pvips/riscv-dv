@@ -128,10 +128,56 @@ class riscv_floating_point_instr(riscv_instr):
 
     # coverage related functons
     def update_src_regs(self, operands = []):
-        pass
+        if self.category in ["LOAD", "CSR"]:
+            super().update_src_regs(operands)
+        if self.format.name == "I_FORMAT":
+            if self.has_fs1:
+                self.fs1 = self.get_fpr(operands[1])
+                self.fs1_value.set_val(self.get_gpr_state(operands[1]))
+            elif self.has_rs1:
+                self.rs1 = self.get_gpr(operands[1])
+                self.rs1_value.set_val(self.get_gpr_state(operands[1]))
+        elif self.format.name == "S_FORMAT":
+            assert len(operands) == 3
+            self.fs2 = self.get_fpr(operands[0])
+            self.fs2_value.set_val(self.get_gpr_state(operands[0]))
+            self.rs1 = self.get_gpr(operands[1])
+            self.rs1_value.set_val(self.get_gpr_state(operands[1]))
+            self.imm.set_val(get_val(operands[2]))
+        elif self.format.name == "R_FORMAT":
+            if len(operands) == 2 and self.instr.name in ["FSGNJ_S", "FSGNJX_S",
+                                                          "FSGNJN_S", "FSGNJ_D",
+                                                          "FSGNJX_D", "FSGNJN_D"]:
+                operands.append(operands[-1])
+                if self.has_fs2 or self.category.name == "CSR":
+                    assert len(operands) == 3
+                else:
+                    assert len(operands) == 2
+                if self.category.name != "CSR":
+                    self.fs1 = self.get_fpr(operands[1])
+                    self.fs1_value.set_val(self.get_gpr_state(operands[1]))
+                    if self.has_fs2:
+                        self.fs2 = self.get_fpr(operands[0])
+                        self.fs2_value.set_val(self.get_gpr_state(operands[0]))
+        elif self.format.name == "R4_FORMAT":
+            assert len(operands) == 4
+            self.fs1 = self.get_fpr(operands[1])
+            self.fs1_value.set_val(self.get_gpr_state(operands[1]))
+            self.fs2 = self.get_fpr(operands[2])
+            self.fs2_value.set_val(self.get_gpr_state(operands[2]))
+            self.fs3 = self.get_fpr(operands[3])
+            self.fs3_value.set_val(self.get_gpr_state(operands[3]))
+        else:
+            logging.error("Unsupported format {}".format(self.format.name))
 
     def update_dst_regs(self, reg_name, val_str):
-        pass
+        riscv_cov_instr.gpr_state[reg_name] = get_val(val_str, hexa=1)
+        if self.has_fd:
+            self.fd = self.get_fpr(self.reg_name)
+            self.fd_value.set_val(self.get_gpr_state(self.reg_name))
+        elif self.has_rd:
+            self.rd = self.get_gpr(self.reg_name)
+            self.rd_value.set_val(self.get_gpr_state(self.reg_name))
 
     def get_fpr(self, reg_name):
         pass
