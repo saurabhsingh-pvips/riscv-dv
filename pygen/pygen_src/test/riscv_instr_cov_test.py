@@ -17,17 +17,15 @@ import sys
 import vsc
 import csv
 from tabulate import *
-from imp import reload
 sys.path.append("pygen/")
 from pygen_src.riscv_instr_pkg import *
-from pygen_src.isa.riscv_cov_instr import riscv_cov_instr
+from pygen_src.riscv_instr_gen_config import cfg
+from importlib import import_module
+rcs = import_module("pygen_src.target." + cfg.argv.target + ".riscv_core_setting")
+from pygen_src.isa.riscv_instr import riscv_instr
 from pygen_src.riscv_instr_cover_group import *
-reload(logging)
-logging.basicConfig(filename='{}'.format(cfg.argv.log_file_name),
-                    filemode='w',
-                    format="%(asctime)s %(filename)s %(lineno)s %(levelname)s %(message)s",
-                    level=logging.DEBUG)
-
+for isa in rcs.supported_isa:
+    import_module("pygen_src.isa." + isa.name.lower() + "_instr")
 
 class riscv_instr_cov_test:
     """ Main class for applying the functional coverage test """
@@ -45,7 +43,7 @@ class riscv_instr_cov_test:
             sys.exit("No CSV file found!")
         logging.info("{} CSV trace files to be "
                      "processed...\n".format(len(self.csv_trace)))
-
+        riscv_instr.create_instr_list(cfg)
         expect_illegal_instr = False
         for csv_file in self.csv_trace:
             with open("{}".format(csv_file)) as trace_file:
@@ -130,27 +128,24 @@ class riscv_instr_cov_test:
     def sample(self):
         processed_instr_name = self.process_instr_name(self.trace["instr"])
         if processed_instr_name in riscv_instr_name_t.__members__:
-            instr_name = riscv_instr_name_t[processed_instr_name]
-            instruction = riscv_cov_instr()
-            instruction.instr = instr_name
-            # cov_instr is created, time to manually assign attributes
-            # TODO: This will get fixed later when we get an inst from template
-            instruction.assign_attributes()
-            if (instruction.group.name in ["RV32I", "RV32M", "RV32C", "RV64I",
+            if riscv_instr.instr_template.get(riscv_instr_name_t[processed_instr_name]):
+                instr_name = riscv_instr_name_t[processed_instr_name]
+                instruction = riscv_instr.get_instr(instr_name)
+                if (instruction.group.name in ["RV32I", "RV32M", "RV32C", "RV64I",
                                           "RV64M", "RV64C", "RV32F", "RV64F",
                                           "RV32D", "RV64D", "RV32B", "RV64B"]) \
                                       and (instruction.group in rcs.supported_isa):
-                self.assign_trace_info_to_instr(instruction)
-                instruction.pre_sample()
-                self.instr_cg.sample(instruction)
-            return True
-        logging.info("Cannot find opcode: {}".format(processed_instr_name))
-        return False
+                    self.assign_trace_info_to_instr(instruction)
+                    instruction.pre_sample()
+                    self.instr_cg.sample(instruction)
+                return True
+            logging.info("Cannot find opcode: {}".format(processed_instr_name))
+            return False
 
     def assign_trace_info_to_instr(self, instruction):
-        instruction.pc.set_val(get_val(self.trace["pc"], hexa=1))
+        instruction.pc = get_val(self.trace["pc"], hexa=1)
         instruction.binary = get_val(self.trace["binary"], hexa=1)
-        if instruction.instr.name in ["NOP", "WFI", "FENCE", "FENCE_I",
+        if instruction.instr_name.name in ["NOP", "WFI", "FENCE", "FENCE_I",
                                       "EBREAK", "C_EBREAK", "SFENCE_VMA",
                                       "ECALL", "C_NOP", "MRET", "SRET",
                                       "URET"]:
