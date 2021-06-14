@@ -12,7 +12,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-
+import traceback
 from pygen_src.riscv_instr_pkg import *
 from pygen_src.isa.riscv_instr import (riscv_instr, operand_sign_e, div_result_e,
                                       div_result_ex_overflow_e, compare_result_e,
@@ -1896,7 +1896,7 @@ class riscv_instr_cover_group:
                                                 cp_t=vsc.enum_t(
                                                     branch_hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -1915,7 +1915,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -1924,7 +1924,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -1945,7 +1945,7 @@ class riscv_instr_cover_group:
                                                 cp_t=vsc.enum_t(
                                                     branch_hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -1964,7 +1964,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -1973,7 +1973,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -1994,7 +1994,7 @@ class riscv_instr_cover_group:
                                                 cp_t=vsc.enum_t(
                                                     store_lsu_hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2013,7 +2013,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2022,7 +2022,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2043,7 +2043,7 @@ class riscv_instr_cover_group:
                                                 cp_t=vsc.enum_t(
                                                     store_lsu_hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2062,7 +2062,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2071,7 +2071,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2098,7 +2098,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2117,7 +2117,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2126,7 +2126,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2153,7 +2153,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2172,7 +2172,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2181,7 +2181,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2208,7 +2208,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2227,7 +2227,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2236,7 +2236,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2263,7 +2263,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2282,7 +2282,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2291,7 +2291,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2317,7 +2317,7 @@ class riscv_instr_cover_group:
             self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
                                             self.cp_fs2_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2336,7 +2336,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2345,7 +2345,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2371,7 +2371,7 @@ class riscv_instr_cover_group:
             self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
                                             self.cp_fs2_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2390,7 +2390,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2399,7 +2399,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2425,7 +2425,7 @@ class riscv_instr_cover_group:
             self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
                                             self.cp_fs2_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2444,7 +2444,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2453,7 +2453,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2479,7 +2479,7 @@ class riscv_instr_cover_group:
             self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
                                             self.cp_fs2_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2498,7 +2498,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2507,7 +2507,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2527,7 +2527,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2546,7 +2546,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2555,7 +2555,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2575,7 +2575,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2594,7 +2594,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2603,7 +2603,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2629,7 +2629,7 @@ class riscv_instr_cover_group:
             self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
                                             self.cp_fs2_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2648,7 +2648,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2657,7 +2657,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2683,7 +2683,7 @@ class riscv_instr_cover_group:
             self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
                                             self.cp_fs2_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2702,7 +2702,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2711,7 +2711,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2737,7 +2737,7 @@ class riscv_instr_cover_group:
             self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
                                             self.cp_fs2_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2756,7 +2756,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2765,7 +2765,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2791,7 +2791,7 @@ class riscv_instr_cover_group:
             self.cp_sign_cross = vsc.cross([self.cp_fs1_sign,
                                             self.cp_fs2_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2810,7 +2810,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2819,7 +2819,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2851,7 +2851,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs3_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2870,7 +2870,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2879,7 +2879,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2911,7 +2911,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs3_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2930,7 +2930,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2939,7 +2939,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -2971,7 +2971,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs3_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -2990,7 +2990,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -2999,7 +2999,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3031,7 +3031,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs3_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3050,7 +3050,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3059,7 +3059,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3091,7 +3091,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs3_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3110,7 +3110,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3119,7 +3119,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3151,7 +3151,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs3_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3170,7 +3170,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3179,7 +3179,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3211,7 +3211,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs3_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3230,7 +3230,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3239,7 +3239,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3271,7 +3271,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs3_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3290,7 +3290,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3299,7 +3299,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3319,7 +3319,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3338,7 +3338,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3347,7 +3347,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3367,7 +3367,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3386,7 +3386,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3395,7 +3395,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3415,7 +3415,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3434,7 +3434,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3443,7 +3443,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3463,7 +3463,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3482,7 +3482,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3491,7 +3491,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3511,7 +3511,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3530,7 +3530,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3539,7 +3539,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3559,7 +3559,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3578,7 +3578,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3587,7 +3587,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3607,7 +3607,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3626,7 +3626,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3635,7 +3635,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3655,7 +3655,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3674,7 +3674,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3683,7 +3683,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3703,7 +3703,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3722,7 +3722,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3731,7 +3731,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3751,7 +3751,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3770,7 +3770,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3779,7 +3779,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3799,7 +3799,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3818,7 +3818,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3827,7 +3827,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3847,7 +3847,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3866,7 +3866,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3875,7 +3875,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3895,7 +3895,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3914,7 +3914,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3923,7 +3923,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3943,7 +3943,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -3962,7 +3962,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -3971,7 +3971,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -3991,7 +3991,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4010,7 +4010,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4019,7 +4019,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4039,7 +4039,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4058,7 +4058,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4067,7 +4067,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4087,7 +4087,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4106,7 +4106,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4115,7 +4115,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4135,7 +4135,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4154,7 +4154,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4163,7 +4163,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4190,7 +4190,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4209,7 +4209,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4218,7 +4218,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4245,7 +4245,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4264,7 +4264,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4273,7 +4273,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4300,7 +4300,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4319,7 +4319,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4328,7 +4328,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4355,7 +4355,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4374,7 +4374,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4383,7 +4383,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4410,7 +4410,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4429,7 +4429,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4438,7 +4438,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4465,7 +4465,7 @@ class riscv_instr_cover_group:
                                             self.cp_fs2_sign,
                                             self.cp_fd_sign])
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4484,7 +4484,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4493,7 +4493,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4513,7 +4513,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4532,7 +4532,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4541,7 +4541,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4561,7 +4561,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4580,7 +4580,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4589,7 +4589,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4609,7 +4609,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4628,7 +4628,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4637,7 +4637,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4657,7 +4657,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4676,7 +4676,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4685,7 +4685,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4707,7 +4707,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4726,7 +4726,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4735,7 +4735,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4757,7 +4757,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4776,7 +4776,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4785,7 +4785,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4807,7 +4807,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4826,7 +4826,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4835,7 +4835,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4857,7 +4857,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4876,7 +4876,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4885,7 +4885,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4907,7 +4907,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4926,7 +4926,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4935,7 +4935,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -4957,7 +4957,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -4976,7 +4976,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -4985,7 +4985,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -5005,7 +5005,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -5024,7 +5024,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -5033,7 +5033,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     @vsc.covergroup
@@ -5053,7 +5053,7 @@ class riscv_instr_cover_group:
             self.cp_gpr_hazard = vsc.coverpoint(lambda: self.instr_name.gpr_hazard,
                                                 cp_t=vsc.enum_t(hazard_e))
             self.cp_sfp_special_values_on_fd_value = vsc.coverpoint(lambda:
-                                                                    self.instr_name.fd_value[31:0],
+                                                                    self.instr_name.fd_value,
                                                                     bins={"infinity":
                                                                           vsc.bin_array(
                                                                               [], 2139095040,
@@ -5072,7 +5072,7 @@ class riscv_instr_cover_group:
                                                                                         2143289344
                                                                                         )})
             self.cp_sfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[30:SINGLE_PRECISION_FRACTION_BITS] == 0,
+                lambda: self.instr_name.fd_value[30:pkg_ins.SINGLE_PRECISION_FRACTION_BITS] == 0,
                 cp_t =vsc.int32_t())
             self.cp_dfp_special_values_on_fd_value = vsc.coverpoint(
                 lambda: self.instr_name.fd_value, bins={
@@ -5081,7 +5081,7 @@ class riscv_instr_cover_group:
                     "zeros": vsc.bin_array([], 0, 9223372036854775808),
                     "NaN": vsc.bin_array([], 9218868437227405313, 9221120237041090560)})
             self.cp_dfp_subnormal_on_fd_value = vsc.coverpoint(
-                lambda: self.instr_name.fd_value[62:DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
+                lambda: self.instr_name.fd_value[62:pkg_ins.DOUBLE_PRECISION_FRACTION_BITS - 1] == 0,
                 cp_t=vsc.int64_t())
 
     '''CSR instructions'''
@@ -5278,13 +5278,15 @@ class riscv_instr_cover_group:
         if binary[1:0] == 3:
             self.opcode_cg_i.instr_name = instr
             self.opcode_cg_i.sample()
+        logging.info("instr_name {}".format(instr.instr_name.name))
         try:
             setattr(eval("self." + instr.instr_name.name.lower() + "_cg_i"),
                     'instr_name', instr)
             eval("self." + instr.instr_name.name.lower() + "_cg_i" + ".sample()")
         except Exception:
-            logging.info("Covergroup for instr {} is not supported yet".format(
-                instr.instr_name.name))
+            logging.info("Covergroup for instr {} is not supported yet {}".format(
+                instr.instr_name.name, traceback.format_exc()))
+            
         if instr.group.name == "RV32I":
             self.rv32i_misc_cg_i.instr_name = instr
             self.rv32i_misc_cg_i.sample()

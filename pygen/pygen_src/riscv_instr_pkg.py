@@ -1376,6 +1376,8 @@ class riscv_instr_pkg:
     MPP_BIT_MASK = BitArray(uint=0x3 << 0x11, length=rcs.XLEN)
 
     MAX_USED_VADDR_BITS = 30
+    SINGLE_PRECISION_FRACTION_BITS = 23
+    DOUBLE_PRECISION_FRACTION_BITS = 52
     IMM25_WIDTH = 25
     IMM12_WIDTH = 12
     INSTR_WIDTH = 32
