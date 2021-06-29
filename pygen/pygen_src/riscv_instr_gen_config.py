@@ -36,7 +36,7 @@ class riscv_instr_gen_config:
         # ---------------------------------------------------------------------------
 
         # Instruction count of the main program
-        self.main_program_instr_cnt = vsc.rand_int32_t()
+        self.main_program_instr_cnt = 1000  # vsc.rand_int32_t()
 
         # Instruction count of each sub-program
         self.sub_program_instr_cnt = []
@@ -313,10 +313,10 @@ class riscv_instr_gen_config:
         self.tvec_ceil = vsc.uint32_t()
         self.tvec_ceil = math.ceil(math.log2((self.XLEN * 4) / 8))
 
-    @vsc.constraint
+    '''@vsc.constraint
     def default_c(self):
         # TODO Add constraint related to sub_program
-        self.main_program_instr_cnt in vsc.rangelist(vsc.rng(10, self.instr_cnt))
+        self.main_program_instr_cnt in vsc.rangelist(vsc.rng(10, self.instr_cnt))'''
 
     @vsc.constraint
     def debug_mode_c(self):

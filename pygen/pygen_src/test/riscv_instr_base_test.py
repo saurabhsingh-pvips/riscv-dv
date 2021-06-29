@@ -14,6 +14,7 @@ import sys
 import logging
 import time
 import multiprocessing
+import cProfile, pstats, io
 sys.path.append("pygen/")
 from pygen_src.riscv_instr_pkg import *
 from pygen_src.riscv_instr_gen_config import cfg  # NOQA
@@ -63,6 +64,14 @@ class riscv_instr_base_test:
 start_time = time.time()
 riscv_base_test_ins = riscv_instr_base_test()
 if cfg.argv.gen_test == "riscv_instr_base_test":
+    pr = cProfile.Profile()
+    pr.enable()
     riscv_base_test_ins.run()
+    pr.disable()
+    s = io.StringIO()
+    sortby = 'tottime'
+    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+    ps.print_stats()
+    logging.info("{}".format(s.getvalue()))
     end_time = time.time()
     logging.info("Total execution time: {}s".format(round(end_time - start_time)))
