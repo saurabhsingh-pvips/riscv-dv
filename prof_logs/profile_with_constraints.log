@@ -1,0 +1,1478 @@
+2021-06-29 21:24:19,817 riscv_instr.py 118 INFO Registering LB
+2021-06-29 21:24:19,817 riscv_instr.py 118 INFO Registering LH
+2021-06-29 21:24:19,817 riscv_instr.py 118 INFO Registering LW
+2021-06-29 21:24:19,818 riscv_instr.py 118 INFO Registering LBU
+2021-06-29 21:24:19,818 riscv_instr.py 118 INFO Registering LHU
+2021-06-29 21:24:19,818 riscv_instr.py 118 INFO Registering SB
+2021-06-29 21:24:19,818 riscv_instr.py 118 INFO Registering SH
+2021-06-29 21:24:19,819 riscv_instr.py 118 INFO Registering SW
+2021-06-29 21:24:19,819 riscv_instr.py 118 INFO Registering SLL
+2021-06-29 21:24:19,819 riscv_instr.py 118 INFO Registering SLLI
+2021-06-29 21:24:19,819 riscv_instr.py 118 INFO Registering SRL
+2021-06-29 21:24:19,819 riscv_instr.py 118 INFO Registering SRLI
+2021-06-29 21:24:19,820 riscv_instr.py 118 INFO Registering SRA
+2021-06-29 21:24:19,820 riscv_instr.py 118 INFO Registering SRAI
+2021-06-29 21:24:19,820 riscv_instr.py 118 INFO Registering ADD
+2021-06-29 21:24:19,820 riscv_instr.py 118 INFO Registering ADDI
+2021-06-29 21:24:19,820 riscv_instr.py 118 INFO Registering NOP
+2021-06-29 21:24:19,821 riscv_instr.py 118 INFO Registering SUB
+2021-06-29 21:24:19,821 riscv_instr.py 118 INFO Registering LUI
+2021-06-29 21:24:19,821 riscv_instr.py 118 INFO Registering AUIPC
+2021-06-29 21:24:19,821 riscv_instr.py 118 INFO Registering XOR
+2021-06-29 21:24:19,821 riscv_instr.py 118 INFO Registering XORI
+2021-06-29 21:24:19,822 riscv_instr.py 118 INFO Registering OR
+2021-06-29 21:24:19,822 riscv_instr.py 118 INFO Registering ORI
+2021-06-29 21:24:19,822 riscv_instr.py 118 INFO Registering AND
+2021-06-29 21:24:19,822 riscv_instr.py 118 INFO Registering ANDI
+2021-06-29 21:24:19,822 riscv_instr.py 118 INFO Registering SLT
+2021-06-29 21:24:19,823 riscv_instr.py 118 INFO Registering SLTI
+2021-06-29 21:24:19,823 riscv_instr.py 118 INFO Registering SLTU
+2021-06-29 21:24:19,823 riscv_instr.py 118 INFO Registering SLTIU
+2021-06-29 21:24:19,823 riscv_instr.py 118 INFO Registering BEQ
+2021-06-29 21:24:19,823 riscv_instr.py 118 INFO Registering BNE
+2021-06-29 21:24:19,824 riscv_instr.py 118 INFO Registering BLT
+2021-06-29 21:24:19,824 riscv_instr.py 118 INFO Registering BGE
+2021-06-29 21:24:19,824 riscv_instr.py 118 INFO Registering BLTU
+2021-06-29 21:24:19,824 riscv_instr.py 118 INFO Registering BGEU
+2021-06-29 21:24:19,824 riscv_instr.py 118 INFO Registering JAL
+2021-06-29 21:24:19,825 riscv_instr.py 118 INFO Registering JALR
+2021-06-29 21:24:19,825 riscv_instr.py 118 INFO Registering FENCE
+2021-06-29 21:24:19,825 riscv_instr.py 118 INFO Registering FENCE_I
+2021-06-29 21:24:19,825 riscv_instr.py 118 INFO Registering SFENCE_VMA
+2021-06-29 21:24:19,826 riscv_instr.py 118 INFO Registering ECALL
+2021-06-29 21:24:19,826 riscv_instr.py 118 INFO Registering EBREAK
+2021-06-29 21:24:19,826 riscv_instr.py 118 INFO Registering URET
+2021-06-29 21:24:19,826 riscv_instr.py 118 INFO Registering SRET
+2021-06-29 21:24:19,826 riscv_instr.py 118 INFO Registering MRET
+2021-06-29 21:24:19,827 riscv_instr.py 118 INFO Registering DRET
+2021-06-29 21:24:19,827 riscv_instr.py 118 INFO Registering WFI
+2021-06-29 21:24:19,827 riscv_instr.py 118 INFO Registering CSRRW
+2021-06-29 21:24:19,827 riscv_instr.py 118 INFO Registering CSRRS
+2021-06-29 21:24:19,827 riscv_instr.py 118 INFO Registering CSRRC
+2021-06-29 21:24:19,828 riscv_instr.py 118 INFO Registering CSRRWI
+2021-06-29 21:24:19,828 riscv_instr.py 118 INFO Registering CSRRSI
+2021-06-29 21:24:19,828 riscv_instr.py 118 INFO Registering CSRRCI
+2021-06-29 21:24:19,829 riscv_instr.py 118 INFO Registering MUL
+2021-06-29 21:24:19,829 riscv_instr.py 118 INFO Registering MULH
+2021-06-29 21:24:19,829 riscv_instr.py 118 INFO Registering MULHSU
+2021-06-29 21:24:19,829 riscv_instr.py 118 INFO Registering MULHU
+2021-06-29 21:24:19,829 riscv_instr.py 118 INFO Registering DIV
+2021-06-29 21:24:19,829 riscv_instr.py 118 INFO Registering DIVU
+2021-06-29 21:24:19,830 riscv_instr.py 118 INFO Registering REM
+2021-06-29 21:24:19,830 riscv_instr.py 118 INFO Registering REMU
+2021-06-29 21:24:19,830 riscv_instr.py 118 INFO Registering C_LW
+2021-06-29 21:24:19,830 riscv_instr.py 118 INFO Registering C_SW
+2021-06-29 21:24:19,831 riscv_instr.py 118 INFO Registering C_LWSP
+2021-06-29 21:24:19,831 riscv_instr.py 118 INFO Registering C_SWSP
+2021-06-29 21:24:19,831 riscv_instr.py 118 INFO Registering C_ADDI4SPN
+2021-06-29 21:24:19,831 riscv_instr.py 118 INFO Registering C_ADDI
+2021-06-29 21:24:19,831 riscv_instr.py 118 INFO Registering C_ADDI16SP
+2021-06-29 21:24:19,832 riscv_instr.py 118 INFO Registering C_LI
+2021-06-29 21:24:19,832 riscv_instr.py 118 INFO Registering C_LUI
+2021-06-29 21:24:19,832 riscv_instr.py 118 INFO Registering C_SUB
+2021-06-29 21:24:19,832 riscv_instr.py 118 INFO Registering C_ADD
+2021-06-29 21:24:19,832 riscv_instr.py 118 INFO Registering C_NOP
+2021-06-29 21:24:19,833 riscv_instr.py 118 INFO Registering C_MV
+2021-06-29 21:24:19,833 riscv_instr.py 118 INFO Registering C_ANDI
+2021-06-29 21:24:19,833 riscv_instr.py 118 INFO Registering C_XOR
+2021-06-29 21:24:19,833 riscv_instr.py 118 INFO Registering C_OR
+2021-06-29 21:24:19,833 riscv_instr.py 118 INFO Registering C_AND
+2021-06-29 21:24:19,834 riscv_instr.py 118 INFO Registering C_BEQZ
+2021-06-29 21:24:19,834 riscv_instr.py 118 INFO Registering C_BNEZ
+2021-06-29 21:24:19,834 riscv_instr.py 118 INFO Registering C_SRLI
+2021-06-29 21:24:19,834 riscv_instr.py 118 INFO Registering C_SRAI
+2021-06-29 21:24:19,835 riscv_instr.py 118 INFO Registering C_SLLI
+2021-06-29 21:24:19,835 riscv_instr.py 118 INFO Registering C_J
+2021-06-29 21:24:19,835 riscv_instr.py 118 INFO Registering C_JAL
+2021-06-29 21:24:19,835 riscv_instr.py 118 INFO Registering C_JR
+2021-06-29 21:24:19,835 riscv_instr.py 118 INFO Registering C_JALR
+2021-06-29 21:24:19,836 riscv_instr.py 118 INFO Registering C_EBREAK
+2021-06-29 21:24:22,418 riscv_instr_gen_config.py 472 INFO min_stack_len_per_program value = 8
+2021-06-29 21:24:22,419 riscv_instr_base_test.py 74 INFO riscv_instr_gen_config is randomized
+2021-06-29 21:24:22,451 riscv_utils.py 68 INFO 
++-----+---------------------------------+---------------+--------+---------------------------------------------------------------------------+
+|     | Name                            | Type          |   Size | Value                                                                     |
+|-----+---------------------------------+---------------+--------+---------------------------------------------------------------------------|
+|   0 | main_program_instr_cnt          | <class 'str'> |     71 | 1000                                                                      |
+|   1 | sub_program_instr_cnt           | <class 'str'> |     70 | []                                                                        |
+|   2 | debug_program_instr_cnt         | <class 'str'> |     72 | 0                                                                         |
+|   3 | debug_sub_program_instr_cnt     | <class 'str'> |     76 | []                                                                        |
+|   4 | data_page_pattern               | <class 'str'> |     66 | data_pattern_t.RAND_DATA                                                  |
+|   5 | vreg_init_method                | <class 'str'> |     65 | vreg_init_method_t.RANDOM_VALUES_VMV                                      |
+|   6 | max_directed_instr_stream_seq   | <class 'str'> |     78 | 20                                                                        |
+|   7 | m_mode_exception_delegation     | <class 'str'> |     76 | {}                                                                        |
+|   8 | s_mode_exception_delegation     | <class 'str'> |     76 | {}                                                                        |
+|   9 | m_mode_interrupt_delegation     | <class 'str'> |     76 | {}                                                                        |
+|  10 | s_mode_interrupt_delegation     | <class 'str'> |     76 | {}                                                                        |
+|  11 | init_privileged_mode            | <class 'str'> |     69 | privileged_mode_t.MACHINE_MODE                                            |
+|  12 | mstatus                         | <class 'str'> |     56 | 1306738009                                                                |
+|  13 | mie                             | <class 'str'> |     52 | 1853717688                                                                |
+|  14 | sstatus                         | <class 'str'> |     56 | 512807234                                                                 |
+|  15 | sie                             | <class 'str'> |     52 | 1184641579                                                                |
+|  16 | ustatus                         | <class 'str'> |     56 | 224354602                                                                 |
+|  17 | uie                             | <class 'str'> |     52 | 517033272                                                                 |
+|  18 | mstatus_mprv                    | <class 'str'> |     61 | 0                                                                         |
+|  19 | mstatus_mxr                     | <class 'str'> |     60 | 0                                                                         |
+|  20 | mstatus_sum                     | <class 'str'> |     60 | 0                                                                         |
+|  21 | mstatus_tvm                     | <class 'str'> |     60 | 0                                                                         |
+|  22 | mstatus_fs                      | <class 'str'> |     59 | 0                                                                         |
+|  23 | mstatus_vs                      | <class 'str'> |     59 | 0                                                                         |
+|  24 | mtvec_mode                      | <class 'str'> |     59 | mtvec_mode_t.DIRECT                                                       |
+|  25 | tvec_alignment                  | <class 'str'> |     63 | 2                                                                         |
+|  26 | fcsr_rm                         | <class 'str'> |     56 | f_rounding_mode_t.RUP                                                     |
+|  27 | enable_sfence                   | <class 'str'> |     62 | 0                                                                         |
+|  28 | gpr                             | <class 'str'> |     52 | [riscv_reg_t.TP, riscv_reg_t.SP, riscv_reg_t.T5, riscv_reg_t.T1]          |
+|  29 | scratch_reg                     | <class 'str'> |     60 | riscv_reg_t.S10                                                           |
+|  30 | pmp_reg                         | <class 'str'> |     56 | riscv_reg_t.S9                                                            |
+|  31 | sp                              | <class 'str'> |     51 | riscv_reg_t.S2                                                            |
+|  32 | tp                              | <class 'str'> |     51 | riscv_reg_t.T0                                                            |
+|  33 | ra                              | <class 'str'> |     51 | riscv_reg_t.T0                                                            |
+|  34 | check_misa_init_val             | <class 'str'> |     68 | 0                                                                         |
+|  35 | check_xstatus                   | <class 'str'> |     62 | 1                                                                         |
+|  36 | virtual_addr_translation_on     | <class 'str'> |     76 | 0                                                                         |
+|  37 | stack_len                       | <class 'str'> |     58 | 5000                                                                      |
+|  38 | kernel_stack_len                | <class 'str'> |     65 | 4000                                                                      |
+|  39 | kernel_program_instr_cnt        | <class 'str'> |     73 | 400                                                                       |
+|  40 | invalid_priv_mode_csrs          | <class 'str'> |     71 | []                                                                        |
+|  41 | num_of_sub_program              | <class 'str'> |     67 | 0                                                                         |
+|  42 | instr_cnt                       | <class 'str'> |     58 | 10000                                                                     |
+|  43 | num_of_tests                    | <class 'str'> |     61 | 1                                                                         |
+|  44 | no_data_page                    | <class 'str'> |     61 | 0                                                                         |
+|  45 | no_branch_jump                  | <class 'str'> |     63 | 0                                                                         |
+|  46 | no_load_store                   | <class 'str'> |     62 | 0                                                                         |
+|  47 | no_csr_instr                    | <class 'str'> |     61 | 0                                                                         |
+|  48 | no_ebreak                       | <class 'str'> |     58 | 1                                                                         |
+|  49 | no_dret                         | <class 'str'> |     56 | 1                                                                         |
+|  50 | no_fence                        | <class 'str'> |     57 | 1                                                                         |
+|  51 | no_wfi                          | <class 'str'> |     55 | 1                                                                         |
+|  52 | enable_unaligned_load_store     | <class 'str'> |     76 | 0                                                                         |
+|  53 | illegal_instr_ratio             | <class 'str'> |     68 | 0                                                                         |
+|  54 | hint_instr_ratio                | <class 'str'> |     65 | 0                                                                         |
+|  55 | num_of_harts                    | <class 'str'> |     61 | 1                                                                         |
+|  56 | fix_sp                          | <class 'str'> |     55 | 0                                                                         |
+|  57 | use_push_data_section           | <class 'str'> |     70 | 0                                                                         |
+|  58 | boot_mode_opts                  | <class 'str'> |     63 |                                                                           |
+|  59 | enable_page_table_exception     | <class 'str'> |     76 | 0                                                                         |
+|  60 | no_directed_instr               | <class 'str'> |     66 | 0                                                                         |
+|  61 | asm_test_suffix                 | <class 'str'> |     64 |                                                                           |
+|  62 | enable_interrupt                | <class 'str'> |     65 | 0                                                                         |
+|  63 | enable_nested_interrupt         | <class 'str'> |     72 | 0                                                                         |
+|  64 | enable_timer_irq                | <class 'str'> |     65 | 0                                                                         |
+|  65 | bare_program_mode               | <class 'str'> |     66 | 0                                                                         |
+|  66 | enable_illegal_csr_instruction  | <class 'str'> |     79 | 0                                                                         |
+|  67 | enable_access_invalid_csr_level | <class 'str'> |     80 | 0                                                                         |
+|  68 | enable_misaligned_instr         | <class 'str'> |     72 | 0                                                                         |
+|  69 | enable_dummy_csr_write          | <class 'str'> |     71 | 0                                                                         |
+|  70 | randomize_csr                   | <class 'str'> |     62 | 0                                                                         |
+|  71 | allow_sfence_exception          | <class 'str'> |     71 | 0                                                                         |
+|  72 | no_delegation                   | <class 'str'> |     62 | 1                                                                         |
+|  73 | force_m_delegation              | <class 'str'> |     67 | 0                                                                         |
+|  74 | force_s_delegation              | <class 'str'> |     67 | 0                                                                         |
+|  75 | support_supervisor_mode         | <class 'str'> |     72 | 0                                                                         |
+|  76 | disable_compressed_instr        | <class 'str'> |     73 | 0                                                                         |
+|  77 | require_signature_addr          | <class 'str'> |     71 | 0                                                                         |
+|  78 | signature_addr                  | <class 'str'> |     63 | 3735928559                                                                |
+|  79 | gen_debug_section               | <class 'str'> |     66 | 0                                                                         |
+|  80 | enable_ebreak_in_debug_rom      | <class 'str'> |     75 | 0                                                                         |
+|  81 | set_dcsr_ebreak                 | <class 'str'> |     64 | 0                                                                         |
+|  82 | num_debug_sub_program           | <class 'str'> |     70 | 0                                                                         |
+|  83 | enable_debug_single_step        | <class 'str'> |     73 | 0                                                                         |
+|  84 | single_step_iterations          | <class 'str'> |     71 | 3102198557                                                                |
+|  85 | set_mstatus_tw                  | <class 'str'> |     63 | 0                                                                         |
+|  86 | set_mstatus_mprv                | <class 'str'> |     65 | 0                                                                         |
+|  87 | min_stack_len_per_program       | <class 'str'> |     74 | 8                                                                         |
+|  88 | max_stack_len_per_program       | <class 'str'> |     74 | 64                                                                        |
+|  89 | max_branch_step                 | <class 'str'> |     64 | 20                                                                        |
+|  90 | reserved_regs                   | <class 'str'> |     62 | [riscv_reg_t.T0, riscv_reg_t.S2, riscv_reg_t.S10]                         |
+|  91 | enable_floating_point           | <class 'str'> |     70 | 0                                                                         |
+|  92 | enable_vector_extension         | <class 'str'> |     72 | 0                                                                         |
+|  93 | vector_instr_only               | <class 'str'> |     66 | 0                                                                         |
+|  94 | enable_b_extension              | <class 'str'> |     67 | 0                                                                         |
+|  95 | enable_bitmanip_groups          | <class 'str'> |     71 | ['ZBB', 'ZBS', 'ZBP', 'ZBE', 'ZBF', 'ZBC', 'ZBR', 'ZBM', 'ZBT', 'ZB_TMP'] |
+|  96 | dist_control_mode               | <class 'str'> |     66 | 0                                                                         |
+|  97 | category_dist                   | <class 'str'> |     62 | {}                                                                        |
+|  98 | march_isa                       | <class 'str'> |     58 | []                                                                        |
+|  99 | supported_interrupt_mode        | <class 'str'> |     73 | [mtvec_mode_t.DIRECT, mtvec_mode_t.VECTORED]                              |
+| 100 | XLEN                            | <class 'str'> |     53 | 32                                                                        |
+| 101 | SATP_MODE                       | <class 'str'> |     58 | satp_mode_t.BARE                                                          |
+| 102 | init_privil_mode                | <class 'str'> |     65 | privileged_mode_t.MACHINE_MODE                                            |
+| 103 | tvec_ceil                       | <class 'str'> |     58 | 4                                                                         |
++-----+---------------------------------+---------------+--------+---------------------------------------------------------------------------+
+2021-06-29 21:24:23,979 riscv_instr_base_test.py 67 INFO All directed instruction is applied
+2021-06-29 21:24:23,983 riscv_asm_program_gen.py 516 INFO Generating privileged mode routing for MACHINE_MODE
+2021-06-29 21:24:24,069 riscv_privileged_common_seq.py 139 INFO self.mstatus_val: 0x1800
+2021-06-29 21:24:24,661 riscv_instr_sequence.py 75 INFO Start generating 1000 instruction
+2021-06-29 21:31:37,760 riscv_instr_sequence.py 83 INFO Finishing instruction generation
+2021-06-29 21:31:37,793 riscv_instr_sequence.py 187 INFO Processing branch instruction[2]:bgeu        a6, s8, 376 # 2 -> 16
+2021-06-29 21:31:37,793 riscv_instr_sequence.py 187 INFO Processing branch instruction[3]:bltu        gp, tp, 328 # 3 -> 19
+2021-06-29 21:31:37,794 riscv_instr_sequence.py 187 INFO Processing branch instruction[5]:bgeu        s10, a6, 758 # 5 -> 12
+2021-06-29 21:31:37,795 riscv_instr_sequence.py 187 INFO Processing branch instruction[20]:bltu        t6, tp, 678 # 20 -> 25
+2021-06-29 21:31:37,795 riscv_instr_sequence.py 187 INFO Processing branch instruction[25]:bne         a6, s8, 159 # 25 -> 31
+2021-06-29 21:31:37,796 riscv_instr_sequence.py 187 INFO Processing branch instruction[27]:blt         s10, s10, 268 # 27 -> 40
+2021-06-29 21:31:37,796 riscv_instr_sequence.py 187 INFO Processing branch instruction[29]:bgeu        s8, s6, -293 # 29 -> 30
+2021-06-29 21:31:37,797 riscv_instr_sequence.py 187 INFO Processing branch instruction[30]:bne         s10, tp, -335 # 30 -> 47
+2021-06-29 21:31:37,797 riscv_instr_sequence.py 187 INFO Processing branch instruction[32]:c.beqz      s0, -2 # 32 -> 46
+2021-06-29 21:31:37,798 riscv_instr_sequence.py 187 INFO Processing branch instruction[42]:bltu        s8, tp, -590 # 42 -> 46
+2021-06-29 21:31:37,799 riscv_instr_sequence.py 187 INFO Processing branch instruction[59]:blt         s10, tp, -752 # 59 -> 71
+2021-06-29 21:31:37,800 riscv_instr_sequence.py 187 INFO Processing branch instruction[70]:bgeu        a6, s10, -935 # 70 -> 73
+2021-06-29 21:31:37,801 riscv_instr_sequence.py 187 INFO Processing branch instruction[77]:c.beqz      s0, 0 # 77 -> 88
+2021-06-29 21:31:37,801 riscv_instr_sequence.py 187 INFO Processing branch instruction[80]:beq         s2, tp, 660 # 80 -> 94
+2021-06-29 21:31:37,802 riscv_instr_sequence.py 187 INFO Processing branch instruction[83]:bne         s10, tp, -801 # 83 -> 103
+2021-06-29 21:31:37,803 riscv_instr_sequence.py 187 INFO Processing branch instruction[91]:c.beqz      s0, -2 # 91 -> 95
+2021-06-29 21:31:37,804 riscv_instr_sequence.py 187 INFO Processing branch instruction[103]:bltu        s10, t0, -141 # 103 -> 122
+2021-06-29 21:31:37,804 riscv_instr_sequence.py 187 INFO Processing branch instruction[105]:c.beqz      s0, 0 # 105 -> 108
+2021-06-29 21:31:37,805 riscv_instr_sequence.py 187 INFO Processing branch instruction[106]:bne         s8, s8, -589 # 106 -> 117
+2021-06-29 21:31:37,805 riscv_instr_sequence.py 187 INFO Processing branch instruction[112]:bne         s2, a6, 118 # 112 -> 119
+2021-06-29 21:31:37,806 riscv_instr_sequence.py 187 INFO Processing branch instruction[124]:c.beqz      s0, 0 # 124 -> 127
+2021-06-29 21:31:37,807 riscv_instr_sequence.py 187 INFO Processing branch instruction[133]:beq         tp, a1, -802 # 133 -> 137
+2021-06-29 21:31:37,808 riscv_instr_sequence.py 187 INFO Processing branch instruction[136]:bne         tp, a7, -432 # 136 -> 152
+2021-06-29 21:31:37,808 riscv_instr_sequence.py 187 INFO Processing branch instruction[139]:beq         s10, a2, -110 # 139 -> 140
+2021-06-29 21:31:37,809 riscv_instr_sequence.py 187 INFO Processing branch instruction[151]:bgeu        s10, a4, -616 # 151 -> 168
+2021-06-29 21:31:37,810 riscv_instr_sequence.py 187 INFO Processing branch instruction[160]:beq         s10, s4, -585 # 160 -> 180
+2021-06-29 21:31:37,811 riscv_instr_sequence.py 187 INFO Processing branch instruction[175]:blt         t2, s10, -326 # 175 -> 195
+2021-06-29 21:31:37,812 riscv_instr_sequence.py 187 INFO Processing branch instruction[189]:beq         s10, a6, 549 # 189 -> 208
+2021-06-29 21:31:37,812 riscv_instr_sequence.py 187 INFO Processing branch instruction[200]:bne         s11, s8, -834 # 200 -> 201
+2021-06-29 21:31:37,813 riscv_instr_sequence.py 187 INFO Processing branch instruction[202]:c.beqz      s0, -2 # 202 -> 221
+2021-06-29 21:31:37,813 riscv_instr_sequence.py 187 INFO Processing branch instruction[203]:bge         s8, s5, -901 # 203 -> 210
+2021-06-29 21:31:37,814 riscv_instr_sequence.py 187 INFO Processing branch instruction[204]:c.beqz      s0, 0 # 204 -> 224
+2021-06-29 21:31:37,814 riscv_instr_sequence.py 187 INFO Processing branch instruction[207]:bgeu        s8, s10, 939 # 207 -> 210
+2021-06-29 21:31:37,815 riscv_instr_sequence.py 187 INFO Processing branch instruction[215]:bltu        a3, a6, -612 # 215 -> 228
+2021-06-29 21:31:37,815 riscv_instr_sequence.py 187 INFO Processing branch instruction[223]:bgeu        s8, a6, -122 # 223 -> 224
+2021-06-29 21:31:37,816 riscv_instr_sequence.py 187 INFO Processing branch instruction[225]:bltu        s10, a2, 811 # 225 -> 228
+2021-06-29 21:31:37,816 riscv_instr_sequence.py 187 INFO Processing branch instruction[229]:blt         tp, tp, -915 # 229 -> 235
+2021-06-29 21:31:37,817 riscv_instr_sequence.py 187 INFO Processing branch instruction[237]:blt         s10, a6, 658 # 237 -> 242
+2021-06-29 21:31:37,817 riscv_instr_sequence.py 187 INFO Processing branch instruction[244]:blt         s8, s10, -439 # 244 -> 245
+2021-06-29 21:31:37,818 riscv_instr_sequence.py 187 INFO Processing branch instruction[257]:blt         tp, tp, -316 # 257 -> 274
+2021-06-29 21:31:37,819 riscv_instr_sequence.py 187 INFO Processing branch instruction[272]:bltu        t5, tp, 586 # 272 -> 283
+2021-06-29 21:31:37,820 riscv_instr_sequence.py 187 INFO Processing branch instruction[284]:bltu        s10, tp, 461 # 284 -> 288
+2021-06-29 21:31:37,821 riscv_instr_sequence.py 187 INFO Processing branch instruction[305]:bgeu        s7, tp, -620 # 305 -> 321
+2021-06-29 21:31:37,821 riscv_instr_sequence.py 187 INFO Processing branch instruction[310]:bne         zero, s10, -470 # 310 -> 321
+2021-06-29 21:31:37,822 riscv_instr_sequence.py 187 INFO Processing branch instruction[313]:bltu        s8, tp, -735 # 313 -> 329
+2021-06-29 21:31:37,822 riscv_instr_sequence.py 187 INFO Processing branch instruction[316]:bne         s10, s11, -364 # 316 -> 336
+2021-06-29 21:31:37,823 riscv_instr_sequence.py 187 INFO Processing branch instruction[323]:blt         s10, s3, 718 # 323 -> 337
+2021-06-29 21:31:37,823 riscv_instr_sequence.py 187 INFO Processing branch instruction[332]:beq         s10, s10, -725 # 332 -> 352
+2021-06-29 21:31:37,824 riscv_instr_sequence.py 187 INFO Processing branch instruction[342]:bgeu        s10, s3, -466 # 342 -> 345
+2021-06-29 21:31:37,825 riscv_instr_sequence.py 187 INFO Processing branch instruction[349]:c.beqz      s0, 0 # 349 -> 368
+2021-06-29 21:31:37,825 riscv_instr_sequence.py 187 INFO Processing branch instruction[352]:bltu        tp, a6, -312 # 352 -> 359
+2021-06-29 21:31:37,826 riscv_instr_sequence.py 187 INFO Processing branch instruction[368]:bltu        s10, s8, -757 # 368 -> 372
+2021-06-29 21:31:37,827 riscv_instr_sequence.py 187 INFO Processing branch instruction[369]:bge         s10, s7, 816 # 369 -> 373
+2021-06-29 21:31:37,827 riscv_instr_sequence.py 187 INFO Processing branch instruction[371]:bltu        t4, s8, 648 # 371 -> 372
+2021-06-29 21:31:37,828 riscv_instr_sequence.py 187 INFO Processing branch instruction[377]:bge         s10, a7, 1003 # 377 -> 391
+2021-06-29 21:31:37,829 riscv_instr_sequence.py 187 INFO Processing branch instruction[384]:beq         a3, a6, -754 # 384 -> 403
+2021-06-29 21:31:37,831 riscv_instr_sequence.py 187 INFO Processing branch instruction[420]:blt         tp, t3, 983 # 420 -> 432
+2021-06-29 21:31:37,832 riscv_instr_sequence.py 187 INFO Processing branch instruction[431]:blt         s10, t5, -539 # 431 -> 450
+2021-06-29 21:31:37,833 riscv_instr_sequence.py 187 INFO Processing branch instruction[447]:bne         s10, a6, 792 # 447 -> 464
+2021-06-29 21:31:37,833 riscv_instr_sequence.py 187 INFO Processing branch instruction[448]:bne         s5, tp, -558 # 448 -> 462
+2021-06-29 21:31:37,834 riscv_instr_sequence.py 187 INFO Processing branch instruction[451]:blt         s10, a4, -609 # 451 -> 455
+2021-06-29 21:31:37,835 riscv_instr_sequence.py 187 INFO Processing branch instruction[475]:c.beqz      s0, 0 # 475 -> 495
+2021-06-29 21:31:37,836 riscv_instr_sequence.py 187 INFO Processing branch instruction[487]:bltu        s10, sp, -424 # 487 -> 507
+2021-06-29 21:31:37,838 riscv_instr_sequence.py 187 INFO Processing branch instruction[504]:blt         s10, s8, -506 # 504 -> 521
+2021-06-29 21:31:37,838 riscv_instr_sequence.py 187 INFO Processing branch instruction[512]:c.beqz      s0, 0 # 512 -> 524
+2021-06-29 21:31:37,839 riscv_instr_sequence.py 187 INFO Processing branch instruction[524]:c.beqz      s0, 0 # 524 -> 543
+2021-06-29 21:31:37,840 riscv_instr_sequence.py 187 INFO Processing branch instruction[525]:c.beqz      s0, 0 # 525 -> 530
+2021-06-29 21:31:37,840 riscv_instr_sequence.py 187 INFO Processing branch instruction[529]:bltu        s8, a4, 816 # 529 -> 546
+2021-06-29 21:31:37,841 riscv_instr_sequence.py 187 INFO Processing branch instruction[543]:bgeu        tp, s4, 278 # 543 -> 559
+2021-06-29 21:31:37,842 riscv_instr_sequence.py 187 INFO Processing branch instruction[552]:bge         sp, tp, 22 # 552 -> 565
+2021-06-29 21:31:37,842 riscv_instr_sequence.py 187 INFO Processing branch instruction[565]:blt         s10, tp, -451 # 565 -> 568
+2021-06-29 21:31:37,843 riscv_instr_sequence.py 187 INFO Processing branch instruction[567]:bltu        s8, s8, -116 # 567 -> 571
+2021-06-29 21:31:37,843 riscv_instr_sequence.py 187 INFO Processing branch instruction[568]:c.beqz      s0, 0 # 568 -> 569
+2021-06-29 21:31:37,844 riscv_instr_sequence.py 187 INFO Processing branch instruction[573]:c.beqz      s0, 0 # 573 -> 574
+2021-06-29 21:31:37,844 riscv_instr_sequence.py 187 INFO Processing branch instruction[575]:bge         s10, a6, 116 # 575 -> 594
+2021-06-29 21:31:37,845 riscv_instr_sequence.py 187 INFO Processing branch instruction[583]:bltu        s10, s6, -39 # 583 -> 594
+2021-06-29 21:31:37,845 riscv_instr_sequence.py 187 INFO Processing branch instruction[597]:bgeu        s10, a0, -891 # 597 -> 608
+2021-06-29 21:31:37,846 riscv_instr_sequence.py 187 INFO Processing branch instruction[603]:bgeu        s10, tp, -70 # 603 -> 622
+2021-06-29 21:31:37,847 riscv_instr_sequence.py 187 INFO Processing branch instruction[612]:c.beqz      s0, 0 # 612 -> 626
+2021-06-29 21:31:37,847 riscv_instr_sequence.py 187 INFO Processing branch instruction[615]:bne         s8, s10, 829 # 615 -> 621
+2021-06-29 21:31:37,847 riscv_instr_sequence.py 187 INFO Processing branch instruction[616]:bgeu        s1, tp, 221 # 616 -> 636
+2021-06-29 21:31:37,848 riscv_instr_sequence.py 187 INFO Processing branch instruction[619]:beq         tp, s8, 953 # 619 -> 633
+2021-06-29 21:31:37,848 riscv_instr_sequence.py 187 INFO Processing branch instruction[625]:bne         s10, tp, 931 # 625 -> 632
+2021-06-29 21:31:37,849 riscv_instr_sequence.py 187 INFO Processing branch instruction[635]:bne         s4, tp, 839 # 635 -> 642
+2021-06-29 21:31:37,850 riscv_instr_sequence.py 187 INFO Processing branch instruction[644]:bne         a6, zero, -175 # 644 -> 645
+2021-06-29 21:31:37,851 riscv_instr_sequence.py 187 INFO Processing branch instruction[667]:bne         a2, s8, 659 # 667 -> 681
+2021-06-29 21:31:37,851 riscv_instr_sequence.py 187 INFO Processing branch instruction[668]:beq         s10, s11, 670 # 668 -> 672
+2021-06-29 21:31:37,852 riscv_instr_sequence.py 187 INFO Processing branch instruction[672]:bltu        s3, a6, -883 # 672 -> 675
+2021-06-29 21:31:37,852 riscv_instr_sequence.py 187 INFO Processing branch instruction[674]:bne         tp, tp, -550 # 674 -> 690
+2021-06-29 21:31:37,853 riscv_instr_sequence.py 187 INFO Processing branch instruction[681]:blt         s10, s8, -826 # 681 -> 684
+2021-06-29 21:31:37,853 riscv_instr_sequence.py 187 INFO Processing branch instruction[683]:bne         s10, a6, -996 # 683 -> 686
+2021-06-29 21:31:37,853 riscv_instr_sequence.py 187 INFO Processing branch instruction[686]:c.beqz      s0, 0 # 686 -> 700
+2021-06-29 21:31:37,854 riscv_instr_sequence.py 187 INFO Processing branch instruction[689]:bne         s10, tp, 389 # 689 -> 708
+2021-06-29 21:31:37,855 riscv_instr_sequence.py 187 INFO Processing branch instruction[698]:bge         a6, s8, 693 # 698 -> 710
+2021-06-29 21:31:37,855 riscv_instr_sequence.py 187 INFO Processing branch instruction[704]:bge         s10, s4, 537 # 704 -> 705
+2021-06-29 21:31:37,856 riscv_instr_sequence.py 187 INFO Processing branch instruction[706]:beq         s8, tp, -260 # 706 -> 717
+2021-06-29 21:31:37,856 riscv_instr_sequence.py 187 INFO Processing branch instruction[709]:c.beqz      s0, 0 # 709 -> 710
+2021-06-29 21:31:37,857 riscv_instr_sequence.py 187 INFO Processing branch instruction[711]:blt         s8, t1, 208 # 711 -> 716
+2021-06-29 21:31:37,857 riscv_instr_sequence.py 187 INFO Processing branch instruction[712]:beq         s10, tp, -790 # 712 -> 719
+2021-06-29 21:31:37,858 riscv_instr_sequence.py 187 INFO Processing branch instruction[715]:bne         s10, a6, 904 # 715 -> 731
+2021-06-29 21:31:37,858 riscv_instr_sequence.py 187 INFO Processing branch instruction[719]:bltu        s10, s10, 353 # 719 -> 725
+2021-06-29 21:31:37,860 riscv_instr_sequence.py 187 INFO Processing branch instruction[739]:bne         s10, s9, 708 # 739 -> 742
+2021-06-29 21:31:37,861 riscv_instr_sequence.py 187 INFO Processing branch instruction[762]:bgeu        s10, ra, 70 # 762 -> 778
+2021-06-29 21:31:37,862 riscv_instr_sequence.py 187 INFO Processing branch instruction[763]:bltu        a3, tp, -45 # 763 -> 767
+2021-06-29 21:31:37,862 riscv_instr_sequence.py 187 INFO Processing branch instruction[764]:blt         a2, s8, 891 # 764 -> 765
+2021-06-29 21:31:37,863 riscv_instr_sequence.py 187 INFO Processing branch instruction[772]:bltu        s10, tp, 605 # 772 -> 779
+2021-06-29 21:31:37,864 riscv_instr_sequence.py 187 INFO Processing branch instruction[778]:bne         s10, a6, 382 # 778 -> 782
+2021-06-29 21:31:37,864 riscv_instr_sequence.py 187 INFO Processing branch instruction[784]:bne         a6, tp, -264 # 784 -> 788
+2021-06-29 21:31:37,865 riscv_instr_sequence.py 187 INFO Processing branch instruction[785]:bne         a1, s8, -353 # 785 -> 788
+2021-06-29 21:31:37,866 riscv_instr_sequence.py 187 INFO Processing branch instruction[807]:bge         s10, t2, 291 # 807 -> 827
+2021-06-29 21:31:37,868 riscv_instr_sequence.py 187 INFO Processing branch instruction[829]:bne         s8, s10, 742 # 829 -> 842
+2021-06-29 21:31:37,869 riscv_instr_sequence.py 187 INFO Processing branch instruction[834]:bne         s10, a7, -515 # 834 -> 854
+2021-06-29 21:31:37,870 riscv_instr_sequence.py 187 INFO Processing branch instruction[851]:bne         s10, s5, 488 # 851 -> 865
+2021-06-29 21:31:37,872 riscv_instr_sequence.py 187 INFO Processing branch instruction[871]:bge         tp, s8, -248 # 871 -> 888
+2021-06-29 21:31:37,873 riscv_instr_sequence.py 187 INFO Processing branch instruction[873]:bgeu        t4, tp, -478 # 873 -> 887
+2021-06-29 21:31:37,874 riscv_instr_sequence.py 187 INFO Processing branch instruction[880]:beq         s10, s6, 913 # 880 -> 900
+2021-06-29 21:31:37,874 riscv_instr_sequence.py 187 INFO Processing branch instruction[881]:bge         s10, t4, -193 # 881 -> 898
+2021-06-29 21:31:37,875 riscv_instr_sequence.py 187 INFO Processing branch instruction[883]:bltu        s10, tp, -683 # 883 -> 894
+2021-06-29 21:31:37,875 riscv_instr_sequence.py 187 INFO Processing branch instruction[888]:bge         s5, s10, -436 # 888 -> 907
+2021-06-29 21:31:37,876 riscv_instr_sequence.py 187 INFO Processing branch instruction[890]:blt         s8, t4, -50 # 890 -> 909
+2021-06-29 21:31:37,876 riscv_instr_sequence.py 187 INFO Processing branch instruction[906]:bge         tp, s8, -21 # 906 -> 913
+2021-06-29 21:31:37,877 riscv_instr_sequence.py 187 INFO Processing branch instruction[913]:bge         a6, s8, 37 # 913 -> 916
+2021-06-29 21:31:37,877 riscv_instr_sequence.py 187 INFO Processing branch instruction[919]:c.beqz      s0, 0 # 919 -> 923
+2021-06-29 21:31:37,878 riscv_instr_sequence.py 187 INFO Processing branch instruction[922]:beq         s10, s10, 359 # 922 -> 923
+2021-06-29 21:31:37,878 riscv_instr_sequence.py 187 INFO Processing branch instruction[925]:blt         tp, a6, -306 # 925 -> 928
+2021-06-29 21:31:37,879 riscv_instr_sequence.py 187 INFO Processing branch instruction[944]:blt         s8, t5, 658 # 944 -> 964
+2021-06-29 21:31:37,880 riscv_instr_sequence.py 187 INFO Processing branch instruction[948]:beq         s8, s10, 675 # 948 -> 967
+2021-06-29 21:31:37,880 riscv_instr_sequence.py 187 INFO Processing branch instruction[953]:bne         s10, s2, 348 # 953 -> 957
+2021-06-29 21:31:37,881 riscv_instr_sequence.py 187 INFO Processing branch instruction[970]:bge         s8, a6, 189 # 970 -> 984
+2021-06-29 21:31:37,882 riscv_instr_sequence.py 187 INFO Processing branch instruction[987]:bgeu        s10, gp, -584 # 987 -> 999
+2021-06-29 21:31:37,883 riscv_instr_sequence.py 187 INFO Processing branch instruction[994]:c.beqz      s0, 124 # 994 -> 995
+2021-06-29 21:31:37,883 riscv_instr_sequence.py 198 INFO Finished post-processing instructions
+2021-06-29 21:31:37,883 riscv_asm_program_gen.py 111 INFO Post-processing main program...done
+2021-06-29 21:31:38,037 riscv_instr_sequence.py 289 INFO Injecting 0 illegal instructions, ratio 0/100
+2021-06-29 21:31:38,038 riscv_instr_sequence.py 301 INFO Injecting 0 HINT instructions, ratio 0/100
+2021-06-29 21:31:38,038 riscv_asm_program_gen.py 113 INFO Generating main program instruction stream...done
+2021-06-29 21:31:38,038 riscv_asm_program_gen.py 128 INFO Main/sub program generation...done
+2021-06-29 21:31:38,041 riscv_data_page_gen.py 60 INFO Generate data section: region_0 size:0x4096 xwr:0x8
+2021-06-29 21:31:38,071 riscv_data_page_gen.py 60 INFO Generate data section: region_1 size:0x4096 xwr:0x8
+2021-06-29 21:31:38,106 riscv_data_page_gen.py 60 INFO Generate data section: s_region_0 size:0x4096 xwr:0x8
+2021-06-29 21:31:38,135 riscv_data_page_gen.py 60 INFO Generate data section: s_region_1 size:0x4096 xwr:0x8
+2021-06-29 21:31:38,172 riscv_asm_program_gen.py 967 INFO out_2021-06-29/asm_test/riscv_arithmetic_basic_test_0.S is generated
+2021-06-29 21:31:38,172 riscv_instr_base_test.py 70 INFO TEST GENERATION DONE
+2021-06-29 21:31:38,173 riscv_instr_base_test.py 88 INFO Total execution time: 438s
+2021-06-29 21:31:38,237 riscv_instr_base_test.py 94 INFO          67732795 function calls (59807063 primitive calls) in 437.512 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     2251  351.133    0.156  351.133    0.156 {method 'Sat' of 'pyboolector.Boolector' objects}
+6122420/1000   14.505    0.000   37.910    0.038 /usr/lib64/python3.6/copy.py:132(deepcopy)
+   647992    5.725    0.000    5.725    0.000 {method 'Const' of 'pyboolector.Boolector' objects}
+831520/1000    4.356    0.000   37.837    0.038 /usr/lib64/python3.6/copy.py:268(_reconstruct)
+248520/1000    4.299    0.000   37.771    0.038 /usr/lib64/python3.6/copy.py:236(_deepcopy_dict)
+ 12600101    3.440    0.000    3.440    0.000 {method 'get' of 'dict' objects}
+  1442592    2.909    0.000    3.103    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rangelist_model.py:43(add_value)
+   592542    2.538    0.000    2.538    0.000 {method 'Eq' of 'pyboolector.Boolector' objects}
+  1288637    2.402    0.000    2.416    0.000 {built-in method builtins.hasattr}
+     1000    2.123    0.002  393.208    0.393 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:182(__exit__)
+240590/140990    1.956    0.000   25.476    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:120(visit_constraint_if_else)
+  1680720    1.943    0.000    1.993    0.000 {built-in method builtins.getattr}
+  7746540    1.770    0.000    1.770    0.000 {built-in method builtins.id}
+183007/81137    1.730    0.000    5.210    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_bin_model.py:74(build)
+   529264    1.612    0.000    1.612    0.000 {method 'Or' of 'pyboolector.Boolector' objects}
+   226634    1.488    0.000   16.141    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:110(visit_constraint_expr)
+    43166    1.218    0.000    1.407    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_model.py:35(update)
+    37875    1.097    0.000    8.942    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/enum_field_model.py:41(build)
+   596000    1.016    0.000    1.016    0.000 /usr/lib64/python3.6/enum.py:517(__new__)
+  1663040    0.889    0.000    3.704    0.000 /usr/lib64/python3.6/copy.py:273(<genexpr>)
+2097588/2097219    0.883    0.000    0.888    0.000 {built-in method builtins.isinstance}
+    21030    0.811    0.000    4.717    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_enum_model.py:12(__init__)
+   596000    0.788    0.000    1.804    0.000 /usr/lib64/python3.6/enum.py:267(__call__)
+     1032    0.771    0.001  374.291    0.363 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:70(randomize)
+   677363    0.746    0.000    1.107    0.000 <frozen importlib._bootstrap>:416(parent)
+   235520    0.725    0.000    0.733    0.000 {method '__reduce_ex__' of 'object' objects}
+  4409254    0.709    0.000    0.709    0.000 {method 'append' of 'list' objects}
+  4271640    0.672    0.000    0.672    0.000 /usr/lib64/python3.6/copy.py:190(_deepcopy_atomic)
+287855/286531    0.537    0.000    9.056    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:162(visit_expr_bin)
+   513560    0.525    0.000    0.754    0.000 /usr/lib64/python3.6/copy.py:252(_keep_alive)
+    24854    0.522    0.000    0.751    0.000 {method 'sort' of 'list' objects}
+29520/6000    0.487    0.000   14.979    0.002 /usr/lib64/python3.6/copy.py:210(_deepcopy_list)
+   533246    0.472    0.000   10.872    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_fieldref_model.py:46(accept)
+   622937    0.459    0.000    0.813    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_literal_model.py:45(accept)
+   126313    0.458    0.000    1.994    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_literal_model.py:39(build)
+   596000    0.446    0.000    0.446    0.000 /usr/lib64/python3.6/enum.py:584(__reduce_ex__)
+   747235    0.443    0.000    2.207    0.000 <frozen importlib._bootstrap>:997(_handle_fromlist)
+   134420    0.416    0.000    0.520    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_bin_model.py:30(__init__)
+219073/78692    0.405    0.000   19.699    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:143(visit_constraint_scope)
+60424/35264    0.403    0.000    4.527    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:129(visit_constraint_if_else)
+    24576    0.399    0.000    3.895    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_in_model.py:40(build)
+72653/72645    0.376    0.000    1.423    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:185(visit_expr_bin)
+     1595    0.374    0.000    0.971    0.001 /usr/lib64/python3.6/inspect.py:714(getmodule)
+   677374    0.362    0.000    0.362    0.000 {method 'rpartition' of 'str' objects}
+    75000    0.359    0.000    5.535    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_node_builder.py:30(visit_constraint_stmt_enter)
+145294/145262    0.350    0.000    0.613    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:68(__getattribute__)
+45252/31172    0.346    0.000    6.164    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_if_else_model.py:42(build)
+71034/16594    0.333    0.000    4.950    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_override_visitor.py:21(visit_constraint_scope)
+    93046    0.293    0.000    7.591    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_node_builder.py:47(visit_expr_fieldref)
+298861/297537    0.282    0.000   10.403    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_bin_model.py:165(accept)
+   366014    0.277    0.000    0.398    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_bin_model.py:147(extend)
+838278/837742    0.263    0.000    0.267    0.000 {built-in method builtins.issubclass}
+   235520    0.262    0.000    0.378    0.000 /usr/lib64/python3.6/copyreg.py:87(__newobj__)
+    82883    0.246    0.000    0.713    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:185(visit_expr_rangelist)
+   186217    0.245    0.000    0.279    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:242(visit_expr_literal)
+246590/146990    0.242    0.000   26.572    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_if_else_model.py:62(accept)
+240650/141050    0.228    0.000   18.838    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_scope_model.py:57(accept)
+  1442592    0.227    0.000    0.227    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_enum_model.py:18(<lambda>)
+   232638    0.224    0.000   16.738    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_expr_model.py:38(accept)
+    60722    0.215    0.000    4.047    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_expr_model.py:35(build)
+     1000    0.213    0.000  394.701    0.395 pygen/pygen_src/riscv_instr_stream.py:241(randomize_gpr)
+    28893    0.205    0.000    0.205    0.000 {method 'Assert' of 'pyboolector.Boolector' objects}
+17130/17026    0.203    0.000   10.313    0.001 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:59(visit_composite_field)
+   235520    0.189    0.000    0.189    0.000 {method 'update' of 'dict' objects}
+    65400    0.182    0.000    0.586    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:201(visit_expr_partselect)
+75604/75236    0.177    0.000    2.530    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:134(visit_expr_bin)
+   199125    0.173    0.000   14.073    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/enum_field_model.py:38(accept)
+    82883    0.172    0.000    3.682    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:194(visit_expr_in)
+    54761    0.167    0.000    0.205    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:166(visit_constraint_stmt_enter)
+    54761    0.165    0.000    0.233    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:173(visit_constraint_stmt_leave)
+   191567    0.164    0.000    0.644    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_scalar_model.py:58(accept)
+   103116    0.164    0.000    2.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:368(visit_expr_fieldref)
+64424/36264    0.162    0.000    2.947    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:106(visit_constraint_if_else)
+    63824    0.160    0.000    0.399    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:254(visit_expr_fieldref)
+    45544    0.152    0.000    0.152    0.000 {method 'Implies' of 'pyboolector.Boolector' objects}
+     1000    0.146    0.000   38.235    0.038 pygen/pygen_src/isa/riscv_instr.py:210(get_rand_instr)
+    30842    0.145    0.000    0.145    0.000 {method 'Ne' of 'pyboolector.Boolector' objects}
+   103736    0.143    0.000    0.163    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:204(visit_expr_fieldref)
+   282003    0.142    0.000    0.207    0.000 /usr/lib64/python3.6/inspect.py:64(ismodule)
+45560/31480    0.135    0.000    3.634    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_scope_model.py:39(build)
+    17372    0.133    0.000    0.140    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/enum_field_model.py:76(post_randomize)
+    43574    0.132    0.000    0.198    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:270(process_fieldref)
+     2064    0.129    0.000    9.869    0.005 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:63(process)
+    43166    0.122    0.000    0.153    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_model.py:13(__init__)
+   240248    0.122    0.000    0.122    0.000 {built-in method __new__ of type object at 0x7f84c58eb0e0}
+    19493    0.121    0.000    0.121    0.000 {method 'Uext' of 'pyboolector.Boolector' objects}
+   115211    0.120    0.000    3.970    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_in_model.py:87(accept)
+   164831    0.119    0.000    0.119    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_fieldref_model.py:35(build)
+     1032    0.110    0.000  393.306    0.381 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:553(do_randomize)
+   619925    0.109    0.000    0.109    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:198(visit_expr_literal)
+   200531    0.105    0.000    0.105    0.000 {method 'pop' of 'list' objects}
+    66976    0.104    0.000    0.302    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:383(visit_scalar_field)
+    56477    0.104    0.000    1.914    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:110(visit_constraint_expr)
+    30402    0.103    0.000    0.368    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:244(to_expr)
+    22241    0.100    0.000    0.195    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_literal_model.py:30(__init__)
+    57922    0.100    0.000    4.830    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:390(visit_enum_field)
+    42564    0.095    0.000    0.106    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_fieldref_model.py:28(__init__)
+    31675    0.094    0.000    0.120    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/value_scalar.py:11(__init__)
+    68/34    0.090    0.001    0.093    0.003 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_in_propagator.py:22(propagate)
+    82887    0.089    0.000    0.847    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_rangelist_model.py:39(accept)
+    16100    0.088    0.000    0.099    0.000 {method 'Slice' of 'pyboolector.Boolector' objects}
+     1032    0.088    0.000   17.649    0.017 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:233(swizzle_randvars)
+   355835    0.082    0.000    0.082    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:96(visit_constraint_stmt_enter)
+   106274    0.081    0.000    0.081    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_model.py:49(toBool)
+   468335    0.081    0.000    0.081    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:100(visit_constraint_stmt_leave)
+   250935    0.079    0.000    0.079    0.000 {method 'items' of 'dict' objects}
+    22136    0.077    0.000    0.183    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_scalar_model.py:11(__init__)
+    68482    0.077    0.000    0.133    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/array_constraint_builder.py:97(visit_expr_fieldref)
+   341350    0.076    0.000    0.076    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:175(visit_expr_fieldref)
+    16485    0.074    0.000    0.074    0.000 {method 'Var' of 'pyboolector.Boolector' objects}
+    24584    0.071    0.000    0.156    0.000 /usr/lib64/python3.6/random.py:173(randrange)
+    16103    0.069    0.000    0.081    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_scalar_model.py:98(post_randomize)
+   179918    0.068    0.000    0.068    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/value_scalar.py:22(__int__)
+    65400    0.067    0.000    0.654    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_partselect_model.py:51(accept)
+256185/254076    0.066    0.000    0.080    0.000 {built-in method builtins.len}
+   194405    0.064    0.000    0.064    0.000 {method 'keys' of 'dict' objects}
+   136665    0.063    0.000    0.063    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_fieldref_model.py:40(is_signed)
+    37875    0.063    0.000    9.005    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_node_builder.py:43(visit_enum_field)
+     2694    0.063    0.000   16.978    0.006 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_node_builder.py:20(build)
+    13637    0.061    0.000    0.133    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:80(__setattr__)
+    16100    0.060    0.000    0.182    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_partselect_model.py:35(build)
+    51997    0.060    0.000    0.114    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:65(__init__)
+     4002    0.058    0.000    0.675    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/array_constraint_builder.py:53(visit_constraint_foreach)
+    46406    0.057    0.000   12.682    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_block_model.py:41(accept)
+    57125    0.055    0.000    0.072    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/expr_mode.py:36(is_raw_mode)
+   159358    0.054    0.000    0.054    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_literal_model.py:48(val)
+    29264    0.053    0.000    0.586    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:234(visit_expr_in)
+    24700    0.052    0.000    0.085    0.000 /usr/lib64/python3.6/random.py:223(_randbelow)
+     3447    0.052    0.000    0.158    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:206(__init__)
+    16435    0.052    0.000    0.120    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:313(to_expr)
+     2062    0.051    0.000    0.118    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/dist_constraint_builder.py:27(__init__)
+    46523    0.049    0.000    0.148    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_dispose_visitor.py:37(visit_expr_fieldref)
+    46406    0.048    0.000   12.559    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:104(visit_constraint_block)
+     1665    0.048    0.000    0.159    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:349(create_rand_domain_constraint)
+     8828    0.048    0.000    0.214    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:140(__init__)
+     4350    0.047    0.000    0.047    0.000 {built-in method posix.stat}
+    14782    0.047    0.000    0.081    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:573(get_val)
+     7892    0.046    0.000    0.264    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:364(bin_expr)
+    29264    0.046    0.000    0.359    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:225(visit_expr_rangelist)
+   202960    0.045    0.000    0.045    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_model.py:28(__init__)
+     1000    0.043    0.000  433.067    0.433 pygen/pygen_src/riscv_instr_stream.py:215(randomize_instr)
+     2694    0.043    0.000    0.051    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set.py:87(rand_fields)
+30044/12004    0.042    0.000    0.319    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:265(expr)
+      138    0.042    0.000    0.374    0.003 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:114(build_field_model)
+     6004    0.041    0.000    0.066    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/array_constraint_builder.py:86(visit_expr_array_subscript)
+    20509    0.040    0.000    0.053    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_scope_model.py:28(__init__)
+   114313    0.038    0.000    0.038    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_literal_model.py:42(is_signed)
+    37500    0.038    0.000    0.060    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_dispose_visitor.py:34(visit_constraint_stmt_enter)
+     4599    0.037    0.000    0.128    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:930(__getitem__)
+     1000    0.037    0.000    0.148    0.000 pygen/pygen_src/isa/riscv_instr.py:303(pre_randomize)
+    12328    0.037    0.000    0.070    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:80(pop_constraint_scope)
+    26363    0.035    0.000    0.915    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:192(visit_constraint_expr)
+    16594    0.034    0.000    5.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:74(visit_constraint_block)
+    51997    0.034    0.000    0.054    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:58(push_expr)
+     3089    0.034    0.000    0.050    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:868(__contains__)
+     2000    0.033    0.000    0.089    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:300(__enter__)
+    24048    0.033    0.000    0.126    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_node_builder.py:35(visit_scalar_field)
+     5074    0.032    0.000    0.056    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_scalar_model.py:31(__init__)
+     5156    0.032    0.000    0.033    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:59(__init__)
+    14828    0.031    0.000    0.040    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_if_else_model.py:33(__init__)
+    43166    0.031    0.000    0.031    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rangelist_model.py:29(__init__)
+     9072    0.031    0.000    0.049    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:352(get_val)
+     2062    0.031    0.000    0.031    0.000 {function Random.seed at 0x7f84ba39b158}
+    10946    0.030    0.000    0.059    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:75(push_constraint_stmt)
+   101870    0.030    0.000    0.030    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_bin_model.py:159(is_signed)
+    14476    0.029    0.000    0.031    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_scalar_model.py:92(set_val)
+     4379    0.029    0.000    0.029    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set.py:35(__init__)
+    13258    0.029    0.000    2.562    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:139(<lambda>)
+    37875    0.029    0.000    0.042    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_dispose_visitor.py:28(visit_enum_field)
+     1032    0.029    0.000    2.259    0.002 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:72(build)
+     2062    0.028    0.000    2.900    0.001 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/array_constraint_builder.py:38(build)
+     3156    0.028    0.000    0.676    0.000 /usr/lib64/python3.6/inspect.py:680(getsourcefile)
+    10563    0.028    0.000    0.028    0.000 {method 'And' of 'pyboolector.Boolector' objects}
+28808/28347    0.028    0.000    0.040    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:293(get_model)
+     3778    0.028    0.000    0.028    0.000 {built-in method posix.lstat}
+    16485    0.028    0.000    0.028    0.000 {method 'BitVecSort' of 'pyboolector.Boolector' objects}
+     2694    0.028    0.000    0.939    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_dispose_visitor.py:18(dispose)
+4343/3887    0.028    0.000    0.064    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:355(set_val)
+    31726    0.027    0.000    0.027    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/value.py:16(__init__)
+        1    0.027    0.027    0.123    0.123 pygen/pygen_src/riscv_instr_sequence.py:128(post_process_instr)
+     2000    0.027    0.000    0.103    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:847(_initialise)
+    23274    0.027    0.000    0.047    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:64(pop_exprs)
+    24048    0.026    0.000    0.093    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_scalar_model.py:61(build)
+     7782    0.026    0.000    2.092    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:126(visit_constraint_block)
+    31890    0.026    0.000    0.026    0.000 {method 'getrandbits' of '_random.Random' objects}
+    43150    0.026    0.000    0.052    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:61(pop_expr)
+1013/1002    0.025    0.000    0.311    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_composite_model.py:134(post_randomize)
+     8001    0.025    0.000    0.034    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:49(__exit__)
+     1000    0.025    0.000    0.046    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:1424(_setuint)
+    37398    0.025    0.000    0.025    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_model.py:27(__init__)
+      981    0.024    0.000    0.166    0.000 pygen/pygen_src/isa/riscv_instr.py:322(extend_imm)
+     3078    0.024    0.000    0.058    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:164(get_model)
+     2000    0.024    0.000    0.141    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:818(__new__)
+     8828    0.024    0.000    0.051    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:148(__enter__)
+1013/1002    0.024    0.000    0.038    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_composite_model.py:59(set_used_rand)
+    53172    0.024    0.000    0.024    0.000 {method 'startswith' of 'str' objects}
+    47228    0.023    0.000    0.023    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/enum_field_model.py:35(dispose)
+      512    0.023    0.000    0.079    0.000 pygen/pygen_src/riscv_data_page_gen.py:34(gen_data)
+    37500    0.022    0.000    0.022    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_model.py:31(dispose)
+    74999    0.022    0.000    0.022    0.000 {method 'clear' of 'list' objects}
+     4856    0.022    0.000    0.035    0.000 /usr/lib64/python3.6/posixpath.py:75(join)
+      281    0.022    0.000    0.023    0.000 {built-in method builtins.dir}
+    22402    0.022    0.000    0.022    0.000 {method 'format' of 'str' objects}
+     2000    0.022    0.000    0.121    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:272(__init__)
+    14320    0.021    0.000    0.021    0.000 {method 'Assume' of 'pyboolector.Boolector' objects}
+1013/1002    0.021    0.000    0.192    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_composite_model.py:122(pre_randomize)
+    32324    0.021    0.000    0.115    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:322(visit_expr_in)
+     1363    0.021    0.000    0.814    0.001 /usr/lib64/python3.6/inspect.py:760(findsource)
+    22136    0.021    0.000    0.026    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rangelist_model.py:46(add_range)
+     2044    0.021    0.000    0.041    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:796(size)
+     3437    0.020    0.000    0.061    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:437(inside)
+     7200    0.019    0.000    0.105    0.000 /usr/lib64/python3.6/random.py:217(randint)
+11072/11022    0.019    0.000   10.328    0.001 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_composite_model.py:144(accept)
+     5156    0.019    0.000    0.052    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_override_visitor.py:16(__init__)
+     1915    0.019    0.000    0.031    0.000 /usr/lib64/python3.6/posixpath.py:338(normpath)
+     1000    0.019    0.000    0.162    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:3129(__new__)
+    24048    0.019    0.000    0.027    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_dispose_visitor.py:25(visit_scalar_field)
+     5824    0.018    0.000    0.028    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:287(__init__)
+    13293    0.018    0.000    0.030    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set.py:108(add_constraint)
+      772    0.017    0.000    0.112    0.000 pygen/pygen_src/isa/riscv_instr.py:337(convert2asm)
+     5388    0.017    0.000    0.018    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set.py:100(all_fields)
+     8001    0.017    0.000    0.019    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:42(__enter__)
+     5004    0.017    0.000    0.042    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:999(to_expr)
+     2000    0.017    0.000    0.068    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_foreach_model.py:14(__init__)
+     1032    0.017    0.000    0.017    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:49(__init__)
+    55321    0.017    0.000    0.017    0.000 {method 'add' of 'set' objects}
+        1    0.017    0.017  433.098  433.098 pygen/pygen_src/riscv_instr_stream.py:204(gen_instr)
+     6108    0.016    0.000    0.097    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:450(randint)
+     2000    0.016    0.000    0.025    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:1250(_assertsanity)
+     1363    0.016    0.000    1.187    0.001 /usr/lib64/python3.6/inspect.py:1432(getframeinfo)
+    14242    0.016    0.000    0.016    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:758(get_model)
+     2062    0.015    0.000    0.036    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/array_constraint_builder.py:30(__init__)
+     6058    0.015    0.000    0.042    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:213(visit_field_scalar_array)
+      512    0.015    0.000    0.030    0.000 pygen/pygen_src/riscv_instr_pkg.py:1584(format_data)
+     6074    0.015    0.000    0.020    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/enum_info.py:45(get)
+    10005    0.014    0.000    0.838    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_foreach_model.py:46(accept)
+    30089    0.014    0.000    0.014    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_scalar_model.py:55(dispose)
+     2000    0.014    0.000    0.014    0.000 {method 'Ugt' of 'pyboolector.Boolector' objects}
+     2000    0.014    0.000    0.040    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:1403(_setbytes_unsafe)
+     1000    0.013    0.000    0.013    0.000 pygen/pygen_src/isa/riscv_instr.py:514(uintToInt)
+     5295    0.013    0.000    0.053    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/enum_info.py:41(e2e)
+     1032    0.013    0.000    0.013    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:46(__init__)
+    14859    0.013    0.000    0.013    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/enum_info.py:38(v2e)
+     4062    0.013    0.000    0.901    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:116(visit_constraint_inline_scope)
+     2001    0.013    0.000    0.411    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_override_visitor.py:28(visit_constraint_inline_scope)
+     2004    0.013    0.000    0.013    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:236(lhsvar_rhsnre_propagator)
+     1000    0.013    0.000    0.045    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:176(__enter__)
+    17426    0.013    0.000    0.017    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set.py:65(add_field)
+     5000    0.013    0.000    0.013    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:146(__init__)
+     3451    0.013    0.000    0.032    0.000 /usr/lib64/python3.6/inspect.py:643(getfile)
+     2779    0.013    0.000    0.013    0.000 {method 'match' of '_sre.SRE_Pattern' objects}
+     2062    0.012    0.000    0.046    0.000 /usr/lib64/python3.6/random.py:96(seed)
+     4054    0.012    0.000    0.013    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/is_nonrand_expr_visitor.py:10(__init__)
+    10768    0.012    0.000    0.016    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/expr_mode.py:10(get_expr_mode)
+      430    0.012    0.000    0.077    0.000 /usr/lib64/python3.6/posixpath.py:400(_joinrealpath)
+     1409    0.012    0.000    0.063    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:69(bin_expr)
+    17197    0.012    0.000    0.012    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_scalar_model.py:48(set_used_rand)
+     8005    0.012    0.000    1.673    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_inline_scope_model.py:14(accept)
+     2694    0.012    0.000    0.013    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_node_builder.py:15(__init__)
+     5292    0.012    0.000    0.161    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:381(__ne__)
+    10005    0.012    0.000    0.090    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_array_subscript_model.py:52(accept)
+    20136    0.011    0.000    0.014    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:318(visit_scalar_field)
+     1665    0.011    0.000    0.012    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_model.py:22(isEmpty)
+    17371    0.011    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/enum_field_model.py:32(set_used_rand)
+     4000    0.011    0.000    0.027    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:262(to_expr)
+     6318    0.011    0.000    0.029    0.000 {built-in method builtins.any}
+     1032    0.011    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/model_pretty_printer.py:35(__init__)
+     5976    0.011    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:263(__init__)
+     2694    0.011    0.000    0.012    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set_dispose_visitor.py:15(__init__)
+    56359    0.011    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:76(visit_scalar_field)
+     8095    0.011    0.000    1.804    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:140(visit_constraint_override)
+    14970    0.011    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_expr_model.py:32(__init__)
+     6007    0.010    0.000    0.010    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_model.py:31(__init__)
+    20752    0.010    0.000    0.010    0.000 {method 'endswith' of 'str' objects}
+     8001    0.010    0.000    0.010    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:32(__init__)
+     8096    0.010    0.000    1.814    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_override_model.py:21(accept)
+    49421    0.010    0.000    0.010    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:73(visit_enum_field)
+     2062    0.010    0.000    1.622    0.001 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/dist_constraint_builder.py:32(build)
+    23274    0.009    0.000    0.009    0.000 {method 'copy' of 'list' objects}
+     6070    0.009    0.000    0.052    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:180(accept)
+     2031    0.009    0.000    0.017    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_override_visitor.py:35(override_constraint)
+     1413    0.009    0.000    0.017    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_block_model.py:28(__init__)
+    12328    0.009    0.000    0.012    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:72(push_constraint_scope)
+     8828    0.009    0.000    0.067    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:152(__exit__)
+     1033    0.009    0.000    0.009    0.000 {built-in method builtins.round}
+     1078    0.009    0.000    0.009    0.000 {built-in method posix.getcwd}
+     3481    0.009    0.000    0.010    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_rangelist_model.py:29(__init__)
+     5000    0.009    0.000    0.009    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:334(rand_mode)
+     1000    0.009    0.000    0.041    0.000 pygen/pygen_src/isa/riscv_instr.py:511(update_imm_str)
+        1    0.009    0.009    0.154    0.154 pygen/pygen_src/riscv_instr_sequence.py:224(generate_instr_stream)
+    13871    0.008    0.000    0.008    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info.py:40(randsets)
+     1032    0.008    0.000    0.883    0.001 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_override_rollback_visitor.py:17(rollback)
+    16032    0.008    0.000    0.012    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:322(visit_enum_field)
+     1000    0.008    0.000    0.249    0.000 pygen/pygen_src/isa/riscv_instr.py:333(post_randomize)
+    18126    0.008    0.000    0.008    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/enum_field_model.py:73(get_val)
+    10915    0.008    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:91(in_constraint_scope)
+     1915    0.008    0.000    0.067    0.000 /usr/lib64/python3.6/posixpath.py:376(abspath)
+     1000    0.007    0.000    0.053    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:192(randomize_with)
+    16200    0.007    0.000    0.007    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_scalar_model.py:95(get_val)
+     2660    0.007    0.000    0.008    0.000 pygen/pygen_src/riscv_instr_pkg.py:1575(format_string)
+     9922    0.007    0.000    0.007    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/enum_field_model.py:70(set_val)
+       91    0.007    0.000    0.055    0.001 pygen/pygen_src/isa/riscv_instr.py:52(__init__)
+     1002    0.007    0.000    0.263    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:203(do_post_randomize)
+     2032    0.007    0.000    0.470    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:135(visit_constraint_inline_scope)
+    24700    0.007    0.000    0.007    0.000 {method 'bit_length' of 'int' objects}
+     2000    0.007    0.000    0.020    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:259(__init__)
+     4000    0.007    0.000    0.016    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:173(__init__)
+     4001    0.006    0.000    0.012    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:190(visit_expr_array_subscript)
+     3778    0.006    0.000    0.036    0.000 /usr/lib64/python3.6/posixpath.py:168(islink)
+      359    0.006    0.000    0.039    0.000 pygen/pygen_src/isa/riscv_compressed_instr.py:166(convert2asm)
+       89    0.006    0.000    1.507    0.017 {built-in method builtins.eval}
+2026/2004    0.006    0.000    1.400    0.001 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:312(visit_composite_field)
+     1032    0.006    0.000    0.023    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_override_rollback_visitor.py:13(__init__)
+     4188    0.006    0.000    0.016    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/is_nonrand_expr_visitor.py:15(is_nonrand)
+     2031    0.006    0.000    0.008    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_override_model.py:12(__init__)
+     1247    0.006    0.000    0.016    0.000 /usr/lib64/python3.6/linecache.py:53(checkcache)
+    17694    0.006    0.000    0.006    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:53(__init__)
+     4722    0.006    0.000    0.008    0.000 /usr/lib64/python3.6/types.py:135(__get__)
+      168    0.006    0.000    1.195    0.007 /usr/lib64/python3.6/inspect.py:1471(getouterframes)
+    16100    0.006    0.000    0.006    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_partselect_model.py:48(is_signed)
+     2062    0.006    0.000    0.052    0.000 /usr/lib64/python3.6/random.py:87(__init__)
+     2596    0.006    0.000    0.120    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:378(__eq__)
+     3093    0.006    0.000    0.044    0.000 /usr/lib64/python3.6/genericpath.py:16(exists)
+    11169    0.006    0.000    0.006    0.000 {method 'extend' of 'list' objects}
+     1032    0.006    0.000    0.016    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:63(__init__)
+     9468    0.005    0.000    0.009    0.000 /usr/lib64/python3.6/inspect.py:687(<genexpr>)
+    12498    0.005    0.000    0.009    0.000 /usr/lib64/python3.6/inspect.py:690(<genexpr>)
+       91    0.005    0.000    0.071    0.001 pygen/pygen_src/isa/riscv_instr.py:97(imm_c)
+      340    0.005    0.000    0.079    0.000 pygen/pygen_src/isa/riscv_compressed_instr.py:132(extend_imm)
+     2062    0.005    0.000    0.769    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/clear_soft_priority_visitor.py:15(clear)
+    14320    0.005    0.000    0.005    0.000 {method 'clear' of 'set' objects}
+     6000    0.005    0.000    0.005    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_array_subscript_model.py:11(__init__)
+    13554    0.005    0.000    0.005    0.000 {built-in method posix.fspath}
+     3221    0.005    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/expr_mode.py:30(__enter__)
+    14149    0.005    0.000    0.005    0.000 {method 'remove' of 'set' objects}
+     7073    0.005    0.000    0.005    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set.py:114(constraints)
+     1032    0.005    0.000    0.005    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/clear_soft_priority_visitor.py:12(__init__)
+     2064    0.005    0.000    0.005    0.000 {method 'Set_opt' of 'pyboolector.Boolector' objects}
+     1485    0.005    0.000    0.079    0.000 /usr/lib64/python3.6/inspect.py:702(getabsfile)
+     2000    0.005    0.000    0.013    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:327(__exit__)
+  168/135    0.005    0.000    1.645    0.012 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:45(__init__)
+     5075    0.005    0.000    0.006    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_rangelist_model.py:36(add_range)
+     7353    0.005    0.000    0.009    0.000 /usr/lib64/python3.6/posixpath.py:41(_get_sep)
+     2031    0.005    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_inline_scope_model.py:11(__init__)
+     1000    0.005    0.000    0.055    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:94(__gt__)
+     2000    0.004    0.000    0.013    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:266(__init__)
+    10062    0.004    0.000    0.004    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_scalar_model.py:88(pre_randomize)
+     3221    0.004    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/expr_mode.py:33(__exit__)
+     1043    0.004    0.000    0.026    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:298(build_field_model)
+     4251    0.004    0.000    0.007    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/expr_mode.py:16(enter_expr_mode)
+        2    0.004    0.002    0.120    0.060 pygen/pygen_src/riscv_data_page_gen.py:47(gen_data_page)
+     3656    0.004    0.000    0.004    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/enum_info.py:35(e2v)
+     1000    0.004    0.000    0.004    0.000 {built-in method fromhex}
+     4251    0.004    0.000    0.007    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/expr_mode.py:19(leave_expr_mode)
+     1002    0.004    0.000    0.158    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:199(do_pre_randomize)
+     1915    0.004    0.000    0.004    0.000 {method 'split' of 'str' objects}
+      782    0.004    0.000    0.005    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/enum_field_model.py:15(__init__)
+     1880    0.004    0.000    0.005    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_composite_model.py:79(add_field)
+     2345    0.004    0.000    0.009    0.000 /usr/lib64/python3.6/posixpath.py:64(isabs)
+     1032    0.004    0.000    0.004    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info.py:32(__init__)
+     1185    0.004    0.000    0.004    0.000 {built-in method time.time}
+      409    0.004    0.000    0.018    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:477(__getitem__)
+      152    0.004    0.000    0.004    0.000 {method 'flush' of '_io.TextIOWrapper' objects}
+     5568    0.004    0.000    0.006    0.000 /usr/lib64/python3.6/inspect.py:229(istraceback)
+     1036    0.004    0.000    0.015    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:831(__len__)
+      152    0.004    0.000    0.007    0.000 /usr/lib64/python3.6/logging/__init__.py:251(__init__)
+     3481    0.004    0.000    0.004    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_in_model.py:36(__init__)
+     8016    0.004    0.000    0.004    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/enum_field_model.py:66(pre_randomize)
+       30    0.004    0.000    0.009    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/dist_constraint_builder.py:37(visit_constraint_dist)
+     2001    0.003    0.000    0.147    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:116(visit_constraint_foreach)
+     1457    0.003    0.000    0.003    0.000 /usr/lib64/python3.6/re.py:286(_compile)
+     7689    0.003    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:85(<lambda>)
+     1050    0.003    0.000    0.074    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:129(visit_constraint_implies)
+     2098    0.003    0.000    0.005    0.000 {method 'write' of '_io.TextIOWrapper' objects}
+     1000    0.003    0.000    0.006    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/methods.py:98(__enter__)
+      229    0.003    0.000    0.003    0.000 {method 'Failed' of 'pyboolector.Boolector' objects}
+     4000    0.003    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:52(is_foreach_arr)
+        1    0.003    0.003    1.527    1.527 pygen/pygen_src/isa/riscv_instr.py:124(create_instr_list)
+     5568    0.003    0.000    0.004    0.000 /usr/lib64/python3.6/inspect.py:239(isframe)
+     1131    0.003    0.000    0.019    0.000 pygen/pygen_src/isa/riscv_instr.py:493(get_instr_name)
+       27    0.003    0.000    0.040    0.001 pygen/pygen_src/isa/riscv_compressed_instr.py:31(rvc_csr_c)
+      467    0.003    0.000    0.003    0.000 {method 'Ugte' of 'pyboolector.Boolector' objects}
+      779    0.003    0.000    0.010    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:544(__init__)
+      779    0.003    0.000    0.008    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:562(build_field_model)
+     1000    0.003    0.000    0.004    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/methods.py:101(__exit__)
+     1789    0.003    0.000    0.004    0.000 /usr/lib64/python3.6/posixpath.py:52(normcase)
+     2008    0.002    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/is_nonrand_expr_visitor.py:20(visit_expr_fieldref)
+     4206    0.002    0.000    0.004    0.000 /usr/lib64/python3.6/inspect.py:73(isclass)
+     4205    0.002    0.000    0.004    0.000 /usr/lib64/python3.6/inspect.py:81(ismethod)
+     3778    0.002    0.000    0.002    0.000 {method 'partition' of 'str' objects}
+     2000    0.002    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:191(bytelength)
+     4205    0.002    0.000    0.004    0.000 /usr/lib64/python3.6/inspect.py:159(isfunction)
+     2180    0.002    0.000    0.002    0.000 {method 'join' of 'str' objects}
+     4655    0.002    0.000    0.002    0.000 /usr/lib64/python3.6/enum.py:594(name)
+     1208    0.002    0.000    0.002    0.000 {method 'rstrip' of 'str' objects}
+     1056    0.002    0.000    0.002    0.000 {built-in method builtins.hex}
+      990    0.002    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:549(_isconvertible)
+       30    0.002    0.000    0.485    0.016 /home/anil/.local/lib/python3.6/site-packages/vsc/methods.py:66(__exit__)
+      179    0.002    0.000    0.003    0.000 <frozen importlib._bootstrap>:157(_get_module_lock)
+     2000    0.002    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:49(push_foreach_arr)
+     4205    0.002    0.000    0.003    0.000 /usr/lib64/python3.6/inspect.py:253(iscode)
+     4000    0.002    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:2001(_getlength)
+     2000    0.002    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:240(byteoffset)
+      467    0.002    0.000    0.002    0.000 {method 'Ulte' of 'pyboolector.Boolector' objects}
+     1363    0.002    0.000    0.007    0.000 /usr/lib64/python3.6/linecache.py:37(getlines)
+        1    0.002    0.002    0.499    0.499 pygen/pygen_src/riscv_asm_program_gen.py:382(init_gpr)
+     1247    0.002    0.000    0.002    0.000 {built-in method builtins.min}
+      152    0.002    0.000    0.002    0.000 {built-in method time.localtime}
+      300    0.002    0.000    0.040    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_implies_model.py:33(build)
+       30    0.002    0.000    0.002    0.000 {built-in method builtins.__build_class__}
+     4000    0.002    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:1998(_getoffset)
+       10    0.002    0.000    0.002    0.000 {method 'readlines' of '_io._IOBase' objects}
+     2000    0.002    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:55(pop_foreach_arr)
+     2694    0.002    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set.py:117(soft_constraints)
+       27    0.002    0.000    0.024    0.001 pygen/pygen_src/isa/riscv_compressed_instr.py:79(no_hint_illegal_instr_c)
+       27    0.002    0.000    0.021    0.001 pygen/pygen_src/isa/riscv_compressed_instr.py:59(imm_val_c)
+     1000    0.002    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/expr_mode.py:22(enter_raw_mode)
+      564    0.002    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:578(set_val)
+     1000    0.002    0.000    0.002    0.000 {method 'popitem' of 'dict' objects}
+     1044    0.002    0.000    0.005    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:597(__init__)
+       10    0.001    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/enum_info.py:15(__init__)
+     1000    0.001    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/bitstring.py:3088(__init__)
+      404    0.001    0.000    0.032    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_unary_model.py:17(build)
+    126/4    0.001    0.000    0.005    0.001 /usr/lib64/python3.6/abc.py:196(__subclasscheck__)
+      520    0.001    0.000    0.007    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:607(_type)
+      430    0.001    0.000    0.088    0.000 /usr/lib64/python3.6/posixpath.py:391(realpath)
+      152    0.001    0.000    0.003    0.000 /usr/lib64/python3.6/logging/__init__.py:1376(findCaller)
+      324    0.001    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_in_propagator.py:31(<lambda>)
+     4002    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:120(visit_constraint_foreach)
+     1032    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/dynamic_expr_reset_visitor.py:13(__init__)
+      779    0.001    0.000    0.011    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:585(__init__)
+       90    0.001    0.000    0.009    0.000 <frozen importlib._bootstrap>:966(_find_and_load)
+     2694    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:116(<lambda>)
+     1247    0.001    0.000    0.004    0.000 /usr/lib64/python3.6/re.py:231(compile)
+     1794    0.001    0.000    0.001    0.000 /usr/lib64/python3.6/codecs.py:326(reset)
+      520    0.001    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:833(_more_generic)
+      152    0.001    0.000    0.001    0.000 {built-in method time.strftime}
+     1789    0.001    0.000    0.001    0.000 {built-in method builtins.max}
+     1363    0.001    0.000    0.002    0.000 <string>:12(__new__)
+     1685    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_set.py:74(fields)
+     1140    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_composite_model.py:50(is_declared_rand)
+     1132    0.001    0.000    0.033    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:207(visit_expr_unary)
+        1    0.001    0.001    0.008    0.008 pygen/pygen_src/riscv_asm_program_gen.py:961(gen_test_file)
+      151    0.001    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_composite_model.py:29(__init__)
+        1    0.001    0.001    0.003    0.003 pygen/pygen_src/riscv_instr_stream.py:162(create_instr_instance)
+      179    0.001    0.000    0.001    0.000 <frozen importlib._bootstrap>:78(acquire)
+     1035    0.001    0.000    0.001    0.000 {method 'clear' of 'dict' objects}
+     3778    0.001    0.000    0.001    0.000 {built-in method _stat.S_ISLNK}
+       27    0.001    0.000    0.004    0.000 pygen/pygen_src/riscv_reg.py:94(set_field)
+     1136    0.001    0.000    0.034    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_unary_model.py:26(accept)
+      152    0.001    0.000    0.008    0.000 /usr/lib64/python3.6/logging/__init__.py:564(format)
+     1000    0.001    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/expr_mode.py:25(leave_raw_mode)
+      152    0.001    0.000    0.004    0.000 /usr/lib64/python3.6/logging/__init__.py:497(formatTime)
+     1050    0.001    0.000    0.076    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_implies_model.py:42(accept)
+     1131    0.001    0.000    0.001    0.000 {method 'replace' of 'str' objects}
+      963    0.001    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:579(_isint)
+      152    0.001    0.000    0.001    0.000 /usr/lib64/python3.6/logging/__init__.py:390(format)
+       11    0.001    0.000    0.001    0.000 {built-in method io.open}
+       89    0.001    0.000    1.517    0.017 pygen/pygen_src/isa/riscv_instr.py:160(create_instr)
+      168    0.001    0.000    0.004    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:171(_get_ro_int)
+      157    0.001    0.000    0.004    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:96(__init__)
+       62    0.001    0.000    0.844    0.014 pygen/pygen_src/riscv_defines.py:26(__init__)
+      152    0.001    0.000    0.030    0.000 /usr/lib64/python3.6/logging/__init__.py:1894(info)
+      126    0.001    0.000    0.005    0.000 /usr/lib64/python3.6/linecache.py:82(updatecache)
+       62    0.001    0.000    0.006    0.000 pygen/pygen_src/isa/riscv_instr.py:312(set_imm_len)
+       27    0.001    0.000    0.003    0.000 pygen/pygen_src/isa/riscv_compressed_instr.py:101(set_imm_len)
+     1032    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info.py:46(unconstrained)
+      152    0.001    0.000    0.029    0.000 /usr/lib64/python3.6/logging/__init__.py:1298(info)
+      383    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:53(set_model)
+      152    0.001    0.000    0.001    0.000 /usr/lib64/python3.6/logging/__init__.py:329(getMessage)
+      379    0.001    0.000    0.013    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:79(__eq__)
+        2    0.001    0.000    1.761    0.880 /home/anil/.local/lib/python3.6/site-packages/vsc/rand_obj.py:106(randomize)
+      300    0.001    0.000    0.012    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:111(visit_constraint_implies)
+      152    0.001    0.000    0.005    0.000 /usr/lib64/python3.6/logging/__init__.py:971(flush)
+      828    0.001    0.000    0.001    0.000 /usr/lib64/python3.6/enum.py:332(<genexpr>)
+       62    0.001    0.000    0.005    0.000 pygen/pygen_src/isa/riscv_instr.py:285(set_rand_mode)
+      540    0.001    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:181(visit_expr_range)
+      152    0.001    0.000    0.028    0.000 /usr/lib64/python3.6/logging/__init__.py:1421(_log)
+      179    0.001    0.000    0.001    0.000 <frozen importlib._bootstrap>:103(release)
+   429/75    0.001    0.000    0.004    0.000 /usr/lib64/python3.6/typing.py:1145(__subclasscheck__)
+       75    0.001    0.000    0.001    0.000 /usr/lib64/python3.6/copyreg.py:96(_slotnames)
+        3    0.001    0.000    0.004    0.001 pygen/pygen_src/riscv_reg.py:72(get_val)
+      443    0.001    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:557(_isnumber)
+      152    0.001    0.000    0.014    0.000 /usr/lib64/python3.6/logging/__init__.py:982(emit)
+      646    0.001    0.000    0.002    0.000 pygen/pygen_src/isa/riscv_instr.py:501(get_imm)
+       39    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:76(name_elems)
+     1223    0.001    0.000    0.001    0.000 {method 'lower' of 'str' objects}
+       37    0.001    0.000    0.003    0.000 pygen/pygen_src/riscv_reg.py:30(__init__)
+      152    0.001    0.000    0.016    0.000 /usr/lib64/python3.6/logging/__init__.py:1500(callHandlers)
+      766    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:69(clear_exprs)
+      152    0.001    0.000    0.001    0.000 /usr/lib64/python3.6/posixpath.py:144(basename)
+      152    0.001    0.000    0.008    0.000 /usr/lib64/python3.6/logging/__init__.py:1406(makeRecord)
+      152    0.001    0.000    0.016    0.000 /usr/lib64/python3.6/logging/__init__.py:852(handle)
+      275    0.001    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:591(__init__)
+      179    0.001    0.000    0.001    0.000 <frozen importlib._bootstrap>:58(__init__)
+      383    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_composite_model.py:100(add_constraint)
+       57    0.001    0.000    0.004    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:837(append)
+      409    0.001    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_partselect_model.py:30(__init__)
+      168    0.000    0.000    1.196    0.007 /usr/lib64/python3.6/inspect.py:1499(stack)
+      152    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/genericpath.py:117(_splitext)
+      230    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:628(__init__)
+      520    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:593(_isbool)
+      704    0.000    0.000    0.000    0.000 {built-in method sys._getframe}
+        1    0.000    0.000    0.032    0.032 pygen/pygen_src/riscv_utils.py:54(gen_config_table)
+       27    0.000    0.000    0.656    0.024 pygen/pygen_src/riscv_defines.py:48(__init__)
+      273    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:617(__init__)
+       37    0.000    0.000    0.005    0.000 pygen/pygen_src/riscv_reg.py:43(hardwired_fld_c)
+      304    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/logging/__init__.py:809(acquire)
+      223    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_composite_model.py:54(is_declared_rand)
+        1    0.000    0.000    0.004    0.004 pygen/pygen_src/riscv_illegal_instr.py:259(illegal_func3_c)
+      456    0.000    0.000    0.000    0.000 {method 'rfind' of 'str' objects}
+       89    0.000    0.000    0.009    0.000 /usr/lib64/python3.6/importlib/__init__.py:108(import_module)
+      179    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:176(cb)
+      540    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_range_model.py:33(accept)
+      152    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/posixpath.py:121(splitext)
+       27    0.000    0.000    0.249    0.009 pygen/pygen_src/isa/riscv_compressed_instr.py:23(__init__)
+      168    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/source_info.py:10(__init__)
+        4    0.000    0.000    0.001    0.000 {pandas._libs.lib.maybe_convert_objects}
+      138    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/randobj_int.py:10(__init__)
+      105    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1546(<listcomp>)
+       79    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:67(_set_size)
+       37    0.000    0.000    0.005    0.000 pygen/pygen_src/riscv_reg.py:38(zero_reserved_field_c)
+      224    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_implies_model.py:29(__init__)
+      152    0.000    0.000    0.017    0.000 /usr/lib64/python3.6/logging/__init__.py:1446(handle)
+      190    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/enum.py:566(__format__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1017(<listcomp>)
+       10    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/tokenize.py:448(open)
+      404    0.000    0.000    0.000    0.000 {method 'Not' of 'pyboolector.Boolector' objects}
+       27    0.000    0.000    0.004    0.000 pygen/pygen_src/isa/riscv_compressed_instr.py:73(jal_c)
+       27    0.000    0.000    0.002    0.000 pygen/pygen_src/isa/riscv_compressed_instr.py:137(set_rand_mode)
+      111    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/_weakrefset.py:58(__iter__)
+       90    0.000    0.000    0.004    0.000 <frozen importlib._bootstrap>:147(__enter__)
+      413    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/expr_mode.py:39(is_expr_mode)
+       30    0.000    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/methods.py:37(randomize_with)
+       34    0.000    0.000    0.104    0.003 pygen/pygen_src/riscv_reg.py:86(add_field)
+      152    0.000    0.000    0.015    0.000 /usr/lib64/python3.6/logging/__init__.py:1063(emit)
+        5    0.000    0.000    0.008    0.002 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:876(<listcomp>)
+      520    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:880(_format)
+       74    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:215(__init__)
+      304    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/logging/__init__.py:816(release)
+       90    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:198(__init__)
+      164    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_unary_model.py:12(__init__)
+      304    0.000    0.000    0.000    0.000 {method 'acquire' of '_thread.RLock' objects}
+      271    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_weakrefset.py:70(__contains__)
+      152    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/logging/__init__.py:1544(isEnabledFor)
+       31    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:122(dist)
+      208    0.000    0.000    0.000    0.000 {method 'sub' of '_sre.SRE_Pattern' objects}
+       89    0.000    0.000    0.008    0.000 <frozen importlib._bootstrap>:982(_gcd_import)
+       39    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:51(append)
+      315    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:684(_padright)
+      152    0.000    0.000    0.008    0.000 /usr/lib64/python3.6/logging/__init__.py:829(format)
+        1    0.000    0.000    0.003    0.003 pygen/pygen_src/riscv_illegal_instr.py:182(reserved_compressed_instr_c)
+      304    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/logging/__init__.py:705(filter)
+        5    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:740(_id_fields)
+      662    0.000    0.000    0.000    0.000 {built-in method _thread.get_ident}
+        6    0.000    0.000    0.000    0.000 {pandas._libs.lib.infer_dtype}
+      152    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/threading.py:1230(current_thread)
+       10    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap_external>:1233(find_spec)
+      180    0.000    0.000    0.010    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_dist_model.py:23(accept)
+       51    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/value_bool.py:10(__init__)
+      362    0.000    0.000    0.000    0.000 {built-in method _imp.acquire_lock}
+      152    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/logging/__init__.py:387(usesTime)
+        1    0.000    0.000  434.185  434.185 pygen/pygen_src/riscv_asm_program_gen.py:58(gen_program)
+        1    0.000    0.000    0.000    0.000 {method 'close' of '_io.TextIOWrapper' objects}
+        5    0.000    0.000    0.002    0.000 {built-in method _functools.reduce}
+       89    0.000    0.000    0.002    0.000 <frozen importlib._bootstrap>:194(_lock_unlock_module)
+      208    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:710(_strip_invisible)
+     1794    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/codecs.py:275(reset)
+      879    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_sequence.py:133(<lambda>)
+      152    0.000    0.000    0.000    0.000 {method 'find' of 'str' objects}
+       10    0.000    0.000    0.000    0.000 {method 'readline' of '_io.BufferedReader' objects}
+      152    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/logging/__init__.py:120(getLevelName)
+      152    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/logging/__init__.py:542(usesTime)
+      358    0.000    0.000    0.000    0.000 {built-in method _thread.allocate_lock}
+        5    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:822(<listcomp>)
+       30    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/methods.py:60(__enter__)
+        1    0.000    0.000    0.000    0.000 {pandas._libs.lib.map_infer}
+       13    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:946(gen_section)
+      108    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1552(_build_simple_row)
+       75    0.000    0.000    0.000    0.000 {method 'get' of 'mappingproxy' objects}
+      152    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/logging/__init__.py:157(<lambda>)
+        1    0.000    0.000    0.006    0.006 pygen/pygen_src/riscv_privileged_common_seq.py:107(mstatus_set_field)
+        3    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:865(_interleave)
+      229    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:339(<lambda>)
+       85    0.000    0.000    0.000    0.000 {method '__subclasses__' of 'type' objects}
+      152    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/logging/__init__.py:548(formatMessage)
+      120    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_soft_model.py:23(accept)
+      152    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/logging/__init__.py:1530(getEffectiveLevel)
+       17    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/value_scalar.py:36(__gt__)
+      208    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/re.py:184(sub)
+        1    0.000    0.000    0.022    0.022 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1128(tabulate)
+      208    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:646(_afterpoint)
+       90    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/expr_range_model.py:28(__init__)
+       70    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_weakrefset.py:81(add)
+       90    0.000    0.000    0.001    0.000 <frozen importlib._bootstrap>:151(__exit__)
+        1    0.000    0.000    0.002    0.002 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:959(_normalize_tabular_data)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1043(iset)
+      208    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/generic.py:10(_check)
+      210    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_scope_model.py:35(addConstraint)
+      210    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:673(_padleft)
+       89    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:917(_sanity_check)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/numerictypes.py:578(_can_coerce_all)
+       90    0.000    0.000    0.121    0.001 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_dist_scope_model.py:28(accept)
+      383    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_block_model.py:38(set_constraint_enabled)
+      138    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/vscobj_int.py:9(__init__)
+       13    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:332(solve_order)
+       40    0.000    0.000    0.000    0.000 {built-in method _codecs.utf_8_decode}
+       14    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:707(__init__)
+      157    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/dist_weight_expr_model.py:10(__init__)
+       68    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_weakrefset.py:26(__exit__)
+        1    0.000    0.000    0.000    0.000 {pandas._libs.lib.clean_index_list}
+      362    0.000    0.000    0.000    0.000 {built-in method _imp.release_lock}
+        4    0.000    0.000    0.000    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+       40    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/codecs.py:318(decode)
+        5    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/random.py:263(shuffle)
+        9    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1303(maybe_cast_to_datetime)
+      152    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/threading.py:1076(name)
+       10    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/tokenize.py:355(detect_encoding)
+        3    0.000    0.000    0.012    0.004 pygen/pygen_src/riscv_reg.py:61(__init__)
+       74    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:222(__enter__)
+       50    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:91(visit_constraint_soft)
+       13    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:17(__init__)
+    18/17    0.000    0.000    0.001    0.000 /usr/lib64/python3.6/typing.py:875(__extrahook__)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1620(_format_table)
+       90    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:143(__init__)
+      105    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1543(_pad_row)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1715(form_blocks)
+        2    0.000    0.000    0.105    0.052 pygen/pygen_src/riscv_privil_reg.py:28(init_reg)
+       30    0.000    0.000    0.012    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:195(visit_constraint_dist_scope)
+       90    0.000    0.000    0.120    0.001 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:82(visit_constraint_dist_scope)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_asm_program_gen.py:671(gen_trap_handler_section)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_asm_program_gen.py:466(gen_register_dump)
+      176    0.000    0.000    0.000    0.000 {built-in method sys.getsizeof}
+       68    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_weakrefset.py:20(__enter__)
+       31    0.000    0.000    0.000    0.000 {built-in method numpy.array}
+       60    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:87(visit_constraint_dist)
+      2/1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:289(__new__)
+        2    0.000    0.000    0.002    0.001 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:776(<listcomp>)
+      525    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1508(<genexpr>)
+      105    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1568(_append_basic_row)
+       18    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:95(add_field)
+       30    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_dist_scope_model.py:13(__init__)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1450(<listcomp>)
+       34    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/rand_info_builder.py:207(visit_constraint_soft)
+        1    0.000    0.000    0.000    0.000 {pandas._libs.lib.to_object_array}
+       13    0.000    0.000    0.000    0.000 {built-in method numpy.empty}
+       43    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:1600(_is_dtype_type)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:238(_rebuild_blknos_and_blklocs)
+       41    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:1460(is_extension_array_dtype)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:1033(get_directed_instr_stream)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_unique_model.py:36(build)
+       42    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/base.py:413(find)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:1642(is_unique)
+        6    0.000    0.000    0.000    0.000 {method 'astype' of 'numpy.ndarray' objects}
+       30    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/methods.py:54(inline_constraint_collector)
+      105    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1558(_build_row)
+       34    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_model.py:55(propagate)
+       68    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_weakrefset.py:16(__init__)
+        1    0.000    0.000    0.053    0.053 pygen/pygen_src/riscv_privileged_common_seq.py:165(mie_set_field)
+       29    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:194(is_object_dtype)
+       30    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_soft_model.py:13(__init__)
+        1    0.000    0.000  437.514  437.514 /DATA/anil/GitHub/RISC-V/riscv-dv/pygen/pygen_src/test/riscv_instr_base_test.py:56(run_phase)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:947(<listcomp>)
+       34    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_in_propagator.py:16(__init__)
+        8    0.000    0.000    0.000    0.000 {method 'Cond' of 'pyboolector.Boolector' objects}
+        7    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:2652(get_block_type)
+        9    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1194(maybe_infer_to_datetimelike)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_illegal_instr.py:97(instr_bit_assignment_c)
+       45    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/typing.py:1033(_abc_negative_cache_version)
+      304    0.000    0.000    0.000    0.000 {method 'release' of '_thread.RLock' objects}
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:784(<listcomp>)
+       13    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:192(__enter__)
+        2    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_pkg.py:1629(pop_gpr_from_kernel_stack)
+      152    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/multiprocessing/process.py:35(current_process)
+      152    0.000    0.000    0.000    0.000 {built-in method posix.getpid}
+      324    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_in_propagator.py:33(<lambda>)
+       36    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_soft_model.py:20(build)
+        5    0.000    0.000    0.003    0.001 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:789(_align_column)
+        3    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1441(find_common_type)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:974(__str__)
+       50    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:59(<listcomp>)
+       50    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:57(_path_join)
+       72    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/typing.py:1019(_abc_negative_cache)
+        1    0.000    0.000    0.130    0.130 pygen/pygen_src/riscv_privileged_common_seq.py:56(setup_mmode_reg)
+       34    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/value_scalar.py:32(__ne__)
+       21    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/enum.py:554(__str__)
+        5    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/construction.py:390(sanitize_array)
+       91    0.000    0.000    0.000    0.000 {method 'insert' of 'list' objects}
+       12    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_dtype.py:333(_name_get)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_illegal_instr.py:115(system_instr_c)
+      152    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/multiprocessing/process.py:146(name)
+       15    0.000    0.000    0.005    0.000 /usr/lib64/python3.6/abc.py:180(__instancecheck__)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_illegal_instr.py:169(illegal_compressed_op_c)
+       17    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/value_scalar.py:52(__add__)
+       38    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/base.py:256(is_dtype)
+       74    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:226(__exit__)
+        1    0.000    0.000    1.793    1.793 /DATA/anil/GitHub/RISC-V/riscv-dv/pygen/pygen_src/test/riscv_instr_base_test.py:72(randomize_cfg)
+        1    0.000    0.000    0.006    0.006 /home/anil/.local/lib/python3.6/site-packages/pandas/core/frame.py:441(__init__)
+        3    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_stream.py:29(__init__)
+        1    0.000    0.000    0.142    0.142 pygen/pygen_src/riscv_privileged_common_seq.py:35(enter_privileged_mode)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:309(setup_misa)
+       30    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/methods.py:56(__init__)
+        2    0.000    0.000    0.000    0.000 {method 'search' of '_sre.SRE_Pattern' objects}
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/series.py:4071(apply)
+       68    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_weakrefset.py:52(_commit_removals)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_illegal_instr.py:59(__init__)
+       10    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/enum.py:331(__iter__)
+       30    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:140(<lambda>)
+       10    0.000    0.000    0.000    0.000 {method 'seek' of '_io.BufferedReader' objects}
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1636(<listcomp>)
+       80    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/typing.py:1089(__eq__)
+        1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap_external>:1117(_get_spec)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:236(mgr_locs)
+       12    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_internal.py:830(npy_ctypes_check)
+       10    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:212(shape)
+        1    0.000    0.000    0.002    0.002 pygen/pygen_src/riscv_privileged_common_seq.py:79(gen_csr_instr)
+       29    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:82(__ne__)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/isa/riscv_instr.py:173(build_basic_instruction_list)
+       37    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_pkg.py:1565(hart_prefix)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_pkg.py:1594(push_gpr_to_kernel_stack)
+        8    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:5138(__setattr__)
+        6    0.000    0.000    0.000    0.000 {built-in method numpy.core._multiarray_umath.implement_array_function}
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_illegal_instr.py:140(exception_type_c)
+       34    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_model.py:30(add_propagator)
+       89    0.000    0.000    0.000    0.000 pygen/pygen_src/isa/riscv_instr.py:170(is_supported)
+       67    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/enum.py:599(value)
+       12    0.000    0.000    0.000    0.000 {pandas._libs.lib.is_list_like}
+        3    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/series.py:201(__init__)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_instr_sequence.py:282(insert_illegal_hint_instr)
+        7    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:458(not_inside)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/frame.py:2869(__getitem__)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1843(_stack_arrays)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1180(maybe_castable)
+        7    0.000    0.000    0.000    0.000 {pandas._libs.lib.infer_datetimelike_array}
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_illegal_instr.py:328(illegal_func7_c)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/numeric.py:283(full)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:861(gen_interrupt_handler_section)
+        1    0.000    0.000    0.034    0.034 pygen/pygen_src/riscv_instr_sequence.py:49(__init__)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:123(__init__)
+        4    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:502(__setitem__)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/construction.py:551(_list_to_arrays)
+        2    0.000    0.000    0.124    0.062 pygen/pygen_src/riscv_asm_program_gen.py:243(gen_data_page)
+        1    0.000    0.000    0.145    0.145 pygen/pygen_src/riscv_asm_program_gen.py:508(gen_privileged_mode_switch_routine)
+       20    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:248(visit_expr_unary)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:778(<listcomp>)
+       30    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_dist_scope_model.py:24(set_dist_soft_c)
+      150    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/dist_constraint_builder.py:107(<lambda>)
+      208    0.000    0.000    0.000    0.000 {built-in method math.isinf}
+       11    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/codecs.py:308(__init__)
+        4    0.000    0.000    0.000    0.000 {built-in method numpy.arange}
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:592(trap_vector_init)
+        1    0.000    0.000    0.499    0.499 pygen/pygen_src/riscv_asm_program_gen.py:290(gen_init_section)
+       34    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/variable_bound_propagator.py:9(__init__)
+        1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap>:870(_find_spec)
+        4    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/construction.py:726(convert)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_illegal_instr.py:244(illegal_opcode_c)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:216(gen_program_header)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:807(gen_illegal_instr_handler)
+        1    0.000    0.000  433.102  433.102 pygen/pygen_src/riscv_instr_sequence.py:72(gen_instr)
+       91    0.000    0.000    0.000    0.000 pygen/pygen_src/isa/riscv_instr.py:111(csr_c)
+      312    0.000    0.000    0.000    0.000 {method 'strip' of 'str' objects}
+        4    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:195(__init__)
+        5    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/construction.py:520(_try_cast)
+       14    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:1733(pandas_dtype)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_illegal_instr.py:132(legal_rv32_c_slli)
+       11    0.000    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:150(visit_constraint_unique)
+        1    0.000    0.000    0.063    0.063 pygen/pygen_src/riscv_asm_program_gen.py:157(gen_kernel_sections)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_instr_gen_config.py:466(post_randomize)
+        3    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:806(as_array)
+        1    0.000    0.000    0.146    0.146 pygen/pygen_src/riscv_asm_program_gen.py:481(pre_enter_privileged_mode)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_gen_config.py:478(check_setting)
+       31    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_dist_model.py:15(__init__)
+      150    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/model_visitor.py:79(visit_constraint_dist)
+       24    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:1565(_get_dtype)
+      208    0.000    0.000    0.000    0.000 {built-in method math.isnan}
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_asarray.py:223(require)
+       30    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/randomizer.py:144(<lambda>)
+       12    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_collections_abc.py:72(_check_methods)
+       50    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:222(_verbose_message)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:321(set)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/base.py:1032(__iter__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1563(construct_1d_object_array_from_listlike)
+        8    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:1330(is_bool_dtype)
+        1    0.000    0.000    0.002    0.002 pygen/pygen_src/riscv_asm_program_gen.py:630(gen_all_trap_handler)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:550(_engine)
+       10    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/dtypes.py:903(is_dtype)
+       57    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/numerictypes.py:587(<listcomp>)
+        1    0.000    0.000    0.007    0.007 pygen/pygen_src/riscv_directed_instr_lib.py:222(__init__)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1532(__init__)
+        3    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:2698(make_block)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:4079(__getitem__)
+        7    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:224(is_sparse)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_illegal_instr.py:226(hint_instr_c)
+       18    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_pkg.py:1571(get_label)
+       10    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/tokenize.py:385(find_cookie)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:366(apply)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:5390(astype)
+       11    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:492(is_interval_dtype)
+       10    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/dtypes.py:1116(is_dtype)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:321(_verify_integrity)
+        3    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:5265(values)
+        7    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:5553(ensure_index)
+       12    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:530(is_categorical_dtype)
+        3    0.000    0.000    0.009    0.003 pygen/pygen_src/riscv_instr_stream.py:151(__init__)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:81(pre_randomize)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:984(iget)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1827(_multi_blockify)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:212(get_values)
+       13    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:94(last_constraint_stmt)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_ufunc_config.py:39(seterr)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:248(gen_stack_section)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:5120(__getattr__)
+        2    0.000    0.000    0.000    0.000 {method 'get_loc' of 'pandas._libs.index.IndexEngine' objects}
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_illegal_instr.py:320(has_func3_c)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/series.py:442(name)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_illegal_instr.py:85(exception_dist_c)
+       15    0.000    0.000    0.003    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_unique_model.py:69(accept)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:2847(get_loc)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_illegal_instr.py:311(has_func7_c)
+       10    0.000    0.000    0.000    0.000 {method 'decode' of 'bytes' objects}
+       30    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:214(<genexpr>)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1675(create_block_manager_from_arrays)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:3529(_get_item_cache)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/range.py:134(_simple_new)
+       33    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:178(classes)
+        3    0.000    0.000    0.019    0.006 pygen/pygen_src/riscv_privil_reg.py:25(__init__)
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_asm_program_gen.py:660(gen_trap_handlers)
+        9    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:789(build_field_model)
+       10    0.000    0.000    0.000    0.000 {method 'startswith' of 'bytes' objects}
+       22    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/range.py:687(__len__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/range.py:86(__new__)
+       11    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/codecs.py:259(__init__)
+        1    0.000    0.000    0.010    0.010 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1469(<listcomp>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:513(astype)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:459(_simple_new)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/shape_base.py:83(atleast_2d)
+        5    0.000    0.000    0.000    0.000 <__array_function__ internals>:2(copyto)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:527(setup_epc)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:75(_path_stat)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/construction.py:329(_homogenize)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:5092(__finalize__)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_ufunc_config.py:139(geterr)
+        3    0.000    0.000    0.000    0.000 {method 'all' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:270(gen_kernel_stack_section)
+       51    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/value_bool.py:21(__bool__)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:155(not_inside)
+       10    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/tokenize.py:379(read_or_stop)
+        5    0.000    0.000    0.002    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:763(_align_column_choose_padfn)
+        5    0.000    0.000    0.010    0.002 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:854(_column_type)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1598(<listcomp>)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:696(is_integer_dtype)
+       12    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_dtype.py:319(_name_includes_bit_suffix)
+        1    0.000    0.000    0.000    0.000 {method 'any' of 'numpy.ndarray' objects}
+        3    0.000    0.000    0.000    0.000 {method 'copy' of 'numpy.ndarray' objects}
+        3    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_stream.py:158(avail_reg_c)
+        8    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:172(visit_constraint_soft)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:117(set_used_rand)
+       29    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_collections_abc.py:392(__subclasshook__)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1590(_build_line)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/frame.py:3105(_set_item)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/frame.py:3697(_sanitize_column)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:132(__init__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_ufunc_config.py:437(__init__)
+        1    0.000    0.000    0.006    0.006 pygen/pygen_src/riscv_directed_instr_lib.py:298(__init__)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_illegal_instr.py:338(initialize)
+        1    0.000    0.000    0.000    0.000 /DATA/anil/GitHub/RISC-V/riscv-dv/pygen/pygen_src/test/riscv_instr_base_test.py:30(__init__)
+        1    0.000    0.000    0.136    0.136 <string>:1(<module>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/frame.py:3179(_box_col_values)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:5650(maybe_extract_name)
+       33    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:180(<lambda>)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/numerictypes.py:602(find_common_type)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_stream.py:166(setup_allowed_instr)
+       11    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:1080(_path_importer_cache)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/frame.py:3024(__setitem__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:674(copy)
+        4    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:2371(__init__)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/common.py:218(asarray_tuplesafe)
+        7    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:381(is_datetime64tz_dtype)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_asarray.py:300(<setcomp>)
+        3    0.000    0.000    0.000    0.000 {built-in method numpy.zeros}
+        1    0.000    0.000    0.001    0.001 pygen/pygen_src/riscv_asm_program_gen.py:780(gen_ecall_handler)
+        2    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_data_page_gen.py:28(__init__)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_illegal_instr.py:254(no_atomic_c)
+       12    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/array_constraint_builder.py:115(visit_field_scalar_array)
+       13    0.000    0.000    0.000    0.000 {built-in method builtins.all}
+        3    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1870(_interleaved_dtype)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:3565(_iset_item)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:5720(_maybe_cast_data_without_dtype)
+       11    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:456(is_period_dtype)
+       12    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/inference.py:322(is_hashable)
+        4    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_copy_builder.py:179(visit_constraint_unique)
+       68    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:125(visit_constraint_soft)
+       15    0.000    0.000    0.000    0.000 {built-in method builtins.hash}
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:916(_align_header)
+        1    0.000    0.000    0.003    0.003 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1499(<listcomp>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/construction.py:651(_validate_or_indexify_columns)
+       13    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:563(__len__)
+        8    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:608(is_dtype_equal)
+       12    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_dtype.py:36(_kind_name)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_unique_model.py:61(_add_list_elems)
+        1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap>:936(_find_and_load_unlocked)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1886(<listcomp>)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:255(make_block_same_class)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:5208(f)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:5644(default_index)
+        7    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:422(is_timedelta64_dtype)
+        7    0.000    0.000    0.000    0.000 {pandas._libs.algos.ensure_object}
+        1    0.000    0.000    0.003    0.003 pygen/pygen_src/riscv_instr_stream.py:41(initialize_instr_list)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:1012(__init__)
+        2    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/re.py:179(search)
+        3    0.000    0.000    0.000    0.000 {built-in method fromkeys}
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/construction.py:498(to_arrays)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:684(<listcomp>)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:5194(_protect_consolidate)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/series.py:398(_set_axis)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/series.py:492(name)
+        1    0.000    0.000    0.002    0.002 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/construction.py:60(arrays_to_mgr)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:3569(_set_item)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/range.py:153(_data)
+        8    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_asarray.py:16(asarray)
+        2    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_reg.py:68(init_reg)
+       13    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/constraint_solve_order_model.py:10(__init__)
+       13    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:208(__exit__)
+        1    0.000    0.000    0.000    0.000 {built-in method _locale.nl_langinfo}
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1485(<listcomp>)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1602(_append_line)
+       16    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:232(mgr_locs)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:134(_check_ndim)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/series.py:540(_values)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:4032(__contains__)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1465(<genexpr>)
+        7    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/common.py:149(cast_scalar_indexer)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/inference.py:391(is_dataclass)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:90(post_randomize)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:865(clear)
+        3    0.000    0.000    0.001    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:1006(__init__)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:43(__init__)
+        4    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_collections_abc.py:252(__subclasshook__)
+        1    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_bootlocale.py:23(getpreferredencoding)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1512(<listcomp>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/frame.py:3717(reindexer)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:683(_consolidate_check)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:5205(_consolidate_inplace)
+        8    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:3866(_values)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:3892(_get_engine_target)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/construction.py:339(extract_array)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:150(ensure_python_int)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_methods.py:44(_any)
+        4    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:971(gen_signature_handshake)
+        9    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/typing.py:889(__extrahook__)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/isa/riscv_instr.py:193(create_csr_filter)
+       15    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_collections_abc.py:302(__subclasshook__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:939(_prepend_row_index)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1613(internal_values)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexing.py:2128(convert_to_index_sliceable)
+       11    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:314(dtype)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:4972(_maybe_cast_indexer)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1588(construct_1d_ndarray_preserving_na)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/numerictypes.py:654(<listcomp>)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:1054(generate_directed_instr_stream)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:454(gen_test_done)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_gen_config.py:458(pre_randomize)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/attrs.py:27(attr)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:231(gen_program_end)
+        7    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_collections_abc.py:271(__subclasshook__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1508(<listcomp>)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/construction.py:732(<listcomp>)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:233(_is_single_block)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1564(from_array)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:1670(__iter__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:1178(name)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1482(<genexpr>)
+        9    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1487(<genexpr>)
+       10    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:188(<lambda>)
+       10    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:183(classes_and_not_datetimelike)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:348(is_datetime64_dtype)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:750(is_signed_integer_dtype)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/inference.py:263(is_dict_like)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/numerictypes.py:293(issubclass_)
+        2    0.000    0.000    0.000    0.000 {method 'fill' of 'numpy.ndarray' objects}
+        2    0.000    0.000    0.000    0.000 {built-in method numpy.seterrobj}
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:205(lhsvar_rhsvar_propagator)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:592(astype)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1812(_simple_blockify)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:3177(_set_as_cached)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:5666(_maybe_cast_with_dtype)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:1751(is_floating)
+        9    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1471(<genexpr>)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/cast.py:1480(<genexpr>)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/common.py:329(apply_if_callable)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:806(is_unsigned_integer_dtype)
+        1    0.000    0.000    0.000    0.000 {pandas._libs.lib.is_iterator}
+        7    0.000    0.000    0.000    0.000 {pandas._libs.lib.is_scalar}
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_ufunc_config.py:441(__enter__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/numerictypes.py:365(issubdtype)
+        3    0.000    0.000    0.000    0.000 {method 'transpose' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_illegal_instr.py:156(compressed_instr_op_c)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_illegal_instr.py:162(b_extension_c)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:387(__lt__)
+       13    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/constraints.py:189(__call__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:861(extend)
+       13    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/impl/ctor.py:88(constraint_scope_depth)
+        6    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:748(_choose_width_fn)
+        1    0.000    0.000    0.001    0.001 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/construction.py:709(_convert_object_array)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:163(blknos)
+        4    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:675(is_consolidated)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1553(from_blocks)
+        4    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1846(_asarray_compat)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1852(_shape_compat)
+        1    0.000    0.000    0.000    0.000 {pandas._libs.internals.get_blkno_placements}
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:1996(inferred_type)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/common.py:190(all_none)
+        4    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:905(is_datetime64_any_dtype)
+        7    0.000    0.000    0.000    0.000 {pandas._libs.lib.is_float}
+        1    0.000    0.000    0.000    0.000 <__array_function__ internals>:2(atleast_2d)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:670(__init__)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.sum}
+        1    0.000    0.000    0.000    0.000 {built-in method _imp.is_builtin}
+        1    0.000    0.000    0.001    0.001 <frozen importlib._bootstrap_external>:1149(find_spec)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:369(__init__)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:707(find_spec)
+        4    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:847(__exit__)
+       10    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap_external>:41(_relax_case)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1496(<listcomp>)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/construction.py:683(<genexpr>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/frame.py:3158(_ensure_valid_index)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:138(<listcomp>)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:259(items)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:961(consolidate)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1575(_block)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1602(dtype)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:641(should_store)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:3247(_clear_item_cache)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:516(is_)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:540(_reset_identity)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/construction.py:580(is_empty_data)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/common.py:1296(is_float_dtype)
+        4    0.000    0.000    0.000    0.000 {built-in method numpy.geterrobj}
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/constraint_override_rollback_visitor.py:22(visit_constraint_override)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/model/field_array_model.py:58(clear)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:384(__le__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:655(__init__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/six.py:184(find_module)
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.iter}
+        2    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_collections_abc.py:349(__subclasshook__)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:780(find_spec)
+        4    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:843(__enter__)
+        1    0.000    0.000    0.000    0.000 <frozen importlib._bootstrap>:861(_find_spec_legacy)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:736(_is_multiline)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1490(<listcomp>)
+        1    0.000    0.000    0.005    0.005 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1526(_expand_numparse)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/tabulate.py:1627(<listcomp>)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/frame.py:1099(__len__)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:179(blklocs)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:216(ndim)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:977(_consolidate_inplace)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1071(value_getitem)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:2725(_extend_blocks)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/series.py:427(dtype)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:232(attrs)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:447(_info_axis)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/range.py:214(start)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/range.py:452(equals)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:4192(equals)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/common.py:194(<genexpr>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_ufunc_config.py:446(__exit__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_asarray.py:88(asanyarray)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/_methods.py:47(_all)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_instr_stream.py:194(setup_instruction_dist)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:237(gen_data_page_begin)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:363(core_is_initialized)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:390(__ge__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:393(__gt__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:97(__add__)
+        1    0.000    0.000    0.000    0.000 {method 'pop' of 'dict' objects}
+        2    0.000    0.000    0.000    0.000 {method 'upper' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/codecs.py:185(__init__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:306(__len__)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:310(shape)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:318(iget)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/series.py:595(__len__)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/generic.py:3606(_check_setitem_copy)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/range.py:260(step)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/inference.py:289(<genexpr>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/dtypes/inference.py:295(is_named_tuple)
+        5    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/multiarray.py:1043(copyto)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:541(setup_pmp)
+        4    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/variable_bound_visitor.py:129(visit_constraint_unique)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/visitors/clear_soft_priority_visitor.py:18(visit_constraint_soft)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/vsc/types.py:607(__init__)
+        3    0.000    0.000    0.000    0.000 {built-in method builtins.callable}
+        4    0.000    0.000    0.000    0.000 /usr/lib64/python3.6/_collections_abc.py:367(__subclasshook__)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:323(<genexpr>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:385(<dictcomp>)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1680(<genexpr>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/managers.py:1830(<lambda>)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/internals/blocks.py:200(internal_values)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/series.py:381(_constructor)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/range.py:237(stop)
+        2    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/numeric.py:150(is_all_dates)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/numeric.py:81(_validate_dtype)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:557(<lambda>)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:1171(name)
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/pandas/core/indexes/base.py:1374(nlevels)
+        1    0.000    0.000    0.000    0.000 {pandas._libs.lib.is_integer}
+        1    0.000    0.000    0.000    0.000 {pandas._libs.lib.item_from_zerodim}
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:548(gen_pmp_csr_write)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:821(gen_instr_fault_handler)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:831(gen_store_fault_handler)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:849(gen_page_table_section)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:856(gen_plic_section)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:956(dump_perf_stats)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:377(gen_dummy_csr_write)
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method _imp.is_frozen}
+        1    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/shape_base.py:79(_atleast_2d_dispatcher)
+        3    0.000    0.000    0.000    0.000 /home/anil/.local/lib/python3.6/site-packages/numpy/core/numerictypes.py:655(<listcomp>)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:553(setup_custom_csrs)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:796(gen_ebreak_handler)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:826(gen_load_fault_handler)
+        1    0.000    0.000    0.000    0.000 pygen/pygen_src/riscv_asm_program_gen.py:843(create_page_table)
+
+
+
