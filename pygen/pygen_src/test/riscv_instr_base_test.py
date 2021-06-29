@@ -32,7 +32,8 @@ class riscv_instr_base_test:
         self.asm_file_name = cfg.argv.asm_file_name
         self.asm = ""
 
-    def run(self):
+    # Commenting out multiprocessing feature for now as it is creating issue with profiling data
+    '''def run(self):
         with multiprocessing.Pool(processes = cfg.num_of_tests) as pool:
             pool.map(self.run_phase, list(range(cfg.num_of_tests)))
 
@@ -50,7 +51,23 @@ class riscv_instr_base_test:
         logging.info("All directed instruction is applied")
         self.asm.gen_program()
         self.asm.gen_test_file(test_name)
-        logging.info("TEST GENERATION DONE")
+        logging.info("TEST GENERATION DONE")'''
+
+    def run_phase(self):
+        for _ in range(cfg.num_of_tests):
+            self.randomize_cfg()
+            self.asm = riscv_asm_program_gen()
+            riscv_instr.create_instr_list(cfg)
+            if cfg.asm_test_suffix != "":
+                self.asm_file_name = "{}.{}".format(self.asm_file_name,
+                                                    cfg.asm_test_suffix)
+            test_name = "{}_{}.S".format(self.asm_file_name,
+                                         _ + self.start_idx)
+            self.asm.get_directed_instr_stream()
+            logging.info("All directed instruction is applied")
+            self.asm.gen_program()
+            self.asm.gen_test_file(test_name)
+            logging.info("TEST GENERATION DONE")
 
     def randomize_cfg(self):
         cfg.randomize()
@@ -62,16 +79,16 @@ class riscv_instr_base_test:
 
 
 start_time = time.time()
+pr = cProfile.Profile()
+pr.enable()
 riscv_base_test_ins = riscv_instr_base_test()
 if cfg.argv.gen_test == "riscv_instr_base_test":
-    pr = cProfile.Profile()
-    pr.enable()
-    riscv_base_test_ins.run()
-    pr.disable()
-    s = io.StringIO()
-    sortby = 'tottime'
-    ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
-    ps.print_stats()
-    logging.info("{}".format(s.getvalue()))
+    riscv_base_test_ins.run_phase()
     end_time = time.time()
     logging.info("Total execution time: {}s".format(round(end_time - start_time)))
+pr.disable()
+s = io.StringIO()
+sortby = 'tottime'
+ps = pstats.Stats(pr, stream=s).sort_stats(sortby)
+ps.print_stats()
+logging.info("{}".format(s.getvalue()))
