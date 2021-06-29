@@ -94,7 +94,7 @@ class riscv_instr:
         # Hence, XLEN should be of PyVSC type in order to use it in a constraint block
         self.XLEN = rcs.XLEN
 
-    @vsc.constraint
+    '''@vsc.constraint
     def imm_c(self):
         with vsc.if_then(self.instr_name.inside(vsc.rangelist(riscv_instr_name_t.SLLIW,
                                                               riscv_instr_name_t.SRLIW,
@@ -106,12 +106,12 @@ class riscv_instr:
             with vsc.if_then(self.XLEN == 32):
                 self.imm[11:5] == 0
             with vsc.if_then(self.XLEN != 32):
-                self.imm[11:6] == 0
+                self.imm[11:6] == 0'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def csr_c(self):
         # TODO
-        pass
+        pass'''
 
     @classmethod
     def register(cls, instr_name, instr_group):

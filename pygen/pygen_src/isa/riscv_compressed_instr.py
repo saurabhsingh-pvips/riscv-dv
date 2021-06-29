@@ -28,7 +28,7 @@ class riscv_compressed_instr(riscv_instr):
         self.rd = riscv_reg_t.S0
         self.is_compressed = 1
 
-    @vsc.constraint
+    '''@vsc.constraint
     def rvc_csr_c(self):
         # Registers specified by the three-bit rs1, rs2, and rd
         with vsc.if_then(self.format.inside(vsc.rangelist(riscv_instr_format_t.CIW_FORMAT,
@@ -54,9 +54,9 @@ class riscv_compressed_instr(riscv_instr):
         with vsc.if_then(self.instr_name.inside(vsc.rangelist(riscv_instr_name_t.C_JR,
                                                               riscv_instr_name_t.C_JALR))):
             self.rs1 != riscv_reg_t.ZERO
-            self.rs2 == riscv_reg_t.ZERO
+            self.rs2 == riscv_reg_t.ZERO'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def imm_val_c(self):
         with vsc.if_then(self.imm_type.inside(vsc.rangelist(imm_t.NZIMM, imm_t.NZUIMM))):
             self.imm[5:0] != 0
@@ -67,16 +67,16 @@ class riscv_compressed_instr(riscv_instr):
                                                                   riscv_instr_name_t.C_SLLI))):
                 self.imm[31:5] == 0
             with vsc.if_then(self.instr_name == riscv_instr_name_t.C_ADDI4SPN):
-                self.imm[1:0] == 0
+                self.imm[1:0] == 0'''
 
     # C_JAL is RV32C only instruction
-    @vsc.constraint
+    '''@vsc.constraint
     def jal_c(self):
         with vsc.if_then(self.XLEN != 32):
-            self.instr_name != riscv_instr_name_t.C_JAL
+            self.instr_name != riscv_instr_name_t.C_JAL'''
 
     # Avoid generating HINT or illegal instruction by default as it's not supported by the compiler
-    @vsc.constraint
+    '''@vsc.constraint
     def no_hint_illegal_instr_c(self):
         with vsc.if_then(self.instr_name.inside(vsc.rangelist(riscv_instr_name_t.C_ADDI,
                                                               riscv_instr_name_t.C_ADDIW,
@@ -96,7 +96,7 @@ class riscv_compressed_instr(riscv_instr):
                                                               riscv_instr_name_t.C_MV))):
             self.rs2 != riscv_reg_t.ZERO
         with vsc.if_then(self.instr_name == riscv_instr_name_t.C_LUI):
-            self.rd != riscv_reg_t.SP
+            self.rd != riscv_reg_t.SP'''
 
     def set_imm_len(self):
         if self.format in [riscv_instr_format_t.CI_FORMAT, riscv_instr_format_t.CSS_FORMAT]:

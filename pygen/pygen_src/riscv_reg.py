@@ -35,15 +35,15 @@ class riscv_reg_field:
         self.hard_wired = vsc.bit_t(1)
         self.name = ""
 
-    @vsc.constraint
+    '''@vsc.constraint
     def zero_reserved_field_c(self):
         with vsc.implies(self.access_type == reg_field_access_t.WPRI):
-            self.val == 0
+            self.val == 0'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def hardwired_fld_c(self):
         with vsc.implies(self.hard_wired == 1):
-            self.val == self.reset_val
+            self.val == self.reset_val'''
 
     def convert2string(self):
         return pkg_ins.format_string("{} bit_width:{} val:{} type:{}".format(

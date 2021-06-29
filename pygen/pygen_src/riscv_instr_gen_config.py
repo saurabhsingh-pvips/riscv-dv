@@ -318,25 +318,25 @@ class riscv_instr_gen_config:
         # TODO Add constraint related to sub_program
         self.main_program_instr_cnt in vsc.rangelist(vsc.rng(10, self.instr_cnt))'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def debug_mode_c(self):
         # TODO
-        pass
+        pass'''
 
     # Keep the number of single step iterations relatively small
-    @vsc.constraint
+    '''@vsc.constraint
     def debug_single_step_c(self):
         # TODO
-        pass
+        pass'''
 
     # Boot privileged mode distribution
-    @vsc.constraint
+    '''@vsc.constraint
     def boot_privileged_mode_dist_c(self):
         # Boot to higher privileged mode more often
         # TODO
-        pass
+        pass'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def mtvec_c(self):
         self.mtvec_mode.inside(vsc.rangelist(self.supported_interrupt_mode))
         with vsc.if_then(self.mtvec_mode == mtvec_mode_t.DIRECT):
@@ -344,9 +344,9 @@ class riscv_instr_gen_config:
         with vsc.else_then():
             # Setting MODE = Vectored may impose an additional alignmentconstraint on BASE,
             # requiring up to 4×XLEN-byte alignment
-            vsc.soft(self.tvec_alignment == self.tvec_ceil)
+            vsc.soft(self.tvec_alignment == self.tvec_ceil)'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def mstatus_c(self):
         with vsc.if_then(self.set_mstatus_mprv == 1):
             self.mstatus_mprv == 1
@@ -355,30 +355,30 @@ class riscv_instr_gen_config:
         with vsc.if_then(self.SATP_MODE == satp_mode_t.BARE):
             self.mstatus_mxr == 0
             self.mstatus_sum == 0
-            self.mstatus_tvm == 0
+            self.mstatus_tvm == 0'''
 
     # Exception delegation setting
-    @vsc.constraint
+    '''@vsc.constraint
     def exception_delegation_c(self):
         # Do not delegate instruction page fault to supervisor/user mode because this may introduce
         # dead loop. All the subsequent instruction fetches may fail and program cannot recover.
         # TODO
-        pass
+        pass'''
 
     # Spike only supports a subset of exception and interrupt delegation
     # You can modify this constraint if your ISS support different set of delegations
-    @vsc.constraint
+    '''@vsc.constraint
     def delegation_c(self):
         # TODO
-        pass
+        pass'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def ra_c(self):
         self.ra != riscv_reg_t.SP
         self.ra != riscv_reg_t.TP
-        self.ra != riscv_reg_t.ZERO
+        self.ra != riscv_reg_t.ZERO'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def sp_tp_c(self):
         with vsc.if_then(self.fix_sp == 1):
             self.sp == riscv_reg_t.SP
@@ -386,53 +386,53 @@ class riscv_instr_gen_config:
         self.sp.not_inside(vsc.rangelist(riscv_reg_t.GP,
                                          riscv_reg_t.RA, riscv_reg_t.ZERO))
         self.tp.not_inside(vsc.rangelist(riscv_reg_t.GP,
-                                         riscv_reg_t.RA, riscv_reg_t.ZERO))
+                                         riscv_reg_t.RA, riscv_reg_t.ZERO))'''
 
     # This reg is used in various places throughout the generator,
     # so need more conservative constraints on it.
-    @vsc.constraint
+    '''@vsc.constraint
     def reserve_scratch_reg_c(self):
         self.scratch_reg.not_inside(vsc.rangelist(riscv_reg_t.ZERO, self.sp,
-                                                  self.tp, self.ra, riscv_reg_t.GP))
+                                                  self.tp, self.ra, riscv_reg_t.GP))'''
 
     # This reg is only used inside PMP exception routine,
     # so we can be a bit looser with constraints.
-    @vsc.constraint
+    '''@vsc.constraint
     def reserved_pmp_reg_c(self):
         # TODO
-        pass
+        pass'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def gpr_c(self):
         with vsc.foreach(self.gpr, idx = True) as i:
             self.gpr[i].not_inside(vsc.rangelist(self.sp, self.tp, self.scratch_reg, self.pmp_reg,
                                                  riscv_reg_t.ZERO, riscv_reg_t.RA, riscv_reg_t.GP))
-        vsc.unique(self.gpr)
+        vsc.unique(self.gpr)'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def addr_translation_rnd_order_c(self):
         # TODO
-        pass
+        pass'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def addr_translation_c(self):
         with vsc.if_then((self.init_privil_mode != privileged_mode_t.MACHINE_MODE) &
                          (self.SATP_MODE != satp_mode_t.BARE)):
             self.virtual_addr_translation_on == 1
         with vsc.else_then():
-            self.virtual_addr_translation_on == 0
+            self.virtual_addr_translation_on == 0'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def floating_point_c(self):
         with vsc.if_then(self.enable_floating_point == 1):
             self.mstatus_fs == 1
         with vsc.else_then():
-            self.mstatus_fs == 0
+            self.mstatus_fs == 0'''
 
-    @vsc.constraint
+    '''@vsc.constraint
     def mstatus_vs_c(self):
         # TODO
-        pass
+        pass'''
 
     def setup_instr_distribution(self):
         if self.dist_control_mode:

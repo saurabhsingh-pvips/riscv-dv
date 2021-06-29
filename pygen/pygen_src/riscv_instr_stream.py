@@ -155,9 +155,9 @@ class riscv_rand_instr_stream(riscv_instr_stream):
         self.allowed_instr = []
         self.category_dist = []
 
-    @vsc.constraint
+    '''@vsc.constraint
     def avail_reg_c(self):
-        self.avail_regs.size == 10
+        self.avail_regs.size == 10'''
 
     def create_instr_instance(self):
         for i in range(self.instr_cnt):
