@@ -376,7 +376,33 @@ class riscv_asm_program_gen:
     # repeated writes to these CSRs.
     def gen_dummy_csr_write(self):
         # TODO
-        pass
+        instr = []
+        
+        if cfg.enable_dummy_csr_write:
+            if cfg.init_privileged_mode == privileged_reg_t.MACHINE_MODE:
+                instr.append("csrr x{}, {}".format(cfg.gpr[0], privileged_reg_t.MSTATUS))
+                instr.append("csrr x{}, {}".format(cfg.gpr[1], privileged_reg_t.MIE))
+                instr.append("csrw {}, x{}".format(privileged_reg_t.MSTATUS, cfg.gpr[0]))
+                instr.append("csrw {}, x{}".format(privileged_reg_t.MIE, cfg.gpr[1]))
+            elif cfg.init_privileged_mode == privileged_reg_t.SUPERVISOR_MODE:
+                instr.append("csrr x{}, {}".format(cfg.gpr[0], privileged_reg_t.SSTATUS))
+                instr.append("csrr x{}, {}".format(cfg.gpr[1], privileged_reg_t.SIE))
+                instr.append("csrw {}, x{}".format(privileged_reg_t.SSTATUS, cfg.gpr[0]))
+                instr.append("csrw {}, x{}".format(privileged_reg_t.SIE, cfg.gpr[1]))
+            elif cfg.init_privileged_mode == privileged_reg_t.USER_MODE: 
+                if not rcs.support_umode_trap:
+                    return
+                instr.append("csrr x{}, {}".format(cfg.gpr[0], privileged_reg_t.USTATUS))
+                instr.append("csrr x{}, {}".format(cfg.gpr[1], privileged_reg_t.UIE))
+                instr.append("csrw {}, x{}".format(privileged_reg_t.USTATUS, cfg.gpr[0]))
+                instr.append("csrw {}, x{}".format(privileged_reg_t.UIE, cfg.gpr[1]))
+            else:
+                logging.critical("Unsupported boot mode")
+                sys.exit(1) 
+           
+            self.format_section(instr)
+            self.instr_stream.append(instr)
+            logging.info("Sucessfully run gen_dummy_csr_write")
 
     # Initialize general purpose registers with random value
     def init_gpr(self):
