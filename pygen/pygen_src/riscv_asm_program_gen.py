@@ -288,6 +288,7 @@ class riscv_asm_program_gen:
             self.instr_stream.append(".popsection;")
 
     def gen_init_section(self, hart):
+        logging.info("start -------- gen_init_section----------------------------")
         init_string = pkg_ins.format_string(pkg_ins.get_label("init:", hart), pkg_ins.LABEL_STR_LEN)
         self.instr_stream.append(init_string)
         if cfg.enable_floating_point:
@@ -376,7 +377,9 @@ class riscv_asm_program_gen:
     # repeated writes to these CSRs.
     def gen_dummy_csr_write(self):
         # TODO
+        logging.info("start -------- gen_dummy_csr_write----------------------------")
         instr = []
+        logging.info("enable_dummy_csr_write : %d", cfg.enable_dummy_csr_write)
         
         if cfg.enable_dummy_csr_write:
             if cfg.init_privileged_mode == privileged_reg_t.MACHINE_MODE:
@@ -402,7 +405,6 @@ class riscv_asm_program_gen:
            
             self.format_section(instr)
             self.instr_stream.append(instr)
-            logging.info("Sucessfully run gen_dummy_csr_write")
 
     # Initialize general purpose registers with random value
     def init_gpr(self):
@@ -463,16 +465,35 @@ class riscv_asm_program_gen:
         self.instr_stream.extend((li_instr0, slli_instr, li_instr1, or_instr, fmv_instr))
 
     # Get a random single precision floating value
+    def randselect_fun(addr_range1, addr_range2):
+        value = vsc.rand_bit_t(32) 
+        with vsc.randomize_with(value): value in vnc.rangelist(addr_range1, addr_range2)
+
     def get_rand_spf_value(self):
-        # TODO randcase
-        value = random.randrange(0, 2**32 - 1)
-        return value
+       vsc.randselect([
+              (1, lambda: randselect_fun(hex(0x7f80_0000), hex(0xff80_0000))),
+              (1, lambda: randselect_fun(hex(0x7f7f_ffff), hex(0xff7f_ffff))),
+              (1, lambda: randselect_fun(hex(0x0000_0000), hex(0x8000_0000))),
+              (1, lambda: randselect_fun(hex(0x7f80_0001), hex(0x7fc0_0000))),
+              (1, lambda: vsc.rng(30, pkg_ins.SINGLE_PRECISION_FRACTION_BITS) > 0)
+              (1, lambda: vsc.rng(30, pkg_ins.SINGLE_PRECISION_FRACTION_BITS) == 0)])
+       return value       
 
     # Get a random double precision floating value
-    def get_rand_dpf_value(self):
+    def randselect_fun1(addr_range1, addr_range2): 
         value = vsc.bit_t(64)
-        # TODO randcase
-        return value
+        with vsc.randomize_with(value): value in vnc.rangelist(addr_range1, addr_range2)
+    
+    def get_rand_dpf_value(self):
+        vsc.randselect([
+              (1, lambda: randselect_fun1(hex(0x7ff0_0000_0000_0000), hex(0xfff0_0000_0000_0000))),
+              (1, lambda: randselect_fun1(hex(0x7fef_ffff_ffff_ffff), hex(0xffef_ffff_ffff_ffff))),
+              (1, lambda: randselect_fun1(hex(0x0000_0000_0000_0000), hex(0x8000_0000_0000_0000))),
+              (1, lambda: randselect_fun1(hex(0x7ff0_0000_0000_0001), hex(0x7ff8_0000_0000_0000))),
+              (1, lambda: vsc.rng(62, pkg_ins.DOUBLE_PRECISION_FRACTION_BITS) > 0)
+              (1, lambda: vsc.rng(62, pkg_ins.DOUBLE_PRECISION_FRACTION_BITS) == 0)])
+        return value       
+
 
     # Generate "test_done" section, test is finished by an ECALL instruction
     # The ECALL trap handler will handle the clean up procedure before finishing the test.
